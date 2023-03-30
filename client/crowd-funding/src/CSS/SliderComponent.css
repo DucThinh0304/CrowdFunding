@@ -1,0 +1,44 @@
+.logo {
+  width: 180px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  box-sizing: inherit;
+}
+
+.text {
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.sliderContainer {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  box-sizing: inherit;
+  text-align: center;
+}
+
+.imageContainer {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 20px;
+}
+
+.title {
+  color: #0275d8;
+  font-size: 16px;
+}
+
+.logoText {
+  color: #858585;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.slick-dots li button {
+  font-size: 100;
+}
