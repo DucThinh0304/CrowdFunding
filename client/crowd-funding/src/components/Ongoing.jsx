@@ -224,7 +224,7 @@ const Ongoing = () => {
         <Title>Dự án đang diễn ra</Title>
         <Desc>Các dự án tiêu biểu đang trong quá trình crowdfunding trên Comicola</Desc>
           <Projects>
-          {projects.map(project => (
+          {projects.slice(0, 2).map(project => (
             checkDay(Math.round(((project.dayfinish - today)/oneDay))) === true ? (
               <ProjectContainer key={project.Id}>
                 <Project>

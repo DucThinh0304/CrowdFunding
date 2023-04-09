@@ -1,5 +1,8 @@
-import { Search } from '@material-ui/icons';
-import styled from 'styled-components';
+import { Search } from "@material-ui/icons";
+import styled from "styled-components";
+import AllCampaigns from "../pages/AllCampaigns";
+import Home from "../pages/Home";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 94px;
@@ -27,40 +30,38 @@ const ImageLogo = styled.img`
 `;
 
 const Left = styled.div`
-  flex:1;
+  flex: 1;
 `;
 
 const Center = styled.div`
-  flex:2;
+  flex: 2;
   display: flex;
   align-items: left;
   justify-content: flex-start;
 `;
 
 const Right = styled.div`
-  flex:1;
+  flex: 1;
   align-items: center;
 `;
-
 
 const WrapLogin = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
-const Link = styled.a`
+const LinkText = styled.div`
   text-decoration: none;
   cursor: pointer;
   padding: 12px;
   font-size: 14px;
   align-content: space-between;
-  &:hover{
+  &:hover {
     color: #c9366f;
   }
   font-weight: 500;
   transition: all 0.2s ease;
-  color: ${props => Number(props.Id) === 2 ? '#c9366f' : 'black'};
 `;
 
 const Icon = styled.div`
@@ -68,47 +69,67 @@ const Icon = styled.div`
   height: 14px;
   justify-content: center;
   align-items: center;
-  display:flex;
+  display: flex;
   cursor: pointer;
-`
+`;
 
 const Login = styled.a`
   text-decoration: none;
   cursor: pointer;
   padding: 12px;
   font-size: 14px;
-`
+`;
 
 const Navbar = () => {
   return (
     <Container>
       <Wrapper>
         <Left>
-          <Logo>
-            <ImageLogo src="https://crowdfunding.comicola.com/wp-content/uploads/2021/06/comicola_crowdfunding_logo-1.png"/>
-          </Logo >
+          <Link to="/">
+            <Logo>
+              <ImageLogo src="https://crowdfunding.comicola.com/wp-content/uploads/2021/06/comicola_crowdfunding_logo-1.png" />
+            </Logo>
+          </Link>
         </Left>
         <Center>
-          <Link Id={1}>Trang chủ</Link>
-          <Link Id={2}>Toàn bộ các dự án</Link>
-          <Link Id={3}>Liên hệ</Link>
+          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+            <LinkText Id={1}>Trang chủ</LinkText>
+          </Link>
+          <Link
+            to="/all-campaigns"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <LinkText Id={2}>Toàn bộ các dự án</LinkText>
+          </Link>
+          <LinkText Id={3}>Liên hệ</LinkText>
         </Center>
         <Right>
           <WrapLogin>
             <Icon>
               <Search />
             </Icon>
-            <Login>
-              <b>Đăng nhập</b>
-            </Login>/<Login>
-              <b>Đăng xuất</b>
-            </Login>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <Login>
+                <b>Đăng nhập</b>
+              </Login>
+            </Link>
+            /
+            <Link
+              to="/register"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <Login>
+                <b>Đăng kí</b>
+              </Login>
+            </Link>
           </WrapLogin>
         </Right>
       </Wrapper>
     </Container>
   );
-}
+};
 
-
-export default Navbar
+export default Navbar;

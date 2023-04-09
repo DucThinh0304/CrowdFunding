@@ -1,9 +1,8 @@
-import { makeStyles } from '@material-ui/core';
-import { FavoriteBorder } from '@material-ui/icons';
-import React from 'react'
-import styled from 'styled-components';
-import { projects, users } from '../data';
-
+import { makeStyles } from "@material-ui/core";
+import { FavoriteBorder } from "@material-ui/icons";
+import React from "react";
+import styled from "styled-components";
+import { projects, users } from "../data";
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +18,7 @@ const CampaingnsContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 1140px;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   max-width: 100%;
   position: relative;
   margin: 0 auto;
@@ -27,13 +26,13 @@ const CampaingnsContainer = styled.div`
 `;
 
 const CampaingnContainer = styled.div`
-    flex: 0 0 50%;
-    max-width: 50%;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    box-sizing: inherit;
-    display: block;
+  flex: 0 0 50%;
+  max-width: 50%;
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  box-sizing: inherit;
+  display: block;
 `;
 
 const Campaingn = styled.div`
@@ -66,10 +65,10 @@ const CampaingnInfoContainer = styled.div`
   padding: 15px;
 `;
 
-const CampaingnTag  = styled.span`
+const CampaingnTag = styled.span`
   color: #c9366f;
-  &:hover{
-    color: #40BDA5;
+  &:hover {
+    color: #40bda5;
   }
   cursor: pointer;
   font-size: 14px;
@@ -84,18 +83,16 @@ const CampaingnTitleContainer = styled.div`
 const CampaingnTitle = styled.h3`
   font-weight: 500;
   cursor: pointer;
-  &:hover{
-    color: #40BDA5;
+  &:hover {
+    color: #40bda5;
   }
   transition: all 0.3s ease;
 `;
 
-const CampaingnProgessContainer = styled.div`
-  
-`;
+const CampaingnProgessContainer = styled.div``;
 
 const CampaingnMoneyContainer = styled.div`
-  display:flex;
+  display: flex;
   justify-content: space-between;
 `;
 
@@ -116,9 +113,9 @@ const ProgressBar = styled.div`
   height: 6px;
   position: relative;
   margin: 10px 0px;
-  &:before{
+  &:before {
     content: attr(data-percentage);
-    width: ${props => props.percentage || 0}%;
+    width: ${(props) => props.percentage || 0}%;
     left: 0;
     top: 0;
     bottom: 0;
@@ -134,18 +131,19 @@ const ProgressBar = styled.div`
 
 const useStyles = makeStyles({
   icon: {
-    position: 'absolute',
-    padding: '5px 5px',
-    color: '#0275d8',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    zIndex:'2',
-    top: '0',
-    right: '0',
-    '&:hover': {
-      color: '#3c52b2',
+    position: "absolute",
+    padding: "5px 5px",
+    color: "#0275d8",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    zIndex: "2",
+    top: "0",
+    right: "0",
+    "&:hover": {
+      color: "#3c52b2",
+    },
   },
-}})
+});
 
 const Hr = styled.hr`
   background-color: #eee;
@@ -169,7 +167,7 @@ const Avatar = styled.img`
   width: 40px;
   border-radius: 50%;
   object-fit: cover;
-`;  
+`;
 
 const Username = styled.div`
   font-size: 14px;
@@ -180,7 +178,7 @@ const Username = styled.div`
 
 const CampaingnSuccessContainer = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
 `;
 
 const SuccessRate = styled.div`
@@ -206,8 +204,8 @@ const SwitchContainer = styled.div`
 const ButtonArrow = styled.button`
   border: none;
   color: #939393;
-  &:hover{
-    color: #40BDA5;
+  &:hover {
+    color: #40bda5;
   }
   transition: all 0.5s ease;
   background-color: transparent;
@@ -218,113 +216,137 @@ const ButtonArrow = styled.button`
   cursor: pointer;
 `;
 
-
 const ButtonNumberContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: fit-content;
   margin: 15px;
-  
 `;
 
 const ButtonNumber = styled.button`
   cursor: pointer;
   background-color: transparent;
   border-radius: 50%;
-  height:25px;
+  height: 25px;
   width: 25px;
   font-size: 14px;
   color: black;
   border: none;
   font-weight: 600;
   margin: 5px;
-  &:hover{
-    color: ${props => props.nohover === 'true' ? 'black' : 'white'};
-    background-color: ${props => props.nohover === 'true' ? 'transparent' : '#c9366f'}
+  &:hover {
+    color: ${(props) => (props.nohover === "true" ? "black" : "white")};
+    background-color: ${(props) =>
+      props.nohover === "true" ? "transparent" : "#c9366f"};
   }
   transition: all 0.5s ease;
-
 `;
-
 
 const AllCampaingn = () => {
   const classes = useStyles();
-  const userNameId = (id) => users.find(a => a.userID === id).username
-  const avtsrcId = (id) => users.find(a => a.userID === id).avtsrc
+  const userNameId = (id) => users.find((a) => a.userID === id).username;
+  const avtsrcId = (id) => users.find((a) => a.userID === id).avtsrc;
   const Shorten = (value) => {
     var newValue = value;
     if (value >= 1000) {
-        var suffixes = ["", "k", "m", "b","t"];
-        var suffixNum = Math.floor( (""+value).length/3 );
-        var shortValue = '';
-        for (var precision = 2; precision >= 1; precision--) {
-            shortValue = parseFloat( (suffixNum !== 0 ? (value / Math.pow(1000,suffixNum) ) : value).toPrecision(precision));
-            var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g,'');
-            if (dotLessShortValue.length <= 2) { break; }
+      var suffixes = ["", "k", "m", "b", "t"];
+      var suffixNum = Math.floor(("" + value).length / 3);
+      var shortValue = "";
+      for (var precision = 2; precision >= 1; precision--) {
+        shortValue = parseFloat(
+          (suffixNum !== 0
+            ? value / Math.pow(1000, suffixNum)
+            : value
+          ).toPrecision(precision)
+        );
+        var dotLessShortValue = (shortValue + "").replace(
+          /[^a-zA-Z 0-9]+/g,
+          ""
+        );
+        if (dotLessShortValue.length <= 2) {
+          break;
         }
-        if (shortValue % 1 !== 0)  shortValue = shortValue.toFixed(1);
-        newValue = shortValue+suffixes[suffixNum];
+      }
+      if (shortValue % 1 !== 0) shortValue = shortValue.toFixed(1);
+      newValue = shortValue + suffixes[suffixNum];
     }
     return newValue;
-    }
+  };
   return (
     <Container>
-        <CampaingnsContainer>
-            {projects.map(project => (
-              project.page === 1 ? (
-                <CampaingnContainer key={project.Id}>
-                  <Campaingn>
-                    <CampaingnImageContainer>
-                      <CampaingnImage src={project.imagesrc}/>
-                      <FavoriteBorder className={classes.icon}/>
-                    </CampaingnImageContainer>
-                    <CampaingnInfoContainer>
-                      {project.tag.map(tag => (
-                       <CampaingnTag key={tag}>{tag} </CampaingnTag>
-                      ))}
-                      <CampaingnTitleContainer>
-                        <CampaingnTitle>{project.title}</CampaingnTitle>
-                      </CampaingnTitleContainer>
-                      <CampaingnProgessContainer>
-                        <CampaingnMoneyContainer>
-                          <CampaingnMoney>
-                            <b>{Shorten(project.donatesum)} ₫</b> đã được ủng hộ
-                          </CampaingnMoney>
-                          <CampaingnNeed>
-                            <b>{Shorten(project.donateneed)} ₫</b> mục tiêu
-                          </CampaingnNeed>
-                        </CampaingnMoneyContainer>
-                        <ProgressBar percentage={project.donatesum/project.donateneed*100}/>
-                      </CampaingnProgessContainer>
-                      <Hr/>
-                      <BottomCampaingn>
-                        <UserContainer>
-                          <Avatar src={avtsrcId(project.userID) === 'none' ? 'https://secure.gravatar.com/avatar/2591fb93574e6b52219135fd0b5f23da?s=40&d=mm&r=g' : avtsrcId(project.userID)}/>
-                          <Username>{userNameId(project.userID)}</Username>
-                        </UserContainer>
-                        <CampaingnSuccessContainer>
-                          <SuccessRate>{Math.round(project.donatesum/project.donateneed*100)}% </SuccessRate>
-                          <Success>Thành công</Success>
-                        </CampaingnSuccessContainer>
-                      </BottomCampaingn>
-                    </CampaingnInfoContainer>
-                  </Campaingn>
-                </CampaingnContainer>
-              ) : (<div></div>)
-            ))}
-        </CampaingnsContainer>
-        <SwitchContainer>
-          <ButtonArrow>TRƯỚC</ButtonArrow>
-          <ButtonNumberContainer>
-            <ButtonNumber>1</ButtonNumber>
-            <ButtonNumber>2</ButtonNumber>
-            <ButtonNumber nohover='true'>...</ButtonNumber>
-            <ButtonNumber>8</ButtonNumber>
-          </ButtonNumberContainer>
-          <ButtonArrow>SAU</ButtonArrow>
-        </SwitchContainer>
+      <CampaingnsContainer>
+        {projects.map((project) =>
+          project.page === 1 ? (
+            <CampaingnContainer key={project.Id}>
+              <Campaingn>
+                <CampaingnImageContainer>
+                  <CampaingnImage src={project.imagesrc} />
+                  <FavoriteBorder className={classes.icon} />
+                </CampaingnImageContainer>
+                <CampaingnInfoContainer>
+                  {project.tag.map((tag) => (
+                    <CampaingnTag key={tag}>{tag} </CampaingnTag>
+                  ))}
+                  <CampaingnTitleContainer>
+                    <CampaingnTitle>{project.title}</CampaingnTitle>
+                  </CampaingnTitleContainer>
+                  <CampaingnProgessContainer>
+                    <CampaingnMoneyContainer>
+                      <CampaingnMoney>
+                        <b>{Shorten(project.donatesum)} ₫</b> đã được ủng hộ
+                      </CampaingnMoney>
+                      <CampaingnNeed>
+                        <b>{Shorten(project.donateneed)} ₫</b> mục tiêu
+                      </CampaingnNeed>
+                    </CampaingnMoneyContainer>
+                    <ProgressBar
+                      percentage={
+                        (project.donatesum / project.donateneed) * 100
+                      }
+                    />
+                  </CampaingnProgessContainer>
+                  <Hr />
+                  <BottomCampaingn>
+                    <UserContainer>
+                      <Avatar
+                        src={
+                          avtsrcId(project.userID) === "none"
+                            ? "https://secure.gravatar.com/avatar/2591fb93574e6b52219135fd0b5f23da?s=40&d=mm&r=g"
+                            : avtsrcId(project.userID)
+                        }
+                      />
+                      <Username>{userNameId(project.userID)}</Username>
+                    </UserContainer>
+                    <CampaingnSuccessContainer>
+                      <SuccessRate>
+                        {Math.round(
+                          (project.donatesum / project.donateneed) * 100
+                        )}
+                        %{" "}
+                      </SuccessRate>
+                      <Success>Thành công</Success>
+                    </CampaingnSuccessContainer>
+                  </BottomCampaingn>
+                </CampaingnInfoContainer>
+              </Campaingn>
+            </CampaingnContainer>
+          ) : (
+            <div></div>
+          )
+        )}
+      </CampaingnsContainer>
+      <SwitchContainer>
+        <ButtonArrow>TRƯỚC</ButtonArrow>
+        <ButtonNumberContainer>
+          <ButtonNumber>1</ButtonNumber>
+          <ButtonNumber>2</ButtonNumber>
+          <ButtonNumber nohover="true">...</ButtonNumber>
+          <ButtonNumber>8</ButtonNumber>
+        </ButtonNumberContainer>
+        <ButtonArrow>SAU</ButtonArrow>
+      </SwitchContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default AllCampaingn
+export default AllCampaingn;

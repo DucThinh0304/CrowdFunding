@@ -1,7 +1,8 @@
-import { makeStyles } from '@material-ui/core';
-import { FavoriteBorder } from '@material-ui/icons';
-import styled from 'styled-components';
-import {projects} from "../data"
+import { makeStyles } from "@material-ui/core";
+import { FavoriteBorder } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { projects } from "../data";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -43,8 +44,8 @@ const Project = styled.div`
   display: flex;
   flex-direction: column;
   border: 0.5px solid lightgray;
-  &:hover{
-    box-shadow: 0px 10px 20px rgba(0,0,0,.5);
+  &:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
   }
   transition: all 0.7s ease;
 `;
@@ -58,8 +59,8 @@ const ProjectImage = styled.img`
 
 const ProjectTag = styled.a`
   color: #c9366f;
-  &:hover{
-    color: #40BDA5;
+  &:hover {
+    color: #40bda5;
   }
   cursor: pointer;
   font-size: 14px;
@@ -78,14 +79,13 @@ const ProjectFlex = styled.div`
 `;
 
 const ProjectTagContainer = styled.div`
-  flex:1;
+  flex: 1;
 `;
-
 
 const ProjectTitle = styled.h3`
   font-weight: 500;
   cursor: pointer;
-  &:hover{
+  &:hover {
     color: #c9366f;
   }
   transition: all 0.3s ease;
@@ -105,9 +105,7 @@ const ProjectMoney = styled.div`
   font-size: 14px;
 `;
 
-const Progress = styled.div`
-  
-`;
+const Progress = styled.div``;
 
 const ProgressBar = styled.div`
   width: 100%;
@@ -116,9 +114,9 @@ const ProgressBar = styled.div`
   height: 6px;
   position: relative;
   margin: 10px 0px;
-  &:before{
+  &:before {
     content: attr(data-percentage);
-    width: ${props => props.percentage || 0}%;
+    width: ${(props) => props.percentage || 0}%;
     left: 0;
     top: 0;
     bottom: 0;
@@ -145,25 +143,24 @@ const ProgressNumberContainer = styled.div`
 `;
 
 const Left = styled.div`
-  flex:1;
+  flex: 1;
   align-items: center;
   justify-content: center;
   text-align: center;
 `;
 
 const Center = styled.div`
-  flex:1;
+  flex: 1;
   align-items: center;
   justify-content: center;
   text-align: center;
 `;
 
 const Right = styled.div`
-  flex:1;
+  flex: 1;
   align-items: center;
   justify-content: center;
   text-align: center;
-
 `;
 
 const TopText = styled.div`
@@ -188,90 +185,127 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 70px;
-  &:hover{
+  &:hover {
     background-color: #c9366f;
     color: white;
   }
   transition: all 0.5s ease;
 `;
 
+const CampaingnProgessContainer = styled.div``;
+
+const CampaingnMoneyContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CampaingnMoney = styled.div`
+  font-size: 14px;
+  text-align: left;
+`;
+
+const CampaingnNeed = styled.div`
+  font-size: 14px;
+  text-align: right;
+`;
+
 const useStyles = makeStyles({
   icon: {
-    color: '#0275d8',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    '&:hover': {
-      color: '#3c52b2',
+    color: "#0275d8",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    "&:hover": {
+      color: "#3c52b2",
+    },
   },
-}})
+});
 
-const formatter = new Intl.NumberFormat(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }));
+const formatter = new Intl.NumberFormat(
+  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
+);
 
 const Projects = () => {
   const today = new Date();
   const classes = useStyles();
   const oneDay = 24 * 60 * 60 * 1000;
   const checkDay = (check) => {
-    return((check < 0 ? false : true));
-  }
+    return check < 0 ? false : true;
+  };
   return (
     <Container>
-        <Title>Các dự án nổi bật</Title>
-        <Desc>Những dự án nổi bật tại Comicola</Desc>
-        <ProjectsContainer>
-          {projects.map(project => (
-            <ProjectContainer key={project.Id}>
-              <Project>
-                <ProjectImage src={project.imagesrc}/>
-                <ProjectTitleContainer>
-                  <ProjectFlex>
-                    <ProjectTagContainer>
-                      {project.tag.map(tag => (
-                        <ProjectTag key={tag}>{tag} </ProjectTag>
-                      ))}
-                    </ProjectTagContainer>
-                    <FavoriteBorder className={classes.icon}/>
-                  </ProjectFlex>
+      <Title>Các dự án nổi bật</Title>
+      <Desc>Những dự án nổi bật tại Comicola</Desc>
+      <ProjectsContainer>
+        {projects.slice(0, 3).map((project) => (
+          <ProjectContainer key={project.Id}>
+            <Project>
+              <Link
+                to="/campaign"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <ProjectImage src={project.imagesrc} />
+              </Link>
+              <ProjectTitleContainer>
+                <ProjectFlex>
+                  <ProjectTagContainer>
+                    {project.tag.map((tag) => (
+                      <ProjectTag key={tag}>{tag} </ProjectTag>
+                    ))}
+                  </ProjectTagContainer>
+                  <FavoriteBorder className={classes.icon} />
+                </ProjectFlex>
+                <Link
+                  to="/campaign"
+                  style={{ textDecoration: "none", color: "black" }}
+                >
                   <ProjectTitle>{project.title}</ProjectTitle>
-                </ProjectTitleContainer>
-                <ProjectProgessContainer>
-                  <ProjectMoney>
-                    {formatter.format(project.donatesum)} ₫ đã được ủng hộ
-                  </ProjectMoney>
-                  <Progress>
-                    <ProgressBar percentage={project.donatesum/project.donateneed*100}/>
-                  </Progress>
-                  <Hr/>
-                  <ProgressNumberContainer>
-                        <Left>
-                          <TopText>
-                            {checkDay(Math.round(((project.dayfinish - today)/oneDay))) === true ? Math.round(Math.abs((project.dayfinish - today)/oneDay)) : "0"}
-                          </TopText>
-                          <BottomText>Ngày còn lại</BottomText>
-                        </Left>
-                        <Center>
-                          <TopText>
-                            {project.supporters}
-                          </TopText>
-                          <BottomText>Người ủng hộ</BottomText>
-                          </Center>
-                        <Right>
-                          <TopText>
-                            {Math.round(project.donatesum/project.donateneed*100)}%
-                          </TopText>
-                          <BottomText>Thành công</BottomText>
-                        </Right>
-                  </ProgressNumberContainer>
-                </ProjectProgessContainer>
-              </Project>
-            </ProjectContainer>
-          ))}
-        </ProjectsContainer>
-        <Button>
-          Xem toàn bộ các dự án
-        </Button>
+                </Link>
+              </ProjectTitleContainer>
+              <ProjectProgessContainer>
+                <ProjectMoney>
+                  {formatter.format(project.donatesum)} ₫ đã được ủng hộ
+                </ProjectMoney>
+                <Progress>
+                  <ProgressBar
+                    percentage={(project.donatesum / project.donateneed) * 100}
+                  />
+                </Progress>
+                <Hr />
+                <ProgressNumberContainer>
+                  <Left>
+                    <TopText>
+                      {checkDay(
+                        Math.round((project.dayfinish - today) / oneDay)
+                      ) === true
+                        ? Math.round(
+                            Math.abs((project.dayfinish - today) / oneDay)
+                          )
+                        : "0"}
+                    </TopText>
+                    <BottomText>Ngày còn lại</BottomText>
+                  </Left>
+                  <Center>
+                    <TopText>{project.supporters}</TopText>
+                    <BottomText>Người ủng hộ</BottomText>
+                  </Center>
+                  <Right>
+                    <TopText>
+                      {Math.round(
+                        (project.donatesum / project.donateneed) * 100
+                      )}
+                      %
+                    </TopText>
+                    <BottomText>Thành công</BottomText>
+                  </Right>
+                </ProgressNumberContainer>
+              </ProjectProgessContainer>
+            </Project>
+          </ProjectContainer>
+        ))}
+      </ProjectsContainer>
+      <Button>Xem toàn bộ các dự án</Button>
     </Container>
-  )
-}
+  );
+};
 
-export default Projects
+export default Projects;
