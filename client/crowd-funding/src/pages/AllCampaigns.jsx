@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import AllCampaingn from "../components/AllCampaingn";
+import AllCampaign from "../components/AllCampaign";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
@@ -25,7 +25,7 @@ const AllCampaigns = () => {
       <TitleContainer>
         <Title>Toàn Bộ Các Dự Án</Title>
       </TitleContainer>
-      <AllCampaingn />
+      <AllCampaign />
       <Footer />
     </Container>
   );

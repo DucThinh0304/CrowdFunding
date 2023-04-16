@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const Container = styled.div``;
 
@@ -52,7 +53,7 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-const Link = styled.a`
+const LinkText = styled.div`
   text-decoration: underline;
   margin-top: 15px;
   font-size: 18px;
@@ -80,8 +81,12 @@ const Login = () => {
           <Input placeholder="Tên tài khoản" />
           <Input placeholder="Mật khẩu" type={"password"} />
           <Button>ĐĂNG NHẬP</Button>
-          <Link>Quên mật khẩu?</Link>
-          <Link>Tạo tài khoản mới</Link>
+          <Link style={{ color: "black" }}>
+            <LinkText>Quên mật khẩu?</LinkText>
+          </Link>
+          <Link to="../register" style={{ color: "black" }}>
+            <LinkText>Tạo tài khoản mới</LinkText>
+          </Link>
         </Form>
       </Wrapper>
       <Footer />

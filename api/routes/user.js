@@ -36,8 +36,10 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User has been deleted...");
+    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
 });
 
@@ -93,8 +95,10 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
       },
     ]);
     res.status(200).json(data);
+    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
 });
 

@@ -7,10 +7,11 @@ export const projects = [
     donatesum: 21265000,
     dayfinish: new Date(2023, 3, 31),
     supporters: 267,
+    likes: 22,
+    comments: 1,
     imagesrc:
       "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/10475306_10152368380096611_698075724123483961_o-660x400.jpg",
     userID: "ID001",
-    page: 1,
   },
   {
     Id: 2,
@@ -21,10 +22,11 @@ export const projects = [
     donatesum: 230300000,
     dayfinish: new Date(2023, 3, 2),
     supporters: 711,
+    likes: 22,
+    comments: 1,
     imagesrc:
       "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/HumansOfHanoi-1-660x400.jpg",
     userID: "ID002",
-    page: 1,
   },
   {
     Id: 3,
@@ -34,49 +36,11 @@ export const projects = [
     donatesum: 200720000,
     dayfinish: new Date(2023, 3, 31),
     supporters: 378,
+    likes: 22,
+    comments: 1,
     imagesrc:
       "https://crowdfunding.comicola.com/wp-content/uploads/2018/04/dntd_mockup_4-660x400.jpg",
     userID: "ID003",
-    page: 1,
-  },
-  {
-    Id: 4,
-    tag: ["Nổi bật", "Sách"],
-    title: 'Gây quỹ cộng đồng cho cuốn sách "Dệt Nên Triều Đại"',
-    donateneed: 200000000,
-    donatesum: 21265000,
-    dayfinish: new Date(2023, 2, 31),
-    supporters: 267,
-    imagesrc:
-      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/10475306_10152368380096611_698075724123483961_o-660x400.jpg",
-    userID: "ID001",
-    page: 1,
-  },
-  {
-    Id: 5,
-    tag: ["Nổi bật", "Sách"],
-    title: 'Gây quỹ cộng đồng cho cuốn sách "Dệt Nên Triều Đại"',
-    donateneed: 200000000,
-    donatesum: 21265000,
-    dayfinish: new Date(2023, 2, 31),
-    supporters: 267,
-    imagesrc:
-      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/10475306_10152368380096611_698075724123483961_o-660x400.jpg",
-    userID: "ID001",
-    page: 1,
-  },
-  {
-    Id: 6,
-    tag: ["Nổi bật", "Sách"],
-    title: 'Gây quỹ cộng đồng cho cuốn sách "Dệt Nên Triều Đại"',
-    donateneed: 2000000000,
-    donatesum: 212650000,
-    dayfinish: new Date(2023, 2, 31),
-    supporters: 267,
-    imagesrc:
-      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/10475306_10152368380096611_698075724123483961_o-660x400.jpg",
-    userID: "ID001",
-    page: 1,
   },
 ];
 

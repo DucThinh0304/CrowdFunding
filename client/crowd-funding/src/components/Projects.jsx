@@ -192,23 +192,6 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-const CampaingnProgessContainer = styled.div``;
-
-const CampaingnMoneyContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CampaingnMoney = styled.div`
-  font-size: 14px;
-  text-align: left;
-`;
-
-const CampaingnNeed = styled.div`
-  font-size: 14px;
-  text-align: right;
-`;
-
 const useStyles = makeStyles({
   icon: {
     color: "#0275d8",
@@ -240,7 +223,7 @@ const Projects = () => {
           <ProjectContainer key={project.Id}>
             <Project>
               <Link
-                to="/campaign"
+                to="/campaign/1asdasdasdsad"
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <ProjectImage src={project.imagesrc} />
@@ -255,7 +238,7 @@ const Projects = () => {
                   <FavoriteBorder className={classes.icon} />
                 </ProjectFlex>
                 <Link
-                  to="/campaign"
+                  to="/campaign/1asdasdasdsad"
                   style={{ textDecoration: "none", color: "black" }}
                 >
                   <ProjectTitle>{project.title}</ProjectTitle>

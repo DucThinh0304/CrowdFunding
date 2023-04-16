@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const CampaingnsContainer = styled.div`
+const CampaignsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,7 +25,7 @@ const CampaingnsContainer = styled.div`
   box-sizing: inherit;
 `;
 
-const CampaingnContainer = styled.div`
+const CampaignContainer = styled.div`
   flex: 0 0 50%;
   max-width: 50%;
   position: relative;
@@ -35,7 +35,7 @@ const CampaingnContainer = styled.div`
   display: block;
 `;
 
-const Campaingn = styled.div`
+const Campaign = styled.div`
   border-radius: 5px;
   border: 0.1px solid lightgray;
   position: relative;
@@ -47,25 +47,25 @@ const Campaingn = styled.div`
   flex-direction: row;
 `;
 
-const CampaingnImageContainer = styled.div`
+const CampaignImageContainer = styled.div`
   position: relative;
   box-sizing: inherit;
   overflow: hidden;
 `;
 
-const CampaingnImage = styled.img`
+const CampaignImage = styled.img`
   border-radius: 5px 0px 0px 5px;
   object-fit: cover;
   width: 215px;
   height: 100%;
 `;
 
-const CampaingnInfoContainer = styled.div`
+const CampaignInfoContainer = styled.div`
   width: 100%;
   padding: 15px;
 `;
 
-const CampaingnTag = styled.span`
+const CampaignTag = styled.span`
   color: #c9366f;
   &:hover {
     color: #40bda5;
@@ -74,13 +74,13 @@ const CampaingnTag = styled.span`
   font-size: 14px;
 `;
 
-const CampaingnTitleContainer = styled.div`
+const CampaignTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 15px;
 `;
 
-const CampaingnTitle = styled.h3`
+const CampaignTitle = styled.h3`
   font-weight: 500;
   cursor: pointer;
   &:hover {
@@ -89,19 +89,19 @@ const CampaingnTitle = styled.h3`
   transition: all 0.3s ease;
 `;
 
-const CampaingnProgessContainer = styled.div``;
+const CampaignProgessContainer = styled.div``;
 
-const CampaingnMoneyContainer = styled.div`
+const CampaignMoneyContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-const CampaingnMoney = styled.div`
+const CampaignMoney = styled.div`
   font-size: 14px;
   text-align: left;
 `;
 
-const CampaingnNeed = styled.div`
+const CampaignNeed = styled.div`
   font-size: 14px;
   text-align: right;
 `;
@@ -151,7 +151,7 @@ const Hr = styled.hr`
   height: 1px;
 `;
 
-const BottomCampaingn = styled.div`
+const BottomCampaign = styled.div`
   padding: 20px 0px 0px;
   display: flex;
   justify-content: space-between;
@@ -176,7 +176,7 @@ const Username = styled.div`
   cursor: pointer;
 `;
 
-const CampaingnSuccessContainer = styled.div`
+const CampaignSuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -242,7 +242,7 @@ const ButtonNumber = styled.button`
   transition: all 0.5s ease;
 `;
 
-const AllCampaingn = () => {
+const AllCampaign = () => {
   const classes = useStyles();
   const userNameId = (id) => users.find((a) => a.userID === id).username;
   const avtsrcId = (id) => users.find((a) => a.userID === id).avtsrc;
@@ -274,39 +274,39 @@ const AllCampaingn = () => {
   };
   return (
     <Container>
-      <CampaingnsContainer>
+      <CampaignsContainer>
         {projects.map((project) =>
           project.page === 1 ? (
-            <CampaingnContainer key={project.Id}>
-              <Campaingn>
-                <CampaingnImageContainer>
-                  <CampaingnImage src={project.imagesrc} />
+            <CampaignContainer key={project.Id}>
+              <Campaign>
+                <CampaignImageContainer>
+                  <CampaignImage src={project.imagesrc} />
                   <FavoriteBorder className={classes.icon} />
-                </CampaingnImageContainer>
-                <CampaingnInfoContainer>
+                </CampaignImageContainer>
+                <CampaignInfoContainer>
                   {project.tag.map((tag) => (
-                    <CampaingnTag key={tag}>{tag} </CampaingnTag>
+                    <CampaignTag key={tag}>{tag} </CampaignTag>
                   ))}
-                  <CampaingnTitleContainer>
-                    <CampaingnTitle>{project.title}</CampaingnTitle>
-                  </CampaingnTitleContainer>
-                  <CampaingnProgessContainer>
-                    <CampaingnMoneyContainer>
-                      <CampaingnMoney>
+                  <CampaignTitleContainer>
+                    <CampaignTitle>{project.title}</CampaignTitle>
+                  </CampaignTitleContainer>
+                  <CampaignProgessContainer>
+                    <CampaignMoneyContainer>
+                      <CampaignMoney>
                         <b>{Shorten(project.donatesum)} ₫</b> đã được ủng hộ
-                      </CampaingnMoney>
-                      <CampaingnNeed>
+                      </CampaignMoney>
+                      <CampaignNeed>
                         <b>{Shorten(project.donateneed)} ₫</b> mục tiêu
-                      </CampaingnNeed>
-                    </CampaingnMoneyContainer>
+                      </CampaignNeed>
+                    </CampaignMoneyContainer>
                     <ProgressBar
                       percentage={
                         (project.donatesum / project.donateneed) * 100
                       }
                     />
-                  </CampaingnProgessContainer>
+                  </CampaignProgessContainer>
                   <Hr />
-                  <BottomCampaingn>
+                  <BottomCampaign>
                     <UserContainer>
                       <Avatar
                         src={
@@ -317,7 +317,7 @@ const AllCampaingn = () => {
                       />
                       <Username>{userNameId(project.userID)}</Username>
                     </UserContainer>
-                    <CampaingnSuccessContainer>
+                    <CampaignSuccessContainer>
                       <SuccessRate>
                         {Math.round(
                           (project.donatesum / project.donateneed) * 100
@@ -325,16 +325,16 @@ const AllCampaingn = () => {
                         %{" "}
                       </SuccessRate>
                       <Success>Thành công</Success>
-                    </CampaingnSuccessContainer>
-                  </BottomCampaingn>
-                </CampaingnInfoContainer>
-              </Campaingn>
-            </CampaingnContainer>
+                    </CampaignSuccessContainer>
+                  </BottomCampaign>
+                </CampaignInfoContainer>
+              </Campaign>
+            </CampaignContainer>
           ) : (
             <div></div>
           )
         )}
-      </CampaingnsContainer>
+      </CampaignsContainer>
       <SwitchContainer>
         <ButtonArrow>TRƯỚC</ButtonArrow>
         <ButtonNumberContainer>
@@ -349,4 +349,4 @@ const AllCampaingn = () => {
   );
 };
 
-export default AllCampaingn;
+export default AllCampaign;
