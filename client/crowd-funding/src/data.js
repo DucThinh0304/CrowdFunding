@@ -10,7 +10,7 @@ export const projects = [
     likes: 22,
     comments: 1,
     imagesrc:
-      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/10475306_10152368380096611_698075724123483961_o-660x400.jpg",
+      "https://crowdfunding.comicola.com/wp-content/uploads/2018/04/dntd_mockup_4-660x400.jpg",
     userID: "ID001",
   },
   {
@@ -25,7 +25,7 @@ export const projects = [
     likes: 22,
     comments: 1,
     imagesrc:
-      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/HumansOfHanoi-1-660x400.jpg",
+      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/10475306_10152368380096611_698075724123483961_o-660x400.jpg",
     userID: "ID002",
   },
   {
@@ -39,7 +39,7 @@ export const projects = [
     likes: 22,
     comments: 1,
     imagesrc:
-      "https://crowdfunding.comicola.com/wp-content/uploads/2018/04/dntd_mockup_4-660x400.jpg",
+      "https://crowdfunding.comicola.com/wp-content/uploads/2021/06/HumansOfHanoi-1-660x400.jpg",
     userID: "ID003",
   },
 ];

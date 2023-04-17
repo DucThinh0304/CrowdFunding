@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { InsertEmoticon, FavoriteBorder, StarBorder } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
+import { publicRequest } from "../requestMethod";
 
 const Container = styled.div``;
 
@@ -42,6 +43,9 @@ const CampaignTag = styled.span`
   cursor: pointer;
   color: #c9366f;
   font-size: 14px;
+  &:hover {
+    color: #40bda5;
+  }
 `;
 
 const CampaignTitle = styled.h3`
@@ -115,52 +119,79 @@ const useStyles = makeStyles({
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
 );
+const checkDay = (check) => {
+  return check < 0 ? false : true;
+};
 
 const Campaign = () => {
   const classes = useStyles();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const today = new Date();
+  const oneDay = 24 * 60 * 60 * 1000;
+  const [campaign, setCampaign] = useState({});
+  const date = new Date(campaign.dayfinish);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get("/campaign/find/" + id);
+        setCampaign(res.data);
+      } catch {}
+    };
+    getProduct();
+  }, [id]);
 
   return (
     <Container>
       <Navbar />
       <Center>
         <CampaignInfoContainer>
-          <CampaignImage src="https://crowdfunding.comicola.com/wp-content/uploads/2017/10/22688446_514860328866877_2961839570336965602_n.jpg" />
+          <CampaignImage src={campaign.img} />
           <CampaignInfo>
             <CampaignTagContainer>
-              <CampaignTag>Nổi bật </CampaignTag>
-              <CampaignTag>Sách</CampaignTag>
+              {campaign.tag?.map((tag) => (
+                <CampaignTag key={tag}>{tag} </CampaignTag>
+              ))}
             </CampaignTagContainer>
-            <CampaignTitle>
-              Gây quỹ để xuất bản Cuốn sách “Họa Sắc Việt”
-            </CampaignTitle>
+            <CampaignTitle>{campaign.title}</CampaignTitle>
             <CampaignNumberContainer>
               <CampaignNumber>
                 <InsertEmoticon className={classes.icon} />
-                230 Người ủng hộ
+                {campaign.supporters} Người ủng hộ
               </CampaignNumber>
               <CampaignNumber>
                 <FavoriteBorder className={classes.icon} />
-                22
+                {campaign.likes}
               </CampaignNumber>
               <CampaignNumber>
-                <StarBorder className={classes.icon} />1 Nhận xét
+                <StarBorder className={classes.icon} />
+                {campaign.comments}
               </CampaignNumber>
             </CampaignNumberContainer>
             <CampaignProgessContainer>
               <CampaignProgressNumberContainer>
                 <CampaignProgressNumber>
-                  209,200,000 ₫ Đã ủng hộ
+                  {formatter.format(campaign.donatesum)} ₫ Đã ủng hộ
                 </CampaignProgressNumber>
                 <CampaignProgressNumber>
-                  200,000,000 ₫ Mục tiêu
+                  {formatter.format(campaign.donateneed)} ₫ Mục tiêu
                 </CampaignProgressNumber>
               </CampaignProgressNumberContainer>
-              <ProgressBar percentage={50} />
+              <ProgressBar
+                percentage={(campaign.donatesum / campaign.donateneed) * 100}
+              />
               <CampaignProgressNumberContainer>
-                <CampaignProgressNumber>0 ngày còn lại</CampaignProgressNumber>
-                <CampaignProgressNumber>106% Thành công</CampaignProgressNumber>
+                <CampaignProgressNumber>
+                  {checkDay(Math.round((date - today) / oneDay)) === true
+                    ? Math.round(Math.abs((date - today) / oneDay))
+                    : "0"}{" "}
+                  ngày còn lại
+                </CampaignProgressNumber>
+                <CampaignProgressNumber>
+                  {Math.round((campaign.donatesum / campaign.donateneed) * 100)}
+                  % Thành công
+                </CampaignProgressNumber>
               </CampaignProgressNumberContainer>
             </CampaignProgessContainer>
           </CampaignInfo>

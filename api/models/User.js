@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    avt: { type: String },
   },
   {
     timestamps: true,
