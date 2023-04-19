@@ -1,8 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 import { FavoriteBorder } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { projects, users } from "../data";
+import { publicRequest } from "../requestMethod";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -244,8 +246,32 @@ const ButtonNumber = styled.button`
 
 const AllCampaign = () => {
   const classes = useStyles();
-  const userNameId = (id) => users.find((a) => a.userID === id).username;
-  const avtsrcId = (id) => users.find((a) => a.userID === id).avtsrc;
+  const avtsrcId = async (id) => {
+    try {
+      const resAvt = await publicRequest.get(`/users/find/avt/${id}`);
+      console.log(resAvt);
+      return resAvt.avt;
+    } catch (err) {
+      console.log(err);
+      return "";
+    }
+  };
+  const [campaigns, setCampaigns] = useState([]);
+
+  const location = useLocation();
+  const page = location.pathname.split("/")[2];
+  useEffect(() => {
+    const getCampaigns = async () => {
+      try {
+        const resCampaign = await publicRequest.get("/campaign");
+        setCampaigns(resCampaign.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCampaigns();
+  }, [page]);
+
   const Shorten = (value) => {
     var newValue = value;
     if (value >= 1000) {
@@ -272,68 +298,65 @@ const AllCampaign = () => {
     }
     return newValue;
   };
+
   return (
     <Container>
       <CampaignsContainer>
-        {projects.map((project) =>
-          project.page === 1 ? (
-            <CampaignContainer key={project.Id}>
-              <Campaign>
-                <CampaignImageContainer>
-                  <CampaignImage src={project.imagesrc} />
-                  <FavoriteBorder className={classes.icon} />
-                </CampaignImageContainer>
-                <CampaignInfoContainer>
-                  {project.tag.map((tag) => (
-                    <CampaignTag key={tag}>{tag} </CampaignTag>
-                  ))}
-                  <CampaignTitleContainer>
-                    <CampaignTitle>{project.title}</CampaignTitle>
-                  </CampaignTitleContainer>
-                  <CampaignProgessContainer>
-                    <CampaignMoneyContainer>
-                      <CampaignMoney>
-                        <b>{Shorten(project.donatesum)} ₫</b> đã được ủng hộ
-                      </CampaignMoney>
-                      <CampaignNeed>
-                        <b>{Shorten(project.donateneed)} ₫</b> mục tiêu
-                      </CampaignNeed>
-                    </CampaignMoneyContainer>
-                    <ProgressBar
-                      percentage={
-                        (project.donatesum / project.donateneed) * 100
+        {campaigns.map((campaign) => (
+          <CampaignContainer key={campaign.Id}>
+            <Campaign>
+              <CampaignImageContainer>
+                <CampaignImage src={campaign.img} />
+                <FavoriteBorder className={classes.icon} />
+              </CampaignImageContainer>
+              <CampaignInfoContainer>
+                {campaign.tag.map((tag) => (
+                  <CampaignTag key={tag}>{tag} </CampaignTag>
+                ))}
+                <CampaignTitleContainer>
+                  <CampaignTitle>{campaign.title}</CampaignTitle>
+                </CampaignTitleContainer>
+                <CampaignProgessContainer>
+                  <CampaignMoneyContainer>
+                    <CampaignMoney>
+                      <b>{Shorten(campaign.donatesum)} ₫</b> đã được ủng hộ
+                    </CampaignMoney>
+                    <CampaignNeed>
+                      <b>{Shorten(campaign.donateneed)} ₫</b> mục tiêu
+                    </CampaignNeed>
+                  </CampaignMoneyContainer>
+                  <ProgressBar
+                    percentage={
+                      (campaign.donatesum / campaign.donateneed) * 100
+                    }
+                  />
+                </CampaignProgessContainer>
+                <Hr />
+                <BottomCampaign>
+                  <UserContainer>
+                    <Avatar
+                      src={
+                        avtsrcId(campaign.username) === ""
+                          ? "https://secure.gravatar.com/avatar/2591fb93574e6b52219135fd0b5f23da?s=40&d=mm&r=g"
+                          : avtsrcId(campaign.username)
                       }
                     />
-                  </CampaignProgessContainer>
-                  <Hr />
-                  <BottomCampaign>
-                    <UserContainer>
-                      <Avatar
-                        src={
-                          avtsrcId(project.userID) === "none"
-                            ? "https://secure.gravatar.com/avatar/2591fb93574e6b52219135fd0b5f23da?s=40&d=mm&r=g"
-                            : avtsrcId(project.userID)
-                        }
-                      />
-                      <Username>{userNameId(project.userID)}</Username>
-                    </UserContainer>
-                    <CampaignSuccessContainer>
-                      <SuccessRate>
-                        {Math.round(
-                          (project.donatesum / project.donateneed) * 100
-                        )}
-                        %{" "}
-                      </SuccessRate>
-                      <Success>Thành công</Success>
-                    </CampaignSuccessContainer>
-                  </BottomCampaign>
-                </CampaignInfoContainer>
-              </Campaign>
-            </CampaignContainer>
-          ) : (
-            <div></div>
-          )
-        )}
+                    <Username>{campaign.username}</Username>
+                  </UserContainer>
+                  <CampaignSuccessContainer>
+                    <SuccessRate>
+                      {Math.round(
+                        (campaign.donatesum / campaign.donateneed) * 100
+                      )}
+                      %{" "}
+                    </SuccessRate>
+                    <Success>Thành công</Success>
+                  </CampaignSuccessContainer>
+                </BottomCampaign>
+              </CampaignInfoContainer>
+            </Campaign>
+          </CampaignContainer>
+        ))}
       </CampaignsContainer>
       <SwitchContainer>
         <ButtonArrow>TRƯỚC</ButtonArrow>

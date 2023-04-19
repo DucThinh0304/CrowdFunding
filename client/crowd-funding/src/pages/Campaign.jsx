@@ -133,13 +133,13 @@ const Campaign = () => {
   const date = new Date(campaign.dayfinish);
 
   useEffect(() => {
-    const getProduct = async () => {
+    const getCampaign = async () => {
       try {
-        const res = await publicRequest.get("/campaign/find/" + id);
+        const res = await publicRequest.get("/campaign/find/avt/" + id);
         setCampaign(res.data);
       } catch {}
     };
-    getProduct();
+    getCampaign();
   }, [id]);
 
   return (

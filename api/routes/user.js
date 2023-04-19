@@ -57,13 +57,36 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+//GET USER AVT
+
+router.get("/find/avt/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const {
+      _id,
+      password,
+      email,
+      isAdmin,
+      createdAt,
+      updatedAt,
+      __v,
+      ...others
+    } = user._doc;
+    res.status(200).json(others);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 //GET ALL USER
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   const query = req.query.new;
   try {
     const users = query
-      ? await User.find().sort({ Id: -1 }).limit(1)
+      ? await User.find().sort({ Id: -1 }).limit(5)
       : await User.find();
     res.status(200).json(users);
     return;

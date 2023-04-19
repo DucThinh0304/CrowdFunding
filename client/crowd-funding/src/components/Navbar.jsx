@@ -1,8 +1,8 @@
 import { Search } from "@material-ui/icons";
 import styled from "styled-components";
-import AllCampaigns from "../pages/AllCampaigns";
-import Home from "../pages/Home";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   height: 94px;
@@ -73,7 +73,7 @@ const Icon = styled.div`
   cursor: pointer;
 `;
 
-const Login = styled.a`
+const Login = styled.div`
   text-decoration: none;
   cursor: pointer;
   padding: 12px;
@@ -81,6 +81,23 @@ const Login = styled.a`
 `;
 
 const Navbar = () => {
+  const location = useLocation();
+  const [color1, setColor1] = useState("black");
+  const [color2, setColor2] = useState("black");
+  const [color3, setColor3] = useState("black");
+  const id = location.pathname.split("/")[1];
+  useEffect(() => {
+    const setColor = () => {
+      if (id === "") {
+        setColor1("#c9366f");
+        setColor2("black");
+      } else if (id === "all-campaigns") {
+        setColor1("black");
+        setColor2("#c9366f");
+      }
+    };
+    setColor();
+  }, [id]);
   return (
     <Container>
       <Wrapper>
@@ -92,16 +109,16 @@ const Navbar = () => {
           </Link>
         </Left>
         <Center>
-          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-            <LinkText Id={1}>Trang chủ</LinkText>
+          <Link to="/" style={{ textDecoration: "none", color: color1 }}>
+            <LinkText>Trang chủ</LinkText>
           </Link>
           <Link
             to="/all-campaigns"
-            style={{ textDecoration: "none", color: "black" }}
+            style={{ textDecoration: "none", color: color2 }}
           >
-            <LinkText Id={2}>Toàn bộ các dự án</LinkText>
+            <LinkText>Toàn bộ các dự án</LinkText>
           </Link>
-          <LinkText Id={3}>Liên hệ</LinkText>
+          <LinkText>Liên hệ</LinkText>
         </Center>
         <Right>
           <WrapLogin>
