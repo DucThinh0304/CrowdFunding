@@ -3,6 +3,9 @@ import { FavoriteBorder } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { projects } from "../data";
+import { useEffect } from "react";
+import { publicRequest } from "../requestMethod";
+import { useState } from "react";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -208,49 +211,66 @@ const formatter = new Intl.NumberFormat(
 );
 
 const Projects = () => {
+  const [campaigns, setCampaigns] = useState([]);
   const today = new Date();
   const classes = useStyles();
   const oneDay = 24 * 60 * 60 * 1000;
   const checkDay = (check) => {
     return check < 0 ? false : true;
   };
+  useEffect(() => {
+    const getCampaigns = async () => {
+      try {
+        const resCampaign = await publicRequest.get("/campaign");
+        setCampaigns(resCampaign.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCampaigns();
+  }, []);
+  const date = (day) => {
+    return new Date(day);
+  };
   return (
     <Container>
       <Title>Các dự án nổi bật</Title>
       <Desc>Những dự án nổi bật tại Comicola</Desc>
       <ProjectsContainer>
-        {projects.slice(0, 3).map((project) => (
-          <ProjectContainer key={project.Id}>
+        {campaigns.slice(0, 3).map((campaign) => (
+          <ProjectContainer key={campaign.Id}>
             <Project>
               <Link
-                to="/campaign/1asdasdasdsad"
+                to={`/campaign/${campaign._id}`}
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <ProjectImage src={project.imagesrc} />
+                <ProjectImage src={campaign.img} />
               </Link>
               <ProjectTitleContainer>
                 <ProjectFlex>
                   <ProjectTagContainer>
-                    {project.tag.map((tag) => (
+                    {campaign.tag.map((tag) => (
                       <ProjectTag key={tag}>{tag} </ProjectTag>
                     ))}
                   </ProjectTagContainer>
                   <FavoriteBorder className={classes.icon} />
                 </ProjectFlex>
                 <Link
-                  to="/campaign/1asdasdasdsad"
+                  to={`/campaign/${campaign._id}`}
                   style={{ textDecoration: "none", color: "black" }}
                 >
-                  <ProjectTitle>{project.title}</ProjectTitle>
+                  <ProjectTitle>{campaign.title}</ProjectTitle>
                 </Link>
               </ProjectTitleContainer>
               <ProjectProgessContainer>
                 <ProjectMoney>
-                  {formatter.format(project.donatesum)} ₫ đã được ủng hộ
+                  {formatter.format(campaign.donatesum)} ₫ đã được ủng hộ
                 </ProjectMoney>
                 <Progress>
                   <ProgressBar
-                    percentage={(project.donatesum / project.donateneed) * 100}
+                    percentage={
+                      (campaign.donatesum / campaign.donateneed) * 100
+                    }
                   />
                 </Progress>
                 <Hr />
@@ -258,23 +278,25 @@ const Projects = () => {
                   <Left>
                     <TopText>
                       {checkDay(
-                        Math.round((project.dayfinish - today) / oneDay)
+                        Math.round((date(campaign.dayfinish) - today) / oneDay)
                       ) === true
                         ? Math.round(
-                            Math.abs((project.dayfinish - today) / oneDay)
+                            Math.abs(
+                              (date(campaign.dayfinish) - today) / oneDay
+                            )
                           )
                         : "0"}
                     </TopText>
                     <BottomText>Ngày còn lại</BottomText>
                   </Left>
                   <Center>
-                    <TopText>{project.supporters}</TopText>
+                    <TopText>{campaign.supporters}</TopText>
                     <BottomText>Người ủng hộ</BottomText>
                   </Center>
                   <Right>
                     <TopText>
                       {Math.round(
-                        (project.donatesum / project.donateneed) * 100
+                        (campaign.donatesum / campaign.donateneed) * 100
                       )}
                       %
                     </TopText>

@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/apiCalls";
 
 const Container = styled.div``;
 
@@ -51,6 +54,10 @@ const Button = styled.button`
     color: white;
   }
   transition: all 0.5s ease;
+  &:disabled {
+    color: gray;
+    cursor: not-allowed;
+  }
 `;
 
 const LinkText = styled.div`
@@ -69,18 +76,34 @@ const TitleContainer = styled.div`
 `;
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch;
+  const { isFetching, error } = useSelector((state) => state.user);
+  const handleClick = (e) => {
+    e.preventDefault();
+    login(dispatch, { username, password });
+  };
   return (
     <Container>
       <Navbar />
-
       <TitleContainer>
         <Title>Đăng Nhập</Title>
       </TitleContainer>
       <Wrapper>
         <Form>
-          <Input placeholder="Tên tài khoản" />
-          <Input placeholder="Mật khẩu" type={"password"} />
-          <Button>ĐĂNG NHẬP</Button>
+          <Input
+            placeholder="Tên tài khoản"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="Mật khẩu"
+            type={"password"}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button onClick={handleClick} disabled={isFetching}>
+            ĐĂNG NHẬP
+          </Button>
           <Link style={{ color: "black" }}>
             <LinkText>Quên mật khẩu?</LinkText>
           </Link>

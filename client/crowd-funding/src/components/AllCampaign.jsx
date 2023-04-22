@@ -2,9 +2,10 @@ import { makeStyles } from "@material-ui/core";
 import { FavoriteBorder } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { projects, users } from "../data";
 import { publicRequest } from "../requestMethod";
 import { useLocation } from "react-router-dom";
+import { Avatar, Username } from "./Avatar";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -164,19 +165,14 @@ const UserContainer = styled.div`
   display: flex;
 `;
 
-const Avatar = styled.img`
+const AvatarContainer = styled.div`
   height: 40px;
   width: 40px;
   border-radius: 50%;
   object-fit: cover;
 `;
 
-const Username = styled.div`
-  font-size: 14px;
-  padding-left: 10px;
-  padding-top: 11px;
-  cursor: pointer;
-`;
+const UsernameContainer = styled.div``;
 
 const CampaignSuccessContainer = styled.div`
   display: flex;
@@ -246,18 +242,7 @@ const ButtonNumber = styled.button`
 
 const AllCampaign = () => {
   const classes = useStyles();
-  const avtsrcId = async (id) => {
-    try {
-      const resAvt = await publicRequest.get(`/users/find/avt/${id}`);
-      console.log(resAvt);
-      return resAvt.avt;
-    } catch (err) {
-      console.log(err);
-      return "";
-    }
-  };
   const [campaigns, setCampaigns] = useState([]);
-
   const location = useLocation();
   const page = location.pathname.split("/")[2];
   useEffect(() => {
@@ -306,16 +291,23 @@ const AllCampaign = () => {
           <CampaignContainer key={campaign.Id}>
             <Campaign>
               <CampaignImageContainer>
-                <CampaignImage src={campaign.img} />
+                <Link to={`../campaign/${campaign._id}`}>
+                  <CampaignImage src={campaign.img} />
+                </Link>
                 <FavoriteBorder className={classes.icon} />
               </CampaignImageContainer>
               <CampaignInfoContainer>
                 {campaign.tag.map((tag) => (
                   <CampaignTag key={tag}>{tag} </CampaignTag>
                 ))}
-                <CampaignTitleContainer>
-                  <CampaignTitle>{campaign.title}</CampaignTitle>
-                </CampaignTitleContainer>
+                <Link
+                  to={`../campaign/${campaign._id}`}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <CampaignTitleContainer>
+                    <CampaignTitle>{campaign.title}</CampaignTitle>
+                  </CampaignTitleContainer>
+                </Link>
                 <CampaignProgessContainer>
                   <CampaignMoneyContainer>
                     <CampaignMoney>
@@ -334,14 +326,12 @@ const AllCampaign = () => {
                 <Hr />
                 <BottomCampaign>
                   <UserContainer>
-                    <Avatar
-                      src={
-                        avtsrcId(campaign.username) === ""
-                          ? "https://secure.gravatar.com/avatar/2591fb93574e6b52219135fd0b5f23da?s=40&d=mm&r=g"
-                          : avtsrcId(campaign.username)
-                      }
-                    />
-                    <Username>{campaign.username}</Username>
+                    <AvatarContainer>
+                      <Avatar id={campaign.username} />
+                    </AvatarContainer>
+                    <UsernameContainer>
+                      <Username id={campaign.username}></Username>
+                    </UsernameContainer>
                   </UserContainer>
                   <CampaignSuccessContainer>
                     <SuccessRate>

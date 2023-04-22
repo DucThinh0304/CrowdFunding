@@ -59,19 +59,11 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 
 //GET USER AVT
 
-router.get("/find/avt/:id", async (req, res) => {
+router.get("/public/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    const {
-      _id,
-      password,
-      email,
-      isAdmin,
-      createdAt,
-      updatedAt,
-      __v,
-      ...others
-    } = user._doc;
+    const { password, email, isAdmin, createdAt, updatedAt, __v, ...others } =
+      user._doc;
     res.status(200).json(others);
     return;
   } catch (err) {

@@ -135,7 +135,7 @@ const Campaign = () => {
   useEffect(() => {
     const getCampaign = async () => {
       try {
-        const res = await publicRequest.get("/campaign/find/avt/" + id);
+        const res = await publicRequest.get("/campaign/find/" + id);
         setCampaign(res.data);
       } catch {}
     };
