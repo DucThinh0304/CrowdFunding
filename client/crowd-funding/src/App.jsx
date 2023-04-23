@@ -10,12 +10,13 @@ import {
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Campaign from "./pages/Campaign";
+import { useSelector } from "react-redux";
 
 function App() {
   const CampaignPage = () => {
     let { id } = useParams();
   };
-  const user = false;
+  const user = useSelector((state) => state.user.currentUser);
   return (
     <Router>
       <Routes>

@@ -109,7 +109,7 @@ const Login = () => {
           <Button onClick={handleClick} disabled={isFetching}>
             ĐĂNG NHẬP
           </Button>
-          {error && <Error>Something went wrong...</Error>}
+          {error && <Error>Có lỗi đã xảy ra...</Error>}
           <Link style={{ color: "black" }}>
             <LinkText>Quên mật khẩu?</LinkText>
           </Link>

@@ -231,6 +231,9 @@ const Ongoing = () => {
       }
     };
     getCampaigns();
+    return () => {
+      setCampaigns([]);
+    };
   }, []);
   const date = (day) => {
     return new Date(day);
