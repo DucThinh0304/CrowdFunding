@@ -6,11 +6,16 @@
     "@fortawesome/react-fontawesome": "0.2.0",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
-    "@reduxjs/toolkit": "^1.9.3",
+    "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.3.6",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.9"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "create-hook": "husky add .husky/pre-commit \"npm test\""
   }
 }

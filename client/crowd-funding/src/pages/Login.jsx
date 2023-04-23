@@ -75,11 +75,16 @@ const TitleContainer = styled.div`
   justify-content: center;
 `;
 
+const Error = styled.span`
+  color: red;
+`;
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
+
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { username, password });
@@ -104,6 +109,7 @@ const Login = () => {
           <Button onClick={handleClick} disabled={isFetching}>
             ĐĂNG NHẬP
           </Button>
+          {error && <Error>Something went wrong...</Error>}
           <Link style={{ color: "black" }}>
             <LinkText>Quên mật khẩu?</LinkText>
           </Link>
