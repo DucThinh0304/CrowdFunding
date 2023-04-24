@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "6.3.0",
-    "@fortawesome/free-regular-svg-icons": "6.3.0",
-    "@fortawesome/free-solid-svg-icons": "6.3.0",
-    "@fortawesome/react-fontawesome": "0.2.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@reduxjs/toolkit": "^1.9.5",
@@ -13,10 +13,6 @@
     "react-slick": "^0.29.0",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
-    "styled-components": "^5.3.9"
-  },
-  "scripts": {
-    "prepare": "husky install",
-    "create-hook": "husky add .husky/pre-commit \"npm test\""
+    "styled-components": "^5.3.10"
   }
 }
