@@ -2,6 +2,7 @@ import { Search } from "@material-ui/icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 const Container = styled.div`
@@ -86,6 +87,7 @@ const Navbar = () => {
   const [color2, setColor2] = useState("black");
   const [color3, setColor3] = useState("black");
   const id = location.pathname.split("/")[1];
+  const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     const setColor = () => {
       if (id === "") {

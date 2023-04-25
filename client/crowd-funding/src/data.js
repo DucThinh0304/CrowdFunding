@@ -24,22 +24,3 @@ export const sliders = [
     logotxt: "VOV",
   },
 ];
-
-export const users = [
-  {
-    userID: "ID001",
-    username: "VietNam Centre",
-    avtsrc: "none",
-  },
-  {
-    userID: "ID002",
-    username: "Nhóm SRiver",
-    avtsrc:
-      "https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/278794676_1132167134237199_7777195482466496494_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=SkqSpKZE258AX_MMuqH&_nc_ht=scontent.fsgn2-6.fna&oh=00_AfD9Tml90Pkw21NUktrFG_Wpg6926dzoUFMlE-NNW6Fw9w&oe=642D3BC2",
-  },
-  {
-    userID: "ID003",
-    username: "Humans of Hà Nội",
-    avtsrc: "none",
-  },
-];
