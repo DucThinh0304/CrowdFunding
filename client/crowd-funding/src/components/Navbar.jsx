@@ -2,8 +2,10 @@ import { Search } from "@material-ui/icons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { logout } from "../redux/apiCalls";
+import { Avatar } from "./Avatar";
 
 const Container = styled.div`
   height: 94px;
@@ -57,7 +59,6 @@ const LinkText = styled.div`
   cursor: pointer;
   padding: 12px;
   font-size: 14px;
-  align-content: space-between;
   &:hover {
     color: #c9366f;
   }
@@ -72,6 +73,11 @@ const Icon = styled.div`
   align-items: center;
   display: flex;
   cursor: pointer;
+`;
+const Links = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Login = styled.div`
@@ -88,18 +94,30 @@ const Navbar = () => {
   const [color3, setColor3] = useState("black");
   const id = location.pathname.split("/")[1];
   const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.user);
   useEffect(() => {
     const setColor = () => {
       if (id === "") {
         setColor1("#c9366f");
         setColor2("black");
+        setColor3("black");
       } else if (id === "all-campaigns") {
         setColor1("black");
         setColor2("#c9366f");
+        setColor3("black");
+      } else {
+        setColor1("black");
+        setColor2("black");
+        setColor3("#c9366f");
       }
     };
     setColor();
   }, [id]);
+  const handleSignOut = () => {
+    logout(dispatch);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -120,30 +138,45 @@ const Navbar = () => {
           >
             <LinkText>Toàn bộ các dự án</LinkText>
           </Link>
-          <LinkText>Liên hệ</LinkText>
+          <Link to="/contact" style={{ textDecoration: "none", color: color3 }}>
+            <LinkText>Liên hệ</LinkText>
+          </Link>
         </Center>
         <Right>
           <WrapLogin>
             <Icon>
               <Search />
             </Icon>
-            <Link
-              to="/login"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <Login>
-                <b>Đăng nhập</b>
-              </Login>
-            </Link>
-            /
-            <Link
-              to="/register"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <Login>
-                <b>Đăng kí</b>
-              </Login>
-            </Link>
+            {user ? (
+              <Links>
+                <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+                  <Login onClick={handleSignOut}>
+                    <b>Đăng xuất</b>
+                  </Login>
+                </Link>
+                <Avatar id={user ? "" : user._id} />
+              </Links>
+            ) : (
+              <Links>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <Login>
+                    <b>Đăng nhập</b>
+                  </Login>
+                </Link>
+                /
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <Login>
+                    <b>Đăng kí</b>
+                  </Login>
+                </Link>
+              </Links>
+            )}
           </WrapLogin>
         </Right>
       </Wrapper>

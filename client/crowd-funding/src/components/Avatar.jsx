@@ -19,7 +19,7 @@ const Name = styled.div`
 `;
 
 const Avatar = ({ id }) => {
-  const [avt, setAvt] = useState([]);
+  const [avt, setAvt] = useState("");
   useEffect(() => {
     const getAvt = async () => {
       try {
@@ -27,6 +27,7 @@ const Avatar = ({ id }) => {
         setAvt(data.data.avt);
       } catch (err) {
         console.log(err);
+        setAvt("");
       }
     };
     getAvt();

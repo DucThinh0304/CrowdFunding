@@ -52,13 +52,6 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-const Link = styled.a`
-  text-decoration: underline;
-  margin-top: 15px;
-  font-size: 18px;
-  cursor: pointer;
-`;
-
 const TitleContainer = styled.div`
   background-color: #f0f0f0;
   height: 268px;
@@ -80,7 +73,6 @@ const Register = () => {
           <Input placeholder="Email" />
           <Input placeholder="Mật khẩu" type={"password"} />
           <Input placeholder="Nhập lại mật khẩu" type={"password"} />
-
           <Button>ĐĂNG KÍ</Button>
         </Form>
       </Wrapper>

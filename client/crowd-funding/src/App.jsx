@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Campaign from "./pages/Campaign";
 import { useSelector } from "react-redux";
+import Contact from "./pages/Contact";
 
 function App() {
   const CampaignPage = () => {
@@ -28,6 +29,7 @@ function App() {
           element={user ? <Navigate to="/" /> : <Register />}
         />
         <Route path="/campaign/:id" element={<Campaign />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );

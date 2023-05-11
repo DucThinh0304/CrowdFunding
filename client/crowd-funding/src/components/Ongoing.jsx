@@ -315,7 +315,9 @@ const Ongoing = () => {
           )
         )}
       </Projects>
-      <Button>Xem toàn bộ các dự án</Button>
+      <Link to="/all-campaigns">
+        <Button>Xem toàn bộ các dự án</Button>
+      </Link>
     </Container>
   );
 };
