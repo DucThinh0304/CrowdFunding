@@ -1,5 +1,4 @@
-import { makeStyles } from "@material-ui/core";
-import { FavoriteBorder } from "@material-ui/icons";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
@@ -198,16 +197,16 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-const useStyles = makeStyles({
-  icon: {
-    color: "#0275d8",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    "&:hover": {
-      color: "#3c52b2",
-    },
-  },
-});
+// const useStyles = makeStyles({
+//   icon: {
+//     color: "#0275d8",
+//     cursor: "pointer",
+//     transition: "all 0.3s ease",
+//     "&:hover": {
+//       color: "#3c52b2",
+//     },
+//   },
+// });
 
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
@@ -215,7 +214,6 @@ const formatter = new Intl.NumberFormat(
 
 const Ongoing = () => {
   const today = new Date();
-  const classes = useStyles();
   const oneDay = 24 * 60 * 60 * 1000;
   const checkDay = (check) => {
     return check <= 0 ? false : true;
@@ -260,7 +258,7 @@ const Ongoing = () => {
                         <ProjectTag key={tag}>{tag} </ProjectTag>
                       ))}
                     </ProjectTagContainer>
-                    <FavoriteBorder className={classes.icon} />
+                    <FavoriteBorderIcon />
                   </ProjectFlex>
                   <ProjectTitle>{campaign.title}</ProjectTitle>
                 </ProjectTitleContainer>

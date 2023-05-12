@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { InsertEmoticon, FavoriteBorder, StarBorder } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useLocation } from "react-router-dom";
 import { publicRequest } from "../requestMethod";
 
@@ -109,12 +110,12 @@ const CampaignProgressNumberContainer = styled.div`
 
 const CampaignProgressNumber = styled.span``;
 
-const useStyles = makeStyles({
-  icon: {
-    color: "#c9366f",
-    transform: "scale(0.8)",
-  },
-});
+// const useStyles = makeStyles({
+//   icon: {
+//     color: "#c9366f",
+//     transform: "scale(0.8)",
+//   },
+// });
 
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
@@ -124,7 +125,6 @@ const checkDay = (check) => {
 };
 
 const Campaign = () => {
-  const classes = useStyles();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const today = new Date();
@@ -157,15 +157,15 @@ const Campaign = () => {
             <CampaignTitle>{campaign.title}</CampaignTitle>
             <CampaignNumberContainer>
               <CampaignNumber>
-                <InsertEmoticon className={classes.icon} />
+                <InsertEmoticonIcon />
                 {campaign.supporters} Người ủng hộ
               </CampaignNumber>
               <CampaignNumber>
-                <FavoriteBorder className={classes.icon} />
+                <FavoriteBorderIcon />
                 {campaign.likes}
               </CampaignNumber>
               <CampaignNumber>
-                <StarBorder className={classes.icon} />
+                <StarBorderIcon />
                 {campaign.comments}
               </CampaignNumber>
             </CampaignNumberContainer>

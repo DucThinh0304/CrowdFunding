@@ -1,5 +1,4 @@
-import { makeStyles } from "@material-ui/core";
-import { FavoriteBorder } from "@material-ui/icons";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { publicRequest } from "../requestMethod";
@@ -132,21 +131,21 @@ const ProgressBar = styled.div`
   }
 `;
 
-const useStyles = makeStyles({
-  icon: {
-    position: "absolute",
-    padding: "5px 5px",
-    color: "#0275d8",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    zIndex: "2",
-    top: "0",
-    right: "0",
-    "&:hover": {
-      color: "#3c52b2",
-    },
-  },
-});
+// const useStyles = makeStyles({
+//   icon: {
+//     position: "absolute",
+//     padding: "5px 5px",
+//     color: "#0275d8",
+//     cursor: "pointer",
+//     transition: "all 0.3s ease",
+//     zIndex: "2",
+//     top: "0",
+//     right: "0",
+//     "&:hover": {
+//       color: "#3c52b2",
+//     },
+//   },
+// });
 
 const Hr = styled.hr`
   background-color: #eee;
@@ -241,7 +240,6 @@ const ButtonNumber = styled.button`
 `;
 
 const AllCampaign = () => {
-  const classes = useStyles();
   const [campaigns, setCampaigns] = useState([]);
   const location = useLocation();
   const page = location.pathname.split("/")[2];
@@ -294,7 +292,7 @@ const AllCampaign = () => {
                 <Link to={`../campaign/${campaign._id}`}>
                   <CampaignImage src={campaign.img} />
                 </Link>
-                <FavoriteBorder className={classes.icon} />
+                <FavoriteBorderIcon />
               </CampaignImageContainer>
               <CampaignInfoContainer>
                 {campaign.tag.map((tag) => (

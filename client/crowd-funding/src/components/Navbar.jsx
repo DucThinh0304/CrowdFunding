@@ -1,4 +1,4 @@
-import { Search } from "@material-ui/icons";
+import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -145,7 +145,7 @@ const Navbar = () => {
         <Right>
           <WrapLogin>
             <Icon>
-              <Search />
+              <SearchIcon />
             </Icon>
             {user ? (
               <Links>

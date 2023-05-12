@@ -32,7 +32,7 @@ const Contact = () => {
       <TitleContainer>
         <Title>Liên hệ</Title>
       </TitleContainer>
-      <Wrapper>aaaa</Wrapper>
+      <Wrapper></Wrapper>
       <Footer />
     </Container>
   );

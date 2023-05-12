@@ -1,11 +1,9 @@
-import { makeStyles } from "@material-ui/core";
-import { FavoriteBorder } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { projects } from "../data";
 import { useEffect } from "react";
 import { publicRequest } from "../requestMethod";
 import { useState } from "react";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -195,16 +193,16 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-const useStyles = makeStyles({
-  icon: {
-    color: "#0275d8",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    "&:hover": {
-      color: "#3c52b2",
-    },
-  },
-});
+// const useStyles = makeStyles({
+//   icon: {
+//     color: "#0275d8",
+//     cursor: "pointer",
+//     transition: "all 0.3s ease",
+//     "&:hover": {
+//       color: "#3c52b2",
+//     },
+//   },
+// });
 
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
@@ -213,7 +211,6 @@ const formatter = new Intl.NumberFormat(
 const Projects = () => {
   const [campaigns, setCampaigns] = useState([]);
   const today = new Date();
-  const classes = useStyles();
   const oneDay = 24 * 60 * 60 * 1000;
   const checkDay = (check) => {
     return check < 0 ? false : true;
@@ -253,7 +250,7 @@ const Projects = () => {
                       <ProjectTag key={tag}>{tag} </ProjectTag>
                     ))}
                   </ProjectTagContainer>
-                  <FavoriteBorder className={classes.icon} />
+                  <FavoriteBorderIcon />
                 </ProjectFlex>
                 <Link
                   to={`/campaign/${campaign._id}`}
