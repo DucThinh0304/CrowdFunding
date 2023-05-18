@@ -260,7 +260,12 @@ const Ongoing = () => {
                     </ProjectTagContainer>
                     <FavoriteBorderIcon />
                   </ProjectFlex>
-                  <ProjectTitle>{campaign.title}</ProjectTitle>
+                  <Link
+                    to={`./campaign/${campaign._id}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <ProjectTitle>{campaign.title}</ProjectTitle>
+                  </Link>
                 </ProjectTitleContainer>
                 <ProjectProgessContainer>
                   <ProjectMoney>
