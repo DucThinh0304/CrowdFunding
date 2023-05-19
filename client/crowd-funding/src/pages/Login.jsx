@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/apiCalls";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import "../CSS/LoginPage.css";
 
 const Container = styled.div``;
 
@@ -36,6 +39,20 @@ const Input = styled.input`
   margin: 10px 0px;
   padding: 15px;
   font-size: 18px;
+`;
+const PasswordContainer = styled.div`
+  position: relative;
+  margin-top: 10px;
+  display: flex;
+`;
+
+const Password = styled.input`
+  padding: 15px;
+  flex: 1;
+  min-width: 40%;
+  font-size: 18px;
+  display: inline-block;
+  position: relative;
 `;
 
 const Button = styled.button`
@@ -82,6 +99,7 @@ const Error = styled.span`
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [type, setType] = useState("password");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
 
@@ -89,6 +107,11 @@ const Login = () => {
     e.preventDefault();
     login(dispatch, { username, password });
   };
+  const changeType = () => {
+    if (type === "password") setType("text");
+    else setType("password");
+  };
+
   return (
     <Container>
       <Navbar />
@@ -101,11 +124,24 @@ const Login = () => {
             placeholder="Tên tài khoản"
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Input
-            placeholder="Mật khẩu"
-            type={"password"}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <PasswordContainer>
+            <Password
+              placeholder="Mật khẩu"
+              type={type}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {type === "password" ? (
+              <VisibilityIcon
+                className="visibility"
+                onClick={() => changeType()}
+              />
+            ) : (
+              <VisibilityOffIcon
+                className="visibility"
+                onClick={() => changeType()}
+              />
+            )}
+          </PasswordContainer>
           <Button onClick={handleClick} disabled={isFetching}>
             ĐĂNG NHẬP
           </Button>
