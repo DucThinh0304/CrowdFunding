@@ -12,6 +12,8 @@ import Register from "./pages/Register";
 import Campaign from "./pages/Campaign";
 import { useSelector } from "react-redux";
 import Contact from "./pages/Contact";
+import Donate from "./pages/Donate";
+import Success from "./pages/Success";
 
 function App() {
   const CampaignPage = () => {
@@ -30,6 +32,8 @@ function App() {
         />
         <Route path="/campaign/:id" element={<Campaign />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/donate/:id" element={<Donate />} />
+        <Route path="/success" element={<Success />} />
       </Routes>
     </Router>
   );

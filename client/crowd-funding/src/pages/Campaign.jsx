@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { publicRequest } from "../requestMethod";
 
 const Container = styled.div``;
@@ -108,6 +108,28 @@ const CampaignProgressNumberContainer = styled.div`
   justify-content: space-between;
 `;
 
+const Button = styled.button`
+  width: 40%;
+  font-weight: 700;
+  margin-top: 20px;
+  background-color: transparent;
+  text-transform: uppercase;
+  color: #0275d8;
+  padding: 18px 30px;
+  border: 1px solid #c9366f;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #c9366f;
+    color: white;
+  }
+  transition: all 0.5s ease;
+  &:disabled {
+    color: gray;
+    cursor: not-allowed;
+  }
+`;
+
 const CampaignProgressNumber = styled.span``;
 
 // const useStyles = makeStyles({
@@ -197,6 +219,9 @@ const Campaign = () => {
           </CampaignInfo>
         </CampaignInfoContainer>
       </Center>
+      <Link to={`/donate/${campaign._id}`}>
+        <Button>Donate</Button>
+      </Link>
       <Footer />
     </Container>
   );
