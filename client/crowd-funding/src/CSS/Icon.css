@@ -1,0 +1,8 @@
+.icon_home:hover {
+  color: #3c52b2;
+}
+.icon_home {
+  color: #0275d8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}

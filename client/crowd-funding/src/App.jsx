@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
 import Success from "./pages/Success";
+import MyAccount from "./pages/MyAccount";
 
 function App() {
   const CampaignPage = () => {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/donate/:id" element={<Donate />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/my-account/:id" element={<MyAccount />} />
       </Routes>
     </Router>
   );

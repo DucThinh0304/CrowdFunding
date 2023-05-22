@@ -152,19 +152,26 @@ const Campaign = () => {
   const today = new Date();
   const oneDay = 24 * 60 * 60 * 1000;
   const [campaign, setCampaign] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const date = new Date(campaign.dayfinish);
 
   useEffect(() => {
     const getCampaign = async () => {
-      try {
-        const res = await publicRequest.get("/campaign/find/" + id);
-        setCampaign(res.data);
-      } catch {}
+      publicRequest
+        .get("/campaign/find/" + id)
+        .then((res) => {
+          setCampaign(res.data);
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
     };
     getCampaign();
   }, [id]);
 
-  return (
+  return loading === true ? (
+    <div></div>
+  ) : (
     <Container>
       <Navbar />
       <Center>

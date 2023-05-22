@@ -3,8 +3,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import StripeCheckout from "react-stripe-checkout";
-import axios from "axios";
-import { publicRequest, userRequest } from "../requestMethod";
+import { userRequest } from "../requestMethod";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Container = styled.div``;
@@ -43,7 +42,6 @@ const Donate = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const id = location.pathname.split("/")[2];
-  console.log(id);
 
   useEffect(() => {
     const makeRequest = async () => {

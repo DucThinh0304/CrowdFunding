@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
 import { Link } from "react-router-dom";
+import "../CSS/Icon.css";
 
 const Container = styled.div`
   background-color: white;
@@ -197,17 +198,6 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-// const useStyles = makeStyles({
-//   icon: {
-//     color: "#0275d8",
-//     cursor: "pointer",
-//     transition: "all 0.3s ease",
-//     "&:hover": {
-//       color: "#3c52b2",
-//     },
-//   },
-// });
-
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
 );
@@ -258,7 +248,7 @@ const Ongoing = () => {
                         <ProjectTag key={tag}>{tag} </ProjectTag>
                       ))}
                     </ProjectTagContainer>
-                    <FavoriteBorderIcon />
+                    <FavoriteBorderIcon className="icon_home" />
                   </ProjectFlex>
                   <Link
                     to={`./campaign/${campaign._id}`}

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register } from "../redux/apiCalls";
 import "../CSS/LoginPage.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -92,10 +92,12 @@ const Error = styled.span`
 `;
 
 const Register = () => {
+  const navigate = useNavigate();
   const handleClick = (e) => {
     if (password === repassword) {
       e.preventDefault();
       register(dispatch, { username, password, email });
+      navigate("/login");
     } else {
       console.log("Sai mật khẩu");
     }
@@ -169,11 +171,9 @@ const Register = () => {
               />
             )}
           </PasswordContainer>
-          <Link to="/login">
-            <Button onClick={handleClick} disabled={isFetching}>
-              ĐĂNG KÍ
-            </Button>
-          </Link>
+          <Button onClick={handleClick} disabled={isFetching}>
+            ĐĂNG KÍ
+          </Button>
           {error && <Error>Có lỗi đã xảy ra...</Error>}
           <Link to="../login" style={{ color: "black" }}>
             <LinkText>Đã có tài khoản</LinkText>

@@ -59,8 +59,16 @@ const FormContainer = styled.div`
 const Input = styled.input`
   padding: 10px;
   font-size: 16px;
+  margin-right: 4%;
+  width: 36%;
+  border: 0.1px solid lightgray;
+`;
+
+const InputSubject = styled.input`
+  padding: 10px;
+  font-size: 16px;
   margin-right: 5%;
-  width: 35%;
+  width: 80%;
   border: 0.1px solid lightgray;
 `;
 const InputContainer = styled.div`
@@ -110,12 +118,11 @@ const Contact = () => {
         </ContactContainer>
         <FormContainer>
           <InputContainer>
-            <Input type="text" placeholder="Họ" />
             <Input type="text" placeholder="Tên" />
+            <Input type="text" placeholder="Email" />
           </InputContainer>
           <InputContainer>
-            <Input type="text" placeholder="Email" />
-            <Input type="text" placeholder="Chủ đề" />
+            <InputSubject type="text" placeholder="Chủ đề" />
           </InputContainer>
           <InputContainer>
             <TextArea placeholder="Nội dung"></TextArea>

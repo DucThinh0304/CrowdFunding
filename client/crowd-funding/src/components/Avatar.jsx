@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { publicRequest } from "../requestMethod";
+import NoAvt from "../asset/NoAvt.png";
 
 const Container = styled.div``;
 
@@ -18,48 +19,60 @@ const Name = styled.div`
   cursor: pointer;
 `;
 
+const Border = styled.div`
+  display: flex;
+  border-radius: 50%;
+  padding: 1px;
+  border: 1px #555 solid;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Avatar = ({ id }) => {
   const [avt, setAvt] = useState("");
+  const ID = id;
   useEffect(() => {
-    const getAvt = async () => {
+    const getAvt = async (ID) => {
       try {
-        const data = await publicRequest.get(`/users/public/${id}`);
+        const data = await publicRequest.get(`/users/public/${ID}`);
         setAvt(data.data.avt);
       } catch (err) {
-        console.log(err);
         setAvt("");
       }
     };
-    getAvt();
+    getAvt(ID);
     return () => {
       setAvt([]);
     };
   }, []);
-  return (
+  return avt !== "" ? (
     <Container>
-      <Image
-        src={
-          avt === ""
-            ? "https://w7.pngwing.com/pngs/419/473/png-transparent-computer-icons-user-profile-login-user-heroes-sphere-black-thumbnail.png"
-            : avt
-        }
-      />
+      <Border>
+        <Image src={avt} />
+      </Border>
+    </Container>
+  ) : (
+    <Container>
+      <Border>
+        <Image src={NoAvt} />
+      </Border>
     </Container>
   );
 };
 
 const Username = ({ id }) => {
   const [username, setUsername] = useState([]);
+  const ID = id;
   useEffect(() => {
-    const getAvt = async () => {
+    const getAvt = async (ID) => {
       try {
-        const data = await publicRequest.get(`/users/public/${id}`);
+        const data = await publicRequest.get(`/users/public/${ID}`);
         setUsername(data.data.username);
       } catch (err) {
         console.log(err);
       }
     };
-    getAvt();
+    getAvt(ID);
     return () => {
       setUsername([]);
     };

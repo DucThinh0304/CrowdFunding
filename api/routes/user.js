@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const {
-  verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
@@ -65,6 +64,25 @@ router.get("/public/:id", async (req, res) => {
     const { password, email, isAdmin, createdAt, updatedAt, __v, ...others } =
       user._doc;
     res.status(200).json(others);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//GET ALL PUBLIC USER
+
+router.get("/publicAll", async (req, res) => {
+  try {
+    const users = await User.find();
+    let array = [];
+    for (const user of users) {
+      const { password, email, isAdmin, createdAt, updatedAt, __v, ...others } =
+        user._doc;
+      array.push(others);
+    }
+    res.status(200).json(array);
     return;
   } catch (err) {
     res.status(500).json(err);

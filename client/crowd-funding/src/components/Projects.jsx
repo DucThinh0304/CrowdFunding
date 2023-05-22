@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { publicRequest } from "../requestMethod";
 import { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import "../CSS/Icon.css";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -193,17 +194,6 @@ const Button = styled.button`
   transition: all 0.5s ease;
 `;
 
-// const useStyles = makeStyles({
-//   icon: {
-//     color: "#0275d8",
-//     cursor: "pointer",
-//     transition: "all 0.3s ease",
-//     "&:hover": {
-//       color: "#3c52b2",
-//     },
-//   },
-// });
-
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
 );
@@ -250,7 +240,7 @@ const Projects = () => {
                       <ProjectTag key={tag}>{tag} </ProjectTag>
                     ))}
                   </ProjectTagContainer>
-                  <FavoriteBorderIcon />
+                  <FavoriteBorderIcon className="icon_home" />
                 </ProjectFlex>
                 <Link
                   to={`/campaign/${campaign._id}`}
