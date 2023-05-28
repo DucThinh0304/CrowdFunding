@@ -7,8 +7,18 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Link, useLocation } from "react-router-dom";
 import { publicRequest } from "../requestMethod";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div``;
+
+const LoadingContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+`;
 
 const Center = styled.div`
   display: flex;
@@ -170,7 +180,15 @@ const Campaign = () => {
   }, [id]);
 
   return loading === true ? (
-    <div></div>
+    <Container>
+      <Navbar />
+      <Center>
+        <LoadingContainer>
+          <CircularProgress />
+        </LoadingContainer>
+      </Center>
+      <Footer />
+    </Container>
   ) : (
     <Container>
       <Navbar />

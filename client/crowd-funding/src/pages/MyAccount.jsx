@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import { Link, useLocation } from "react-router-dom";
+import Setting from "../components/Setting";
 
 const Container = styled.div``;
 
@@ -32,9 +33,9 @@ const Left = styled.div`
 `;
 const MenuLink = styled.div`
   font-size: 16px;
-  color: ${(props) => (props.id === true ? "white" : "black")};
+  color: ${(props) => (props.id === "true" ? "white" : "black")};
   background-color: ${(props) =>
-    props.id === true ? "#c9366f" : "transparent"};
+    props.id === "true" ? "#c9366f" : "transparent"};
   &:hover {
     background-color: #c9366f;
     color: white;
@@ -81,28 +82,30 @@ const MyAccount = () => {
             style={{ textDecoration: "none", color: "black" }}
             to="/my-account/support-campaign"
           >
-            <MenuLink id={index === 1}>Đã ủng hộ</MenuLink>
+            <MenuLink id={index === 1 ? "true" : "false"}>Đã ủng hộ</MenuLink>
           </Link>
           <Link
             style={{ textDecoration: "none", color: "black" }}
             to="/my-account/favorite"
           >
-            <MenuLink id={index === 2}>Yêu thích</MenuLink>
+            <MenuLink id={index === 2 ? "true" : "false"}>Yêu thích</MenuLink>
           </Link>
           <Link
             style={{ textDecoration: "none", color: "black" }}
             to="/my-account/setting"
           >
-            <MenuLink id={index === 3}>Tài khoản</MenuLink>
+            <MenuLink id={index === 3 ? "true" : "false"}>Tài khoản</MenuLink>
           </Link>
           <Link
             style={{ textDecoration: "none", color: "black" }}
             to="/my-account/address"
           >
-            <MenuLink id={index === 4}>Địa chỉ</MenuLink>
+            <MenuLink id={index === 4 ? "true" : "false"}>Địa chỉ</MenuLink>
           </Link>
         </Left>
-        <Right></Right>
+        <Right>
+          <Setting />
+        </Right>
       </Wrapper>
       <Footer />
     </Container>

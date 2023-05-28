@@ -112,6 +112,12 @@ const Login = () => {
     else setType("password");
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleClick(event);
+    }
+  };
+
   return (
     <Container>
       <Navbar />
@@ -123,12 +129,14 @@ const Login = () => {
           <Input
             placeholder="Tên tài khoản"
             onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <PasswordContainer>
             <Password
               placeholder="Mật khẩu"
               type={type}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             {type === "password" ? (
               <VisibilityIcon

@@ -60,7 +60,7 @@ const LinkText = styled.div`
   cursor: pointer;
   padding: 12px;
   font-size: 14px;
-  color: ${(props) => (props.id === true ? "#c9366f" : "black")};
+  color: ${(props) => (props.id === "true" ? "#c9366f" : "black")};
   &:hover {
     color: #c9366f;
   }
@@ -156,19 +156,18 @@ const Navbar = () => {
     logout(dispatch);
   };
   useEffect(() => {
-    const getAvt = async () => {
-      try {
-        const data = await publicRequest.get(`/users/public/${user._id}`);
-        data.data.avt === "" ? setAvt(NoAvt) : setAvt(data.data.avt);
-        data.data.name === ""
-          ? setUsername(data.data.username)
-          : setUsername(data.data.name);
-      } catch (err) {
-        setAvt(NoAvt);
-      }
+    const getLocalStorage = () => {
+      localStorage.getItem("avt")
+        ? setAvt(localStorage.getItem("avt"))
+        : setAvt(NoAvt);
+      localStorage.getItem("name") === ""
+        ? setUsername(localStorage.getItem("username"))
+        : setUsername(localStorage.getItem("name"));
     };
-    user ? getAvt() : setAvt(NoAvt);
-  }, [user]);
+    if (user) {
+      getLocalStorage();
+    }
+  }, []);
 
   const open = Boolean(anchorEl);
 
@@ -197,19 +196,21 @@ const Navbar = () => {
         </Left>
         <Center>
           <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-            <LinkText id={index === 1}>Trang chủ</LinkText>
+            <LinkText id={index === 1 ? "true" : "false"}>Trang chủ</LinkText>
           </Link>
           <Link
             to="/all-campaigns"
             style={{ textDecoration: "none", color: "black" }}
           >
-            <LinkText id={index === 2}>Toàn bộ các dự án</LinkText>
+            <LinkText id={index === 2 ? "true" : "false"}>
+              Toàn bộ các dự án
+            </LinkText>
           </Link>
           <Link
             to="/contact"
             style={{ textDecoration: "none", color: "black" }}
           >
-            <LinkText id={index === 3}>Liên hệ</LinkText>
+            <LinkText id={index === 3 ? "true" : "false"}>Liên hệ</LinkText>
           </Link>
         </Center>
         <Right>

@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema(
     name: { type: String, default: "" },
     address: { type: Array, default: [] },
     favorite: { type: Array, default: [] },
+    support: { type: Array, default: [] },
   },
   {
     timestamps: true,

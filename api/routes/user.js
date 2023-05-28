@@ -31,7 +31,7 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 //DELETE
 
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User has been deleted...");
@@ -61,8 +61,17 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 router.get("/public/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    const { password, email, isAdmin, createdAt, updatedAt, __v, ...others } =
-      user._doc;
+    const {
+      password,
+      email,
+      isAdmin,
+      createdAt,
+      updatedAt,
+      address,
+      favorite,
+      __v,
+      ...others
+    } = user._doc;
     res.status(200).json(others);
     return;
   } catch (err) {
@@ -83,6 +92,21 @@ router.get("/publicAll", async (req, res) => {
       array.push(others);
     }
     res.status(200).json(array);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//GET USER SETTING
+
+router.get("/setting/:id", verifyTokenAndAuthorization, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const { password, isAdmin, createdAt, updatedAt, __v, ...others } =
+      user._doc;
+    res.status(200).json(others);
     return;
   } catch (err) {
     res.status(500).json(err);

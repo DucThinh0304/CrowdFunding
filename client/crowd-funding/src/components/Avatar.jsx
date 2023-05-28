@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { publicRequest } from "../requestMethod";
 import NoAvt from "../asset/NoAvt.png";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div``;
 
@@ -26,16 +27,20 @@ const Border = styled.div`
   border: 1px #555 solid;
   justify-content: center;
   align-items: center;
+  width: 40px;
+  height: 40px;
 `;
 
 const Avatar = ({ id }) => {
   const [avt, setAvt] = useState("");
+  const [loading, setLoading] = useState(true);
   const ID = id;
   useEffect(() => {
     const getAvt = async (ID) => {
       try {
         const data = await publicRequest.get(`/users/public/${ID}`);
         setAvt(data.data.avt);
+        setLoading(false);
       } catch (err) {
         setAvt("");
       }
@@ -45,7 +50,13 @@ const Avatar = ({ id }) => {
       setAvt([]);
     };
   }, []);
-  return avt !== "" ? (
+  return loading === true ? (
+    <Container>
+      <Border>
+        <CircularProgress />
+      </Border>
+    </Container>
+  ) : avt !== "" ? (
     <Container>
       <Border>
         <Image src={avt} />
@@ -67,7 +78,9 @@ const Username = ({ id }) => {
     const getAvt = async (ID) => {
       try {
         const data = await publicRequest.get(`/users/public/${ID}`);
-        setUsername(data.data.username);
+        data.data.name === ""
+          ? setUsername(data.data.username)
+          : setUsername(data.data.name);
       } catch (err) {
         console.log(err);
       }
