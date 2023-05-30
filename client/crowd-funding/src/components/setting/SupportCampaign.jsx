@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { userRequest } from "../../requestMethod";
+import { publicRequest, userRequest } from "../../requestMethod";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getCampaign } from "../../redux/apiCalls";
@@ -20,59 +20,26 @@ const Container = styled.div`
   height: 500px;
 `;
 
-const SupportCampaign = () => {
-  const [data, setData] = useState([]);
+const SuppportCampaign = () => {
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
-  const campaigns = useSelector((state) => state.campaign.campaigns);
+  const [campaigns, setCampaigns] = useState([]);
+  const user = useSelector((state) => state.user.currentUser);
   const formatter = new Intl.NumberFormat(
     new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
   );
 
-  const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
-    const getSetting = async () => {
-      userRequest
-        .get(`/users/setting/${user._id}`)
-        .then((res) => {
-          setData(res.data);
-          setLoading(false);
-        })
-        .catch((err) => console.log(err));
-    };
-    getSetting();
-  }, []);
-
-  const Shorten = (value) => {
-    var newValue = value;
-    if (value >= 1000) {
-      var suffixes = ["", "k", "m", "b", "t"];
-      var suffixNum = Math.floor(("" + value).length / 3);
-      var shortValue = "";
-      for (var precision = 2; precision >= 1; precision--) {
-        shortValue = parseFloat(
-          (suffixNum !== 0
-            ? value / Math.pow(1000, suffixNum)
-            : value
-          ).toPrecision(precision)
-        );
-        var dotLessShortValue = (shortValue + "").replace(
-          /[^a-zA-Z 0-9]+/g,
-          ""
-        );
-        if (dotLessShortValue.length <= 2) {
-          break;
-        }
+    const getCampaigns = async () => {
+      try {
+        const resCampaign = await publicRequest.get("/campaign");
+        setCampaigns(resCampaign.data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
       }
-      if (shortValue % 1 !== 0) shortValue = shortValue.toFixed(1);
-      newValue = shortValue + suffixes[suffixNum];
-    }
-    return newValue;
-  };
-
-  useEffect(() => {
-    getCampaign(dispatch);
-  }, [dispatch]);
+    };
+    getCampaigns();
+  }, []);
 
   const columns = [
     { field: "_id", headerName: "ID", width: 220 },
@@ -115,25 +82,22 @@ const SupportCampaign = () => {
 
   const mergedData = () => {
     let array = [];
-    if (!data.support || !campaigns) return array;
-    data.support.map((a) => {
+    if (!user.support || !campaigns) return array;
+    user.support.map((a) => {
       campaigns.map((b) => {
-        console.log(b);
         if (a.id === b._id) array.push({ ...a, ...b });
       });
     });
     return array;
   };
 
-  console.log(mergedData());
-
-  return loading === true && data !== null ? (
+  return loading === true && user !== null ? (
     <CircularProgressContainer>
       <CircularProgress />
     </CircularProgressContainer>
   ) : (
     <Container>
-      {data.support.length > 0 ? (
+      {user.support.length > 0 ? (
         <DataGrid
           localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
           rows={mergedData()}
@@ -147,4 +111,4 @@ const SupportCampaign = () => {
     </Container>
   );
 };
-export default SupportCampaign;
+export default SuppportCampaign;

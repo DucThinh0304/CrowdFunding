@@ -7,6 +7,15 @@ import Setting from "../components/Setting";
 
 const Container = styled.div``;
 
+const NotFound = styled.div`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
 const TitleContainer = styled.div`
   background-color: #f0f0f0;
   height: 268px;
@@ -110,7 +119,10 @@ const MyAccount = () => {
       <Footer />
     </Container>
   ) : (
-    <div>Trang này không tồn tại</div>
+    <NotFound>
+      <div>Trang này không tồn tại </div>
+      <Link to="/">Quay về trang chủ</Link>
+    </NotFound>
   );
 };
 

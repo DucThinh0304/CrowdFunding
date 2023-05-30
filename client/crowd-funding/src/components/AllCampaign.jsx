@@ -5,6 +5,7 @@ import { publicRequest } from "../requestMethod";
 import { useLocation } from "react-router-dom";
 import { Avatar, Username } from "./Avatar";
 import { Link } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +14,15 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+`;
+
+const CircularProgressContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 70vh;
+  padding-top: 50px;
+  padding-bottom: 50px;
 `;
 
 const CampaignsContainer = styled.div`
@@ -241,6 +251,7 @@ const ButtonNumber = styled.button`
 
 const AllCampaign = () => {
   const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const page = location.pathname.split("/")[2];
   useEffect(() => {
@@ -248,6 +259,7 @@ const AllCampaign = () => {
       try {
         const resCampaign = await publicRequest.get("/campaign");
         setCampaigns(resCampaign.data);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -282,7 +294,11 @@ const AllCampaign = () => {
     return newValue;
   };
 
-  return (
+  return loading ? (
+    <CircularProgressContainer>
+      <CircularProgress />
+    </CircularProgressContainer>
+  ) : (
     <Container>
       <CampaignsContainer>
         {campaigns.map((campaign) => (

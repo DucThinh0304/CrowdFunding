@@ -10,11 +10,6 @@ import {
   registerFailure,
 } from "./userRedux";
 import { publicRequest } from "../requestMethod";
-import {
-  getCampaignFailure,
-  getCampaignStart,
-  getCampaignSuccess,
-} from "./campaignRedux";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
@@ -47,15 +42,5 @@ export const register = async (dispatch, user) => {
     dispatch(registerSuccess(res.data));
   } catch (err) {
     dispatch(registerFailure());
-  }
-};
-
-export const getCampaign = async (dispatch) => {
-  dispatch(getCampaignStart());
-  try {
-    const res = await publicRequest.get("/campaign");
-    dispatch(getCampaignSuccess(res.data));
-  } catch (err) {
-    dispatch(getCampaignFailure());
   }
 };

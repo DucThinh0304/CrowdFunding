@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { userRequest } from "../../requestMethod";
+import { publicRequest } from "../../requestMethod";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
-import { getCampaign } from "../../redux/apiCalls";
 import { Link } from "react-router-dom";
 import { DataGrid, viVN } from "@mui/x-data-grid";
 import "../../CSS/DataGrid.css";
@@ -21,28 +20,25 @@ const Container = styled.div`
 `;
 
 const Favorite = () => {
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
-  const campaigns = useSelector((state) => state.campaign.campaigns);
-
+  const [campaigns, setCampaigns] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
-  useEffect(() => {
-    const getSetting = async () => {
-      userRequest
-        .get(`/users/setting/${user._id}`)
-        .then((res) => {
-          setData(res.data);
-          setLoading(false);
-        })
-        .catch((err) => console.log(err));
-    };
-    getSetting();
-  }, []);
+  const formatter = new Intl.NumberFormat(
+    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
+  );
 
   useEffect(() => {
-    getCampaign(dispatch);
-  }, [dispatch]);
+    const getCampaigns = async () => {
+      try {
+        const resCampaign = await publicRequest.get("/campaign");
+        setCampaigns(resCampaign.data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCampaigns();
+  }, []);
 
   const columns = [
     { field: "_id", headerName: "ID", width: 220 },
@@ -63,6 +59,9 @@ const Favorite = () => {
       field: "amount",
       headerName: "Số tiền đã ủng hộ",
       width: 160,
+      renderCell: (params) => {
+        return <div>{formatter.format(params.row.amount)} đ</div>;
+      },
     },
     {
       field: "action",
@@ -82,25 +81,22 @@ const Favorite = () => {
 
   const mergedData = () => {
     let array = [];
-    if (!data.support || !campaigns) return array;
-    data.favorite.map((a) => {
+    if (!user.support || !campaigns) return array;
+    user.favorite.map((a) => {
       campaigns.map((b) => {
-        console.log(b);
         if (a.id === b._id) array.push({ ...a, ...b });
       });
     });
     return array;
   };
 
-  console.log(mergedData());
-
-  return loading === true && data !== null ? (
+  return loading === true && user !== null ? (
     <CircularProgressContainer>
       <CircularProgress />
     </CircularProgressContainer>
   ) : (
     <Container>
-      {data.support.length > 0 ? (
+      {user.support.length > 0 ? (
         <DataGrid
           localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
           rows={mergedData()}

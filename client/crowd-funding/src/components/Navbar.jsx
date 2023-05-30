@@ -131,8 +131,6 @@ const Navbar = () => {
   const location = useLocation();
   const [index, setIndex] = useState(1);
   const [anchorEl, setAnchorEl] = useState();
-  const [avt, setAvt] = useState(NoAvt);
-  const [username, setUsername] = useState("");
   const id = location.pathname.split("/")[1];
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
@@ -155,19 +153,6 @@ const Navbar = () => {
     navigate("/");
     logout(dispatch);
   };
-  useEffect(() => {
-    const getLocalStorage = () => {
-      localStorage.getItem("avt")
-        ? setAvt(localStorage.getItem("avt"))
-        : setAvt(NoAvt);
-      localStorage.getItem("name") === ""
-        ? setUsername(localStorage.getItem("username"))
-        : setUsername(localStorage.getItem("name"));
-    };
-    if (user) {
-      getLocalStorage();
-    }
-  }, []);
 
   const open = Boolean(anchorEl);
 
@@ -222,10 +207,10 @@ const Navbar = () => {
               <Links>
                 <Username>
                   Xin chào,
-                  <Span> {username}</Span>
+                  <Span> {user.name ? user.name : user.username}</Span>
                 </Username>
                 <Border onClick={(e) => handleClick(e)}>
-                  <Image src={avt} />
+                  <Image src={user.avt ? user.avt : NoAvt} />
                 </Border>
                 <Menu
                   id="basic-menu"

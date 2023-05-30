@@ -99,21 +99,6 @@ router.get("/publicAll", async (req, res) => {
   }
 });
 
-//GET USER SETTING
-
-router.get("/setting/:id", verifyTokenAndAuthorization, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    const { password, isAdmin, createdAt, updatedAt, __v, ...others } =
-      user._doc;
-    res.status(200).json(others);
-    return;
-  } catch (err) {
-    res.status(500).json(err);
-    return;
-  }
-});
-
 //GET ALL USER
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {

@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userRedux";
-import campaignReducer from "./campaignRedux";
 import {
   persistStore,
   persistReducer,
@@ -21,7 +20,6 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
-  campaign: campaignReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
