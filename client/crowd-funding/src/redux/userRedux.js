@@ -34,6 +34,7 @@ const userSlice = createSlice({
     },
     registerStart: (state) => {
       state.isFetching = true;
+      state.error = false;
     },
     registerSuccess: (state) => {
       state.isFetching = false;
@@ -41,6 +42,19 @@ const userSlice = createSlice({
       state.error = false;
     },
     registerFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
+    settingStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    settingSuccess: (state, action) => {
+      state.isFetching = false;
+      state.currentUser = action.payload;
+      state.error = false;
+    },
+    settingFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
@@ -57,5 +71,8 @@ export const {
   registerStart,
   registerSuccess,
   registerFailure,
+  settingStart,
+  settingSuccess,
+  settingFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

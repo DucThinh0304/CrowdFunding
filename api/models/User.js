@@ -15,6 +15,9 @@ const UserSchema = new mongoose.Schema(
     address: { type: Array, default: [] },
     favorite: { type: Array, default: [] },
     support: { type: Array, default: [] },
+    phonenumber: { type: String, default: "" },
+    gender: { type: String, default: "" },
+    birthday: { type: Date, default: "1980-01-01T17:33:18.902+00:00" },
   },
   {
     timestamps: true,

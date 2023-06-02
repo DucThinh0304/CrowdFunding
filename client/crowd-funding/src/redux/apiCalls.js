@@ -8,8 +8,11 @@ import {
   registerStart,
   registerSuccess,
   registerFailure,
+  settingStart,
+  settingSuccess,
+  settingFailure,
 } from "./userRedux";
-import { publicRequest } from "../requestMethod";
+import { publicRequest, userRequest } from "../requestMethod";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
@@ -28,10 +31,9 @@ export const login = async (dispatch, user) => {
 export const logout = async (dispatch) => {
   dispatch(logoutStart());
   try {
-    localStorage.clear();
-    dispatch(loginSuccess());
+    dispatch(logoutSuccess());
   } catch (err) {
-    dispatch(loginFailure());
+    dispatch(logoutFailure());
   }
 };
 
@@ -42,5 +44,15 @@ export const register = async (dispatch, user) => {
     dispatch(registerSuccess(res.data));
   } catch (err) {
     dispatch(registerFailure());
+  }
+};
+
+export const setting = async (dispatch, user) => {
+  dispatch(settingStart());
+  try {
+    const res = await userRequest.put(`/users/${user._id}`, user);
+    dispatch(settingSuccess(res.data));
+  } catch (err) {
+    dispatch(settingFailure());
   }
 };
