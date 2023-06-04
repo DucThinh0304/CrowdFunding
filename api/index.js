@@ -7,6 +7,7 @@ const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const campaignRoute = require("./routes/campaign");
 const stripeRoute = require("./routes/stripe");
+const addressRoute = require("./routes/address");
 const cors = require("cors");
 
 mongoose
@@ -22,6 +23,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/campaign", campaignRoute);
 app.use("/api/donate", stripeRoute);
+app.use("/api/addresses", addressRoute);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("Backend server is running!");

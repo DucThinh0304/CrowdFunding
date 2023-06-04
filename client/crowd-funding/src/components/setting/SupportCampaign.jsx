@@ -97,17 +97,13 @@ const SuppportCampaign = () => {
     </CircularProgressContainer>
   ) : (
     <Container>
-      {user.support.length > 0 ? (
-        <DataGrid
-          localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
-          rows={mergedData()}
-          disableSelectionOnClick
-          columns={columns}
-          getRowId={(row) => row._id}
-        />
-      ) : (
-        <div>Bạn chưa ủng hộ dự án nào</div>
-      )}
+      <DataGrid
+        localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
+        rows={mergedData()}
+        disableSelectionOnClick
+        columns={columns}
+        getRowId={(row) => row._id}
+      />
     </Container>
   );
 };

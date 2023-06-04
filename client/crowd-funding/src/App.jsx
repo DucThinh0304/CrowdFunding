@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
 import Success from "./pages/Success";
 import MyAccount from "./pages/MyAccount";
+import Address from "./components/setting/Address";
 
 function App() {
   const CampaignPage = () => {
@@ -36,6 +37,11 @@ function App() {
         <Route path="/donate/:id" element={<Donate />} />
         <Route path="/success" element={<Success />} />
         <Route path="/my-account/:id" element={<MyAccount />} />
+        <Route path="/my-account/address/:id" element={<MyAccount />} />
+        <Route
+          path="/my-account/address/edit-address/:id"
+          element={<MyAccount />}
+        />
       </Routes>
     </Router>
   );
