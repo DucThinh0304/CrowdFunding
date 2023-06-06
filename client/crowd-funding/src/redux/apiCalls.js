@@ -11,6 +11,9 @@ import {
   settingStart,
   settingSuccess,
   settingFailure,
+  addressStart,
+  addressSuccess,
+  addressFailure,
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
 
@@ -18,10 +21,6 @@ export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", user);
-    localStorage.clear();
-    localStorage.setItem("username", res.data.username);
-    localStorage.setItem("name", res.data.name);
-    localStorage.setItem("avt", res.data.avt);
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
@@ -51,8 +50,56 @@ export const setting = async (dispatch, user) => {
   dispatch(settingStart());
   try {
     const res = await userRequest.put(`/users/${user._id}`, user);
+    const userPersist = JSON.parse(localStorage.getItem("persist:root"))?.user;
+    const currentUser = userPersist && JSON.parse(userPersist).currentUser;
+    const TOKEN = currentUser?.accessToken;
+    res.data.accessToken = TOKEN;
     dispatch(settingSuccess(res.data));
   } catch (err) {
+    dispatch(settingFailure());
+  }
+};
+
+export const addAddress = async (dispatch, address) => {
+  dispatch(addressStart());
+  try {
+    await userRequest.post(`/addresses/${address.username}`, address);
+    dispatch(addressSuccess());
+  } catch (err) {
+    console.log(err);
+    dispatch(addressFailure());
+  }
+};
+
+export const editAddress = async (dispatch, address, id) => {
+  dispatch(addressStart());
+  try {
+    const res = await userRequest.put(`/addresses/${id}`, address);
+    dispatch(addressSuccess());
+  } catch (err) {
+    console.log(err);
+    dispatch(addressFailure());
+  }
+};
+
+export const deleteAddress = async (dispatch, id) => {
+  dispatch(addressStart());
+  try {
+    const res = await userRequest.delete(`/addresses/${id}`);
+    dispatch(addressSuccess());
+  } catch (err) {
+    console.log(err);
+    dispatch(addressFailure());
+  }
+};
+
+export const favorite = async (dispatch, id, campaignId) => {
+  dispatch(settingStart());
+  try {
+    const res = await userRequest.put(`/users/favorite/${id}`, campaignId);
+    dispatch(settingSuccess());
+  } catch (err) {
+    console.log(err);
     dispatch(settingFailure());
   }
 };

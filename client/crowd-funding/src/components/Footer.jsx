@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   background-color: #202020;
@@ -16,19 +16,19 @@ const First = styled.div`
 `;
 
 const Second = styled.div`
-  flex:1;
+  flex: 1;
   display: flex;
   flex-direction: column;
 `;
 
 const Third = styled.div`
-  flex:1;
+  flex: 1;
   display: flex;
   flex-direction: column;
 `;
 
 const Forth = styled.div`
-  flex:1;
+  flex: 1;
   display: flex;
   flex-direction: column;
 `;
@@ -43,8 +43,8 @@ const Link = styled.a`
   cursor: pointer;
   color: #939393;
   font-size: 16px;
-  &:hover{
-    color: #41BB98
+  &:hover {
+    color: #41bb98;
   }
   transition: all 0.7s ease;
   padding: 10px 0px;
@@ -82,12 +82,11 @@ const Footer = () => {
       <Forth>
         <Title>Đơn vị chủ quản</Title>
         <Logo>
-            <ImageLogo src="https://crowdfunding.comicola.com/wp-content/uploads/2021/06/comicola_logo_198_60_white.png"/>
-          </Logo >
+          <ImageLogo src="https://crowdfunding.comicola.com/wp-content/uploads/2021/06/comicola_logo_198_60_white.png" />
+        </Logo>
       </Forth>
     </Container>
-  )
-}
+  );
+};
 
-
-export default Footer
+export default Footer;

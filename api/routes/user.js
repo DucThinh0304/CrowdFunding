@@ -144,4 +144,24 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+//FAVORITE
+
+router.put("/favorite/:id", async (req, res) => {
+  try {
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $push: {
+          favorite: req.body.id,
+        },
+      }
+    );
+    res.status(201);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 module.exports = router;

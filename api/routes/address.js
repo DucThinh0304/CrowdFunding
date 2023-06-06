@@ -3,7 +3,7 @@ const Address = require("../models/Address");
 const { verifyTokenAndAuthorization } = require("./verifyToken");
 
 //UPDATE
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updatedAddress = await Address.findByIdAndUpdate(
       req.params.id,
@@ -22,7 +22,7 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 //DELETE
 
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     await Address.findByIdAndDelete(req.params.id);
     res.status(200).json("Address has been deleted...");
@@ -46,13 +46,26 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
+//GET ADDRESS
+
+router.get("/findOne/:id", async (req, res) => {
+  try {
+    const address = await Address.findById(req.params.id);
+    res.status(200).json(address);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 //ADD ADDRESS
 
-router.post("/", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/:id", verifyTokenAndAuthorization, async (req, res) => {
   const newAddress = new Address(req.body);
   try {
     const savedAddress = await newAddress.save();
-    res.status(200).json(savedAddress);
+    res.status(201).json(savedAddress);
     return;
   } catch (err) {
     res.status(500).json(err);

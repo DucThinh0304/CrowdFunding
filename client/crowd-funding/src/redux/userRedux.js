@@ -52,9 +52,20 @@ const userSlice = createSlice({
     settingSuccess: (state, action) => {
       state.isFetching = false;
       state.currentUser = action.payload;
-      state.error = false;
     },
     settingFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
+    addressStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    addressSuccess: (state) => {
+      state.isFetching = false;
+      state.error = false;
+    },
+    addressFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
@@ -74,5 +85,8 @@ export const {
   settingStart,
   settingSuccess,
   settingFailure,
+  addressStart,
+  addressSuccess,
+  addressFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

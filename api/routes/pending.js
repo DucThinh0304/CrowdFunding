@@ -4,14 +4,14 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
-const Campaign = require("../models/Campaign");
+const Pending = require("../models/Pending");
 
 //CREATE
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newCampaign = new Campaign(req.body);
+  const newPending = new Pending(req.body);
   try {
-    const savedCampaign = await newCampaign.save();
-    res.status(201).json(savedCampaign);
+    const savedPending = await newPending.save();
+    res.status(201).json(savedPending);
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -22,13 +22,13 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 //UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const updatedCampaign = await Campaign.findByIdAndUpdate();
+    const updatedPending = await Pending.findByIdAndUpdate();
     req.params.id,
       {
         $set: req.body,
       },
       { new: true };
-    res.status(200).json(updatedCampaign);
+    res.status(200).json(updatedPending);
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -40,8 +40,8 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    await Campaign.findByIdAndDelete(req.params.id);
-    res.status(200).json("Campaign has been deleted...");
+    await Pending.findByIdAndDelete(req.params.id);
+    res.status(200).json("Pending has been deleted...");
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -49,12 +49,12 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
-//GET CAMPAIGN
+//GET PENDING
 
 router.get("/find/:id", async (req, res) => {
   try {
-    const campaign = await Campaign.findById(req.params.id);
-    res.status(200).json(campaign);
+    const pending = await Pending.findById(req.params.id);
+    res.status(200).json(pending);
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -62,25 +62,25 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-//GET ALL CAMPAIGN
+//GET ALL PENDING
 
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qTag = req.query.tag;
   try {
-    let campaigns;
+    let pendings;
     if (qNew) {
-      campaigns = await Campaign.find().sort({ createdAt: -1 }).limit(8);
+      pendings = await Pending.find().sort({ createdAt: -1 }).limit(8);
     } else if (qTag) {
-      campaigns = await Campaign.find({
+      pendings = await Pending.find({
         tag: {
           $in: [qTag],
         },
       });
     } else {
-      campaigns = await Campaign.find();
+      pendings = await Pending.find();
     }
-    res.status(200).json(campaigns);
+    res.status(200).json(pendings);
     return;
   } catch (err) {
     res.status(500).json(err);

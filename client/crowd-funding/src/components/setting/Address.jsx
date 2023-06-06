@@ -50,6 +50,7 @@ const AddressContainer = styled.div`
     background-color: #eee;
   }
   transition: all 0.5s ease;
+  margin: 5px;
 `;
 
 const AddressWrapper = styled.div`
@@ -133,7 +134,8 @@ const Address = () => {
           <AddressWrapper>
             <InformationWrapper>
               <Name>{address.name}</Name> |
-              <PhoneNumber>{address.phonenumber}</PhoneNumber>
+              <PhoneNumber>{address.phonenumber}</PhoneNumber> |
+              <PhoneNumber>{address.email}</PhoneNumber>
             </InformationWrapper>
             <Location>
               {address.province}, {address.district}, {address.ward}

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import data from "../../dvhcvn.json";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addAddress } from "../../redux/apiCalls";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -36,18 +38,62 @@ const Span = styled.span`
   color: red;
 `;
 
+const Button = styled.button`
+  width: 40%;
+  font-weight: 700;
+  margin-top: 20px;
+  background-color: transparent;
+  text-transform: uppercase;
+  color: #0275d8;
+  padding: 18px 30px;
+  border: 1px solid #c9366f;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #c9366f;
+    color: white;
+  }
+  transition: all 0.5s ease;
+  &:disabled {
+    color: gray;
+    cursor: not-allowed;
+  }
+`;
+
 const AddAddress = () => {
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
   const [ward, setWard] = useState("");
+  const [name, setName] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
   const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {}, [province]);
-
-  const reset = (e) => {
+  const handleReset = (e) => {
     setWard("");
     setDistrict("");
     setProvince(e.target.value);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    addAddress(dispatch, {
+      name,
+      businessName,
+      address,
+      phonenumber: phone,
+      email,
+      province,
+      district,
+      ward,
+      username: `${user._id}`,
+    });
+    navigate("/my-account/address");
   };
 
   return (
@@ -56,11 +102,16 @@ const AddAddress = () => {
       <Label>
         Nhập họ và tên <Span>*</Span>
       </Label>
-      <Input />
+      <Input onChange={(e) => setName(e.target.value)} />
+      <Label>Nhập tên công ty (không bắt buộc)</Label>
+      <Input onChange={(e) => setBusinessName(e.target.value)} />
       <Label>
         Tỉnh/Thành phố <Span>*</Span>
       </Label>
-      <Select value={province} onChange={(e) => reset(e)}>
+      <Select value={province} onChange={(e) => handleReset(e)}>
+        <option value="" disabled>
+          Chọn tỉnh/thành phố
+        </option>
         {data.data.map((city) => (
           <option key={city.level1_id + "_city"} value={city.id}>
             {city.name}
@@ -71,6 +122,9 @@ const AddAddress = () => {
         Quận/Huyện <Span>*</Span>
       </Label>
       <Select value={district} onChange={(e) => setDistrict(e.target.value)}>
+        <option value="" disabled>
+          Chọn quận/huyện
+        </option>
         {province !== "" ? (
           data.data
             .find((city) => city.name === province)
@@ -90,6 +144,9 @@ const AddAddress = () => {
         Xã/Phường/Thị trấn <Span>*</Span>
       </Label>
       <Select value={ward} onChange={(e) => setWard(e.target.value)}>
+        <option value="" disabled>
+          Chọn Xã/Phường/Thị trấn
+        </option>
         {district !== "" ? (
           data.data
             .find((city) => city.name === province)
@@ -106,15 +163,19 @@ const AddAddress = () => {
       <Label>
         Địa chỉ <Span>*</Span>
       </Label>
-      <Input />
+      <Input onChange={(e) => setAddress(e.target.value)} />
       <Label>
         Số điện thoại <Span>*</Span>
       </Label>
-      <Input />
+      <Input onChange={(e) => setPhone(e.target.value)} />
       <Label>
         Địa chỉ Email <Span>*</Span>
       </Label>
-      <Input value={user.email} />
+      <Input
+        onChange={(e) => setEmail(e.target.value)}
+        defaultValue={user.email}
+      />
+      <Button onClick={(e) => handleSave(e)}>Lưu thông tin</Button>
     </Container>
   );
 };

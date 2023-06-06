@@ -202,6 +202,10 @@ const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
 );
 
+const handleFavorite = (e, id) => {
+  e.preventDefault();
+};
+
 const Ongoing = () => {
   const today = new Date();
   const oneDay = 24 * 60 * 60 * 1000;
@@ -248,7 +252,10 @@ const Ongoing = () => {
                         <ProjectTag key={tag}>{tag} </ProjectTag>
                       ))}
                     </ProjectTagContainer>
-                    <FavoriteBorderIcon className="icon_home" />
+                    <FavoriteBorderIcon
+                      className="icon_home"
+                      onClick={(e) => handleFavorite(e, campaign.Id)}
+                    />
                   </ProjectFlex>
                   <Link
                     to={`./campaign/${campaign._id}`}
