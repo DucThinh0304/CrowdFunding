@@ -114,10 +114,12 @@ const Address = () => {
     <CircularProgressContainer>
       <CircularProgress />
     </CircularProgressContainer>
-  ) : addresses.length === 0 ? (
+  ) : addresses.length === 0 && subpage === "" ? (
     <Container>
       <Label>Bạn chưa có địa chỉ nào</Label>
-      <Button>Thêm địa chỉ</Button>
+      <Link to="./add-address">
+        <Button>Thêm địa chỉ</Button>
+      </Link>
     </Container>
   ) : subpage === "add-address" ? (
     <Container>

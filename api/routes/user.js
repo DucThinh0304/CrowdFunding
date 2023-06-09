@@ -21,7 +21,8 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).json(updatedUser);
+    const { password, ...others } = updatedUser._doc;
+    res.status(200).json(others);
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -148,15 +149,18 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
 
 router.put("/favorite/:id", async (req, res) => {
   try {
-    await User.updateOne(
+    const updatedUser = await User.findOneAndUpdate(
       { _id: req.params.id },
       {
         $push: {
-          favorite: req.body.id,
+          favorite: {
+            id: req.body.campaignId,
+          },
         },
       }
     );
-    res.status(201);
+    const { password, ...others } = updatedUser._doc;
+    res.status(200).json(others);
     return;
   } catch (err) {
     res.status(500).json(err);

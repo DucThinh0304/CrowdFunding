@@ -35,7 +35,7 @@ router.delete("/:id", async (req, res) => {
 
 //GET USER ADDRESS
 
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:id", async (req, res) => {
   try {
     const address = await Address.find({ username: `${req.params.id}` });
     res.status(200).json(address);

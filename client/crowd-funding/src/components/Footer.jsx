@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import MainLogo from "../asset/Happy.png";
 
 const Container = styled.div`
   background-color: #202020;
@@ -80,9 +81,8 @@ const Footer = () => {
         <Link>Giỏ hàng</Link>
       </Third>
       <Forth>
-        <Title>Đơn vị chủ quản</Title>
         <Logo>
-          <ImageLogo src="https://crowdfunding.comicola.com/wp-content/uploads/2021/06/comicola_logo_198_60_white.png" />
+          <ImageLogo src={MainLogo} />
         </Logo>
       </Forth>
     </Container>

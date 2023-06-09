@@ -14,6 +14,9 @@ import {
   addressStart,
   addressSuccess,
   addressFailure,
+  favoriteStart,
+  favoriteSuccess,
+  favoriteFailure,
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
 
@@ -74,7 +77,7 @@ export const addAddress = async (dispatch, address) => {
 export const editAddress = async (dispatch, address, id) => {
   dispatch(addressStart());
   try {
-    const res = await userRequest.put(`/addresses/${id}`, address);
+    await userRequest.put(`/addresses/${id}`, address);
     dispatch(addressSuccess());
   } catch (err) {
     console.log(err);
@@ -85,7 +88,7 @@ export const editAddress = async (dispatch, address, id) => {
 export const deleteAddress = async (dispatch, id) => {
   dispatch(addressStart());
   try {
-    const res = await userRequest.delete(`/addresses/${id}`);
+    await userRequest.delete(`/addresses/${id}`);
     dispatch(addressSuccess());
   } catch (err) {
     console.log(err);
@@ -94,12 +97,29 @@ export const deleteAddress = async (dispatch, id) => {
 };
 
 export const favorite = async (dispatch, id, campaignId) => {
-  dispatch(settingStart());
+  dispatch(favoriteStart());
   try {
-    const res = await userRequest.put(`/users/favorite/${id}`, campaignId);
-    dispatch(settingSuccess());
+    const res = await userRequest.put(`/users/favorite/${id}`, {
+      campaignId: campaignId,
+    });
+    const userPersist = JSON.parse(localStorage.getItem("persist:root"))?.user;
+    const currentUser = userPersist && JSON.parse(userPersist).currentUser;
+    const TOKEN = currentUser?.accessToken;
+    res.data.accessToken = TOKEN;
+    dispatch(favoriteSuccess(res.data));
   } catch (err) {
     console.log(err);
-    dispatch(settingFailure());
+    dispatch(favoriteFailure());
+  }
+};
+
+export const addPending = async (dispatch, pending) => {
+  dispatch(addressStart());
+  try {
+    const res = await userRequest.post(`/pendings/`, pending);
+    dispatch(addressSuccess());
+  } catch (err) {
+    console.log(err);
+    dispatch(addressSuccess());
   }
 };

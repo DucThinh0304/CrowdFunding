@@ -16,6 +16,9 @@ import Donate from "./pages/Donate";
 import Success from "./pages/Success";
 import MyAccount from "./pages/MyAccount";
 import Address from "./components/setting/Address";
+import Profile from "./pages/Profile";
+import CreateCampaign from "./pages/CreateCampaign";
+import PendingCampaign from "./pages/PendingCampaign";
 
 function App() {
   const CampaignPage = () => {
@@ -34,13 +37,37 @@ function App() {
         />
         <Route path="/campaign/:id" element={<Campaign />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/donate/:id" element={<Donate />} />
-        <Route path="/success" element={<Success />} />
-        <Route path="/my-account/:id" element={<MyAccount />} />
-        <Route path="/my-account/address/:id" element={<MyAccount />} />
+        <Route
+          path="/profile"
+          element={!user ? <Navigate to="/login" /> : <Profile />}
+        />
+        <Route
+          path="/donate/:id"
+          element={!user ? <Navigate to="/login" /> : <Donate />}
+        />
+        <Route
+          path="/success"
+          element={!user ? <Navigate to="/login" /> : <Success />}
+        />
+        <Route
+          path="/my-account/:id"
+          element={!user ? <Navigate to="/login" /> : <MyAccount />}
+        />
+        <Route
+          path="/my-account/address/:id"
+          element={!user ? <Navigate to="/login" /> : <MyAccount />}
+        />
         <Route
           path="/my-account/address/edit-address/:id"
-          element={<MyAccount />}
+          element={!user ? <Navigate to="/login" /> : <MyAccount />}
+        />
+        <Route
+          path="/create-campaign"
+          element={!user ? <Navigate to="/login" /> : <CreateCampaign />}
+        />
+        <Route
+          path="/pending-campaign/:id"
+          element={!user ? <Navigate to="/login" /> : <PendingCampaign />}
         />
       </Routes>
     </Router>

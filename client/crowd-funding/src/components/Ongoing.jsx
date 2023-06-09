@@ -2,8 +2,11 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
+import { favorite } from "../redux/apiCalls";
 import { Link } from "react-router-dom";
 import "../CSS/Icon.css";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div`
   background-color: white;
@@ -202,22 +205,22 @@ const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
 );
 
-const handleFavorite = (e, id) => {
-  e.preventDefault();
-};
-
 const Ongoing = () => {
   const today = new Date();
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
   const oneDay = 24 * 60 * 60 * 1000;
   const checkDay = (check) => {
     return check <= 0 ? false : true;
   };
   const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getCampaigns = async () => {
       try {
         const resCampaign = await publicRequest.get("/campaign");
         setCampaigns(resCampaign.data);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -230,91 +233,99 @@ const Ongoing = () => {
   const date = (day) => {
     return new Date(day);
   };
+  const handleFavorite = (e, id) => {
+    e.preventDefault();
+    user ? favorite(dispatch, user._id, id) : console.log("Bạn chưa đăng nhập");
+  };
   return (
     <Container>
       <Title>Dự án đang diễn ra</Title>
       <Desc>
         Các dự án tiêu biểu đang trong quá trình crowdfunding trên Comicola
       </Desc>
-      <Projects>
-        {campaigns.slice(0, 2).map((campaign) =>
-          checkDay(Math.round((campaign.dayfinish - today) / oneDay)) ===
-          true ? (
-            <ProjectContainer key={campaign.Id}>
-              <Project>
-                <Link to={`./campaign/${campaign._id}`}>
-                  <ProjectImage src={campaign.img} />
-                </Link>
-                <ProjectTitleContainer>
-                  <ProjectFlex>
-                    <ProjectTagContainer>
-                      {campaign.tag.map((tag) => (
-                        <ProjectTag key={tag}>{tag} </ProjectTag>
-                      ))}
-                    </ProjectTagContainer>
-                    <FavoriteBorderIcon
-                      className="icon_home"
-                      onClick={(e) => handleFavorite(e, campaign.Id)}
-                    />
-                  </ProjectFlex>
-                  <Link
-                    to={`./campaign/${campaign._id}`}
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <ProjectTitle>{campaign.title}</ProjectTitle>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Projects>
+          {campaigns.slice(0, 2).map((campaign) =>
+            checkDay(Math.round((campaign.dayfinish - today) / oneDay)) ===
+            true ? (
+              <ProjectContainer key={campaign.Id}>
+                <Project>
+                  <Link to={`./campaign/${campaign._id}`}>
+                    <ProjectImage src={campaign.img} />
                   </Link>
-                </ProjectTitleContainer>
-                <ProjectProgessContainer>
-                  <ProjectMoney>
-                    {formatter.format(campaign.donatesum)} ₫ đã được ủng hộ
-                  </ProjectMoney>
-                  <Progress>
-                    <ProgressBar
-                      percentage={
-                        (campaign.donatesum / campaign.donateneed) * 100
-                      }
-                    />
-                  </Progress>
-                  <Hr />
-                  <ProgressNumberContainer>
-                    <Left>
-                      <TopText>
-                        {checkDay(
-                          Math.round(
-                            (date(campaign.dayfinish) - today) / oneDay
-                          )
-                        ) === true
-                          ? Math.round(
-                              Math.abs(
-                                (date(campaign.dayfinish) - today) / oneDay
-                              )
-                            )
-                          : "0"}
-                      </TopText>
-                      <BottomText>Ngày còn lại</BottomText>
-                    </Left>
-                    <Center>
-                      <TopText>{campaign.supporters}</TopText>
-                      <BottomText>Người ủng hộ</BottomText>
-                    </Center>
-                    <Right>
-                      <TopText>
-                        {Math.round(
+                  <ProjectTitleContainer>
+                    <ProjectFlex>
+                      <ProjectTagContainer>
+                        {campaign.tag.map((tag) => (
+                          <ProjectTag key={tag}>{tag} </ProjectTag>
+                        ))}
+                      </ProjectTagContainer>
+                      <FavoriteBorderIcon
+                        className="icon_home"
+                        onClick={(e) => handleFavorite(e, campaign._id)}
+                      />
+                    </ProjectFlex>
+                    <Link
+                      to={`./campaign/${campaign._id}`}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <ProjectTitle>{campaign.title}</ProjectTitle>
+                    </Link>
+                  </ProjectTitleContainer>
+                  <ProjectProgessContainer>
+                    <ProjectMoney>
+                      {formatter.format(campaign.donatesum)} ₫ đã được ủng hộ
+                    </ProjectMoney>
+                    <Progress>
+                      <ProgressBar
+                        percentage={
                           (campaign.donatesum / campaign.donateneed) * 100
-                        )}
-                        %
-                      </TopText>
-                      <BottomText>Thành công</BottomText>
-                    </Right>
-                  </ProgressNumberContainer>
-                </ProjectProgessContainer>
-              </Project>
-            </ProjectContainer>
-          ) : (
-            <div key={campaign.Id}></div>
-          )
-        )}
-      </Projects>
+                        }
+                      />
+                    </Progress>
+                    <Hr />
+                    <ProgressNumberContainer>
+                      <Left>
+                        <TopText>
+                          {checkDay(
+                            Math.round(
+                              (date(campaign.dayfinish) - today) / oneDay
+                            )
+                          ) === true
+                            ? Math.round(
+                                Math.abs(
+                                  (date(campaign.dayfinish) - today) / oneDay
+                                )
+                              )
+                            : "0"}
+                        </TopText>
+                        <BottomText>Ngày còn lại</BottomText>
+                      </Left>
+                      <Center>
+                        <TopText>{campaign.supporters}</TopText>
+                        <BottomText>Người ủng hộ</BottomText>
+                      </Center>
+                      <Right>
+                        <TopText>
+                          {Math.round(
+                            (campaign.donatesum / campaign.donateneed) * 100
+                          )}
+                          %
+                        </TopText>
+                        <BottomText>Thành công</BottomText>
+                      </Right>
+                    </ProgressNumberContainer>
+                  </ProjectProgessContainer>
+                </Project>
+              </ProjectContainer>
+            ) : (
+              <div key={campaign.Id}></div>
+            )
+          )}
+        </Projects>
+      )}
       <Link to="/all-campaigns">
         <Button>Xem toàn bộ các dự án</Button>
       </Link>

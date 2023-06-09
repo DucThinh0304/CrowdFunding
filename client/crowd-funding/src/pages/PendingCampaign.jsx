@@ -175,7 +175,7 @@ const checkDay = (check) => {
   return check < 0 ? false : true;
 };
 
-const Campaign = () => {
+const PendingCampaign = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const today = new Date();
@@ -213,14 +213,16 @@ const Campaign = () => {
   useEffect(() => {
     const getCampaign = async () => {
       publicRequest
-        .get("/campaign/find/" + id)
+        .get("/pendings/findone/" + id)
         .then((res) => {
           setCampaign(res.data);
+
           setLoading(false);
         })
         .catch((err) => console.log(err));
     };
     getCampaign();
+    campaign.username === user._id && navigate("/login");
   }, [id]);
 
   return loading === true ? (
@@ -304,7 +306,9 @@ const Campaign = () => {
                 token={onToken}
                 currency="VND"
               >
-                <Button onClick={() => setMoney(donate)}>{donate} ₫</Button>
+                <Button onClick={() => setMoney(donate)} disabled>
+                  {donate} ₫
+                </Button>
               </StripeCheckout>
             </DonateBorder>
           ))}
@@ -315,4 +319,4 @@ const Campaign = () => {
   );
 };
 
-export default Campaign;
+export default PendingCampaign;

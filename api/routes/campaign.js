@@ -62,6 +62,19 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
+//GET USER CAMPAIGN
+
+router.get("/userfind/:id", verifyTokenAndAuthorization, async (req, res) => {
+  try {
+    const campaign = await Campaign.find({ username: `${req.params.id}` });
+    res.status(200).json(campaign);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 //GET ALL CAMPAIGN
 
 router.get("/", async (req, res) => {

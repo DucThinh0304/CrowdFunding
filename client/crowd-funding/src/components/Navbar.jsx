@@ -5,9 +5,10 @@ import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { logout } from "../redux/apiCalls";
-import { publicRequest } from "../requestMethod";
 import NoAvt from "../asset/NoAvt.png";
 import { Menu, MenuItem } from "@mui/material";
+import MainLogo from "../asset/Happy.png";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   height: 94px;
@@ -27,6 +28,10 @@ const Logo = styled.div`
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
+  margin-left: 150px;
+  height: 40px;
+  width: 40px;
+  ${mobile({ display: "none" })}
 `;
 
 const ImageLogo = styled.img`
@@ -77,6 +82,7 @@ const Icon = styled.div`
   display: flex;
   cursor: pointer;
   margin-right: 20px;
+  ${mobile({ display: "none" })}
 `;
 
 const Links = styled.div`
@@ -166,7 +172,7 @@ const Navbar = () => {
     navigate("/my-account/support-campaign");
   };
   const handleProfile = () => {
-    setAnchorEl(null);
+    navigate("/profile");
   };
 
   return (
@@ -175,7 +181,7 @@ const Navbar = () => {
         <Left>
           <Link to="/">
             <Logo>
-              <ImageLogo src="https://crowdfunding.comicola.com/wp-content/uploads/2021/06/comicola_crowdfunding_logo-1.png" />
+              <ImageLogo src={MainLogo} />
             </Logo>
           </Link>
         </Left>

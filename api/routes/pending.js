@@ -7,7 +7,7 @@ const {
 const Pending = require("../models/Pending");
 
 //CREATE
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
+router.post("/", verifyTokenAndAuthorization, async (req, res) => {
   const newPending = new Pending(req.body);
   try {
     const savedPending = await newPending.save();
@@ -20,7 +20,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const updatedPending = await Pending.findByIdAndUpdate();
     req.params.id,
@@ -38,7 +38,7 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 //DELETE
 
-router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     await Pending.findByIdAndDelete(req.params.id);
     res.status(200).json("Pending has been deleted...");
@@ -53,6 +53,19 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 router.get("/find/:id", async (req, res) => {
   try {
+    const pending = await Pending.find({ username: `${req.params.id}` });
+    res.status(200).json(pending);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//GET PENDING
+
+router.get("/findone/:id", async (req, res) => {
+  try {
     const pending = await Pending.findById(req.params.id);
     res.status(200).json(pending);
     return;
@@ -66,11 +79,10 @@ router.get("/find/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
-  const qTag = req.query.tag;
   try {
     let pendings;
     if (qNew) {
-      pendings = await Pending.find().sort({ createdAt: -1 }).limit(8);
+      pendings = await Pending.find();
     } else if (qTag) {
       pendings = await Pending.find({
         tag: {

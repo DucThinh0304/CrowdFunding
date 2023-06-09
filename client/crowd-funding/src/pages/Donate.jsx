@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethod";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div``;
 const Wrapper = styled.div``;
@@ -42,12 +43,14 @@ const Donate = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const id = location.pathname.split("/")[2];
+  const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await userRequest.post(`/donate/payment/${id}`, {
+        const res = await userRequest.post(`/donate/payment/${user._id}`, {
           tokenId: stripeToken.id,
+          campaignId: id,
           amount: 20000,
         });
         console.log(res.data);
