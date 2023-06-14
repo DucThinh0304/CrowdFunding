@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import "./topbar.css";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LanguageIcon from "@mui/icons-material/Language";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Menu, MenuItem } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../redux/apiCalls";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Topbar() {
+  const [anchorEl, setAnchorEl] = useState();
+  const user = useSelector((state) => state.user.currentUser);
+  const handleMenu = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    navigate("/");
+    logoutUser(dispatch);
+  };
+
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -23,11 +45,32 @@ export default function Topbar() {
           <div className="topbarIconContainer">
             <SettingsIcon />
           </div>
+
           <img
-            src="https://images.pexels.com/photos/1526814/pexels-photo-1526814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+            src={user.avt}
             alt=""
             className="topAvatar"
+            onClick={(e) => handleMenu(e)}
           />
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <MenuItem onClick={(e) => handleSignOut(e)}>Đăng xuất</MenuItem>
+          </Menu>
         </div>
       </div>
     </div>

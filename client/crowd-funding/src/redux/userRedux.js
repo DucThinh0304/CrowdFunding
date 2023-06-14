@@ -20,17 +20,8 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
-    logoutStart: (state) => {
-      state.isFetching = true;
-      state.error = false;
-    },
-    logoutSuccess: (state) => {
-      state.isFetching = false;
+    logout: (state) => {
       state.currentUser = null;
-    },
-    logoutFailure: (state) => {
-      state.isFetching = false;
-      state.error = true;
     },
     registerStart: (state) => {
       state.isFetching = true;
@@ -88,9 +79,7 @@ export const {
   loginStart,
   loginSuccess,
   loginFailure,
-  logoutStart,
-  logoutSuccess,
-  logoutFailure,
+  logout,
   registerStart,
   registerSuccess,
   registerFailure,

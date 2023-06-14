@@ -69,7 +69,7 @@ const Deployment = () => {
     },
   ];
 
-  return loading === true && campaigns !== null ? (
+  return loading === true ? (
     <CircularProgressContainer>
       <CircularProgress />
     </CircularProgressContainer>

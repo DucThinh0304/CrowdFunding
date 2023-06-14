@@ -10,13 +10,17 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isAuthority: {
+      type: Boolean,
+      default: false,
+    },
     name: { type: String, default: "" },
     phonenumber: { type: String, default: "" },
     favorite: { type: Array, default: [] },
     support: { type: Array, default: [] },
     phonenumber: { type: String, default: "" },
     gender: { type: String, default: "" },
-    birthday: { type: Date, default: "1980-01-01T17:33:18.902+00:00" },
+    birthday: { type: Date, default: "1980-01-01T00:00:00.902+00:00" },
   },
   {
     timestamps: true,

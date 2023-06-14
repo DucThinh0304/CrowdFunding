@@ -5,6 +5,7 @@ import { publicRequest } from "../requestMethod";
 import { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import "../CSS/Icon.css";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -199,6 +200,7 @@ const formatter = new Intl.NumberFormat(
 );
 
 const Projects = () => {
+  const [loading, setLoading] = useState(true);
   const [campaigns, setCampaigns] = useState([]);
   const today = new Date();
   const oneDay = 24 * 60 * 60 * 1000;
@@ -210,6 +212,7 @@ const Projects = () => {
       try {
         const resCampaign = await publicRequest.get("/campaign");
         setCampaigns(resCampaign.data);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -223,78 +226,85 @@ const Projects = () => {
     <Container>
       <Title>Các dự án nổi bật</Title>
       <Desc>Những dự án nổi bật tại Comicola</Desc>
-      <ProjectsContainer>
-        {campaigns.slice(0, 3).map((campaign) => (
-          <ProjectContainer key={campaign.Id}>
-            <Project>
-              <Link
-                to={`/campaign/${campaign._id}`}
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <ProjectImage src={campaign.img} />
-              </Link>
-              <ProjectTitleContainer>
-                <ProjectFlex>
-                  <ProjectTagContainer>
-                    {campaign.tag.map((tag) => (
-                      <ProjectTag key={tag}>{tag} </ProjectTag>
-                    ))}
-                  </ProjectTagContainer>
-                  <FavoriteBorderIcon className="icon_home" />
-                </ProjectFlex>
+      {loading ? (
+        <CircularProgress></CircularProgress>
+      ) : (
+        <ProjectsContainer>
+          {campaigns.slice(0, 3).map((campaign) => (
+            <ProjectContainer key={campaign.Id}>
+              <Project>
                 <Link
                   to={`/campaign/${campaign._id}`}
                   style={{ textDecoration: "none", color: "black" }}
                 >
-                  <ProjectTitle>{campaign.title}</ProjectTitle>
+                  <ProjectImage src={campaign.img} />
                 </Link>
-              </ProjectTitleContainer>
-              <ProjectProgessContainer>
-                <ProjectMoney>
-                  {formatter.format(campaign.donatesum)} ₫ đã được ủng hộ
-                </ProjectMoney>
-                <Progress>
-                  <ProgressBar
-                    percentage={
-                      (campaign.donatesum / campaign.donateneed) * 100
-                    }
-                  />
-                </Progress>
-                <Hr />
-                <ProgressNumberContainer>
-                  <Left>
-                    <TopText>
-                      {checkDay(
-                        Math.round((date(campaign.dayfinish) - today) / oneDay)
-                      ) === true
-                        ? Math.round(
-                            Math.abs(
-                              (date(campaign.dayfinish) - today) / oneDay
-                            )
-                          )
-                        : "0"}
-                    </TopText>
-                    <BottomText>Ngày còn lại</BottomText>
-                  </Left>
-                  <Center>
-                    <TopText>{campaign.supporters}</TopText>
-                    <BottomText>Người ủng hộ</BottomText>
-                  </Center>
-                  <Right>
-                    <TopText>
-                      {Math.round(
+                <ProjectTitleContainer>
+                  <ProjectFlex>
+                    <ProjectTagContainer>
+                      {campaign.tag.map((tag) => (
+                        <ProjectTag key={tag}>{tag} </ProjectTag>
+                      ))}
+                    </ProjectTagContainer>
+                    <FavoriteBorderIcon className="icon_home" />
+                  </ProjectFlex>
+                  <Link
+                    to={`/campaign/${campaign._id}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <ProjectTitle>{campaign.title}</ProjectTitle>
+                  </Link>
+                </ProjectTitleContainer>
+                <ProjectProgessContainer>
+                  <ProjectMoney>
+                    {formatter.format(campaign.donatesum)} ₫ đã được ủng hộ
+                  </ProjectMoney>
+                  <Progress>
+                    <ProgressBar
+                      percentage={
                         (campaign.donatesum / campaign.donateneed) * 100
-                      )}
-                      %
-                    </TopText>
-                    <BottomText>Thành công</BottomText>
-                  </Right>
-                </ProgressNumberContainer>
-              </ProjectProgessContainer>
-            </Project>
-          </ProjectContainer>
-        ))}
-      </ProjectsContainer>
+                      }
+                    />
+                  </Progress>
+                  <Hr />
+                  <ProgressNumberContainer>
+                    <Left>
+                      <TopText>
+                        {checkDay(
+                          Math.round(
+                            (date(campaign.dayfinish) - today) / oneDay
+                          )
+                        ) === true
+                          ? Math.round(
+                              Math.abs(
+                                (date(campaign.dayfinish) - today) / oneDay
+                              )
+                            )
+                          : "0"}
+                      </TopText>
+                      <BottomText>Ngày còn lại</BottomText>
+                    </Left>
+                    <Center>
+                      <TopText>{campaign.supporters}</TopText>
+                      <BottomText>Người ủng hộ</BottomText>
+                    </Center>
+                    <Right>
+                      <TopText>
+                        {Math.round(
+                          (campaign.donatesum / campaign.donateneed) * 100
+                        )}
+                        %
+                      </TopText>
+                      <BottomText>Thành công</BottomText>
+                    </Right>
+                  </ProgressNumberContainer>
+                </ProjectProgessContainer>
+              </Project>
+            </ProjectContainer>
+          ))}
+        </ProjectsContainer>
+      )}
+
       <Button>Xem toàn bộ các dự án</Button>
     </Container>
   );

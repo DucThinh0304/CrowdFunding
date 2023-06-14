@@ -2,9 +2,7 @@ import {
   loginFailure,
   loginStart,
   loginSuccess,
-  logoutStart,
-  logoutSuccess,
-  logoutFailure,
+  logout,
   registerStart,
   registerSuccess,
   registerFailure,
@@ -30,13 +28,8 @@ export const login = async (dispatch, user) => {
   }
 };
 
-export const logout = async (dispatch) => {
-  dispatch(logoutStart());
-  try {
-    dispatch(logoutSuccess());
-  } catch (err) {
-    dispatch(logoutFailure());
-  }
+export const logoutUser = async (dispatch) => {
+  dispatch(logout());
 };
 
 export const register = async (dispatch, user) => {

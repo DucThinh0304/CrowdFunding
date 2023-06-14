@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { logout } from "../redux/apiCalls";
+import { logoutUser } from "../redux/apiCalls";
 import NoAvt from "../asset/NoAvt.png";
 import { Menu, MenuItem } from "@mui/material";
 import MainLogo from "../asset/Happy.png";
@@ -157,7 +157,7 @@ const Navbar = () => {
   }, [id]);
   const handleSignOut = () => {
     navigate("/");
-    logout(dispatch);
+    logoutUser(dispatch);
   };
 
   const open = Boolean(anchorEl);

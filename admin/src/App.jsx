@@ -15,15 +15,23 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
+import { useSelector } from "react-redux";
 
 function App() {
+  const admin = useSelector((state) => state.user.currentUser);
   return (
     <Router>
-      <Topbar />
+      {admin && <Topbar />}
       <div className="container">
-        <Sidebar />
+        {admin && <Sidebar />}
         <Routes>
-          <Route path="/" exact element={<Home />} />
+          <Route path="/" exact element={admin ? <Home /> : <Login />} />
+          <Route
+            path="/login"
+            exact
+            element={admin ? <Navigate to="/" /> : <Login />}
+          />
           <Route path="/users" element={<UserList />} />
           <Route path="/user/:userId" element={<User />} />
           <Route path="/newUser" element={<NewUser />} />
