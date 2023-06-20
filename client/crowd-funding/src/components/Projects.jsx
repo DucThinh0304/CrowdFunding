@@ -246,6 +246,7 @@ const Projects = () => {
                         <ProjectTag key={tag}>{tag} </ProjectTag>
                       ))}
                     </ProjectTagContainer>
+
                     <FavoriteBorderIcon className="icon_home" />
                   </ProjectFlex>
                   <Link
@@ -305,7 +306,9 @@ const Projects = () => {
         </ProjectsContainer>
       )}
 
-      <Button>Xem toàn bộ các dự án</Button>
+      <Link to="/all-campaigns">
+        <Button>Xem toàn bộ các dự án</Button>
+      </Link>
     </Container>
   );
 };

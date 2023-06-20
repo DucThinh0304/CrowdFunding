@@ -18,6 +18,13 @@ import {
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
 
+const getAccessToken = () => {
+  const userPersist = JSON.parse(localStorage.getItem("persist:root"))?.user;
+  const currentUser = userPersist && JSON.parse(userPersist).currentUser;
+  const TOKEN = currentUser?.accessToken;
+  return TOKEN;
+};
+
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
@@ -46,10 +53,7 @@ export const setting = async (dispatch, user) => {
   dispatch(settingStart());
   try {
     const res = await userRequest.put(`/users/${user._id}`, user);
-    const userPersist = JSON.parse(localStorage.getItem("persist:root"))?.user;
-    const currentUser = userPersist && JSON.parse(userPersist).currentUser;
-    const TOKEN = currentUser?.accessToken;
-    res.data.accessToken = TOKEN;
+    res.data.accessToken = getAccessToken();
     dispatch(settingSuccess(res.data));
   } catch (err) {
     dispatch(settingFailure());
@@ -95,10 +99,21 @@ export const favorite = async (dispatch, id, campaignId) => {
     const res = await userRequest.put(`/users/favorite/${id}`, {
       campaignId: campaignId,
     });
-    const userPersist = JSON.parse(localStorage.getItem("persist:root"))?.user;
-    const currentUser = userPersist && JSON.parse(userPersist).currentUser;
-    const TOKEN = currentUser?.accessToken;
-    res.data.accessToken = TOKEN;
+    res.data.accessToken = getAccessToken();
+    dispatch(favoriteSuccess(res.data));
+  } catch (err) {
+    console.log(err);
+    dispatch(favoriteFailure());
+  }
+};
+
+export const removefavorite = async (dispatch, id, campaignId) => {
+  dispatch(favoriteStart());
+  try {
+    const res = await userRequest.put(`/users/removefavorite/${id}`, {
+      campaignId: campaignId,
+    });
+    res.data.accessToken = getAccessToken();
     dispatch(favoriteSuccess(res.data));
   } catch (err) {
     console.log(err);
@@ -109,7 +124,7 @@ export const favorite = async (dispatch, id, campaignId) => {
 export const addPending = async (dispatch, pending) => {
   dispatch(addressStart());
   try {
-    const res = await userRequest.post(`/pendings/`, pending);
+    await userRequest.post(`/pendings/`, pending);
     dispatch(addressSuccess());
   } catch (err) {
     console.log(err);

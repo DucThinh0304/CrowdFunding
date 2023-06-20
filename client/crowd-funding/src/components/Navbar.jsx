@@ -149,8 +149,10 @@ const Navbar = () => {
         setIndex(2);
       } else if (id === "contact") {
         setIndex(3);
-      } else {
+      } else if (id === "news") {
         setIndex(4);
+      } else {
+        setIndex(5);
       }
     };
     setColor();
@@ -202,6 +204,9 @@ const Navbar = () => {
             style={{ textDecoration: "none", color: "black" }}
           >
             <LinkText id={index === 3 ? "true" : "false"}>Liên hệ</LinkText>
+          </Link>
+          <Link to="/news" style={{ textDecoration: "none", color: "black" }}>
+            <LinkText id={index === 4 ? "true" : "false"}>Tin tức</LinkText>
           </Link>
         </Center>
         <Right>

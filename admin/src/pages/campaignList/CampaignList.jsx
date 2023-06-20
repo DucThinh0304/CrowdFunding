@@ -1,11 +1,11 @@
-import "./productList.css";
+import "./campaignList.css";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { productRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-export default function ProductList() {
+export default function CampaignList() {
   const [data, setData] = useState(productRows);
 
   const handleDelete = (id) => {

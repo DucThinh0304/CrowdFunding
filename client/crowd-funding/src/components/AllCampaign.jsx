@@ -1,11 +1,15 @@
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { publicRequest } from "../requestMethod";
 import { useLocation } from "react-router-dom";
 import { Avatar, Username } from "./Avatar";
 import { Link } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { favorite, removefavorite } from "../redux/apiCalls";
+import "../CSS/Icon.css";
 
 const Container = styled.div`
   display: flex;
@@ -141,22 +145,6 @@ const ProgressBar = styled.div`
   }
 `;
 
-// const useStyles = makeStyles({
-//   icon: {
-//     position: "absolute",
-//     padding: "5px 5px",
-//     color: "#0275d8",
-//     cursor: "pointer",
-//     transition: "all 0.3s ease",
-//     zIndex: "2",
-//     top: "0",
-//     right: "0",
-//     "&:hover": {
-//       color: "#3c52b2",
-//     },
-//   },
-// });
-
 const Hr = styled.hr`
   background-color: #eee;
   border: none;
@@ -252,6 +240,8 @@ const ButtonNumber = styled.button`
 const AllCampaign = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.currentUser);
   const location = useLocation();
   const page = location.pathname.split("/")[2];
   useEffect(() => {
@@ -294,6 +284,25 @@ const AllCampaign = () => {
     return newValue;
   };
 
+  const handleFavorite = (e, id) => {
+    e.preventDefault();
+    console.log("handleFavorite");
+    user ? favorite(dispatch, user._id, id) : console.log("Bạn chưa đăng nhập");
+  };
+
+  const checkFavorite = (id) => {
+    if (!user) return false;
+    return user.favorite.find((x) => x.id === id);
+  };
+
+  const handleRemoveFavorite = (e, id) => {
+    e.preventDefault();
+    console.log("handleRemoveFavorite");
+    user
+      ? removefavorite(dispatch, user._id, id)
+      : console.log("Bạn chưa đăng nhập");
+  };
+
   return loading ? (
     <CircularProgressContainer>
       <CircularProgress />
@@ -308,7 +317,21 @@ const AllCampaign = () => {
                 <Link to={`../campaign/${campaign._id}`}>
                   <CampaignImage src={campaign.img} />
                 </Link>
-                <FavoriteBorderIcon />
+                {checkFavorite(campaign._id) ? (
+                  <IconButton
+                    onClick={(e) => handleRemoveFavorite(e, campaign._id)}
+                    className="icon_allcampaign"
+                  >
+                    <FavoriteIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    onClick={(e) => handleFavorite(e, campaign._id)}
+                    className="icon_allcampaign"
+                  >
+                    <FavoriteBorderIcon />
+                  </IconButton>
+                )}
               </CampaignImageContainer>
               <CampaignInfoContainer>
                 {campaign.tag.map((tag) => (

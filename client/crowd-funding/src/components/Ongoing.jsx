@@ -1,12 +1,13 @@
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod";
-import { favorite } from "../redux/apiCalls";
+import { favorite, removefavorite } from "../redux/apiCalls";
 import { Link } from "react-router-dom";
 import "../CSS/Icon.css";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
 
 const Container = styled.div`
   background-color: white;
@@ -230,12 +231,28 @@ const Ongoing = () => {
       setCampaigns([]);
     };
   }, []);
+
   const date = (day) => {
     return new Date(day);
   };
+
+  const checkFavorite = (id) => {
+    if (!user) return false;
+    return user.favorite.find((x) => x.id === id);
+  };
+
   const handleFavorite = (e, id) => {
     e.preventDefault();
+    console.log("handleFavorite");
     user ? favorite(dispatch, user._id, id) : console.log("Bạn chưa đăng nhập");
+  };
+
+  const handleRemoveFavorite = (e, id) => {
+    e.preventDefault();
+    console.log("handleRemoveFavorite");
+    user
+      ? removefavorite(dispatch, user._id, id)
+      : console.log("Bạn chưa đăng nhập");
   };
   return (
     <Container>
@@ -262,10 +279,19 @@ const Ongoing = () => {
                           <ProjectTag key={tag}>{tag} </ProjectTag>
                         ))}
                       </ProjectTagContainer>
-                      <FavoriteBorderIcon
-                        className="icon_home"
-                        onClick={(e) => handleFavorite(e, campaign._id)}
-                      />
+                      {checkFavorite(campaign._id) ? (
+                        <IconButton
+                          onClick={(e) => handleRemoveFavorite(e, campaign._id)}
+                        >
+                          <FavoriteIcon className="icon_home" />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          onClick={(e) => handleFavorite(e, campaign._id)}
+                        >
+                          <FavoriteBorderIcon className="icon_home" />
+                        </IconButton>
+                      )}
                     </ProjectFlex>
                     <Link
                       to={`./campaign/${campaign._id}`}

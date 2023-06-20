@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import "./product.css";
+import "./campaign.css";
 import Chart from "../../components/chart/Chart";
 import { productData } from "../../dummyData";
 import PublishIcon from "@mui/icons-material/Publish";
 
-export default function Product() {
+export default function Campaign() {
   return (
     <div className="product">
       <div className="productTitleContainer">

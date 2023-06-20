@@ -157,7 +157,34 @@ router.put("/favorite/:id", async (req, res) => {
             id: req.body.campaignId,
           },
         },
-      }
+      },
+      { new: true }
+    );
+    const { password, ...others } = updatedUser._doc;
+    res.status(200).json(others);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//REMOVE FAVORITE
+
+router.put("/removefavorite/:id", async (req, res) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $pullAll: {
+          favorite: [
+            {
+              id: req.body.campaignId,
+            },
+          ],
+        },
+      },
+      { new: true }
     );
     const { password, ...others } = updatedUser._doc;
     res.status(200).json(others);

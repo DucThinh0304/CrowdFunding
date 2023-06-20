@@ -8,36 +8,62 @@ import {
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
-import ProductList from "./pages/productList/ProductList";
-import Product from "./pages/product/Product";
-import NewProduct from "./pages/newProduct/NewProduct";
+import CampaignList from "./pages/campaignList/CampaignList";
+import Campaign from "./pages/campaign/Campaign";
+import NewCampaign from "./pages/newCampaign/NewCampaign";
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import { useSelector } from "react-redux";
+import Inaccessible from "./pages/login/Inaccessible";
 
 function App() {
   const admin = useSelector((state) => state.user.currentUser);
+  const isAdmin = () => {
+    return !admin ? false : admin.isAdmin ? true : false;
+  };
+  console.log(!admin);
   return (
     <Router>
-      {admin && <Topbar />}
+      {isAdmin() && <Topbar />}
       <div className="container">
-        {admin && <Sidebar />}
+        {isAdmin() && <Sidebar />}
         <Routes>
-          <Route path="/" exact element={admin ? <Home /> : <Login />} />
+          <Route
+            path="/"
+            exact
+            element={
+              !admin ? (
+                <Navigate to="/login" />
+              ) : isAdmin() ? (
+                <Home />
+              ) : (
+                <Navigate to="/inaccessible" />
+              )
+            }
+          />
           <Route
             path="/login"
             exact
-            element={admin ? <Navigate to="/" /> : <Login />}
+            element={
+              !admin ? (
+                <Login />
+              ) : isAdmin() ? (
+                <Navigate to="/" />
+              ) : (
+                <Navigate to="/inaccessible" />
+              )
+            }
           />
+          <Route path="/inaccessible" exact element={<Inaccessible />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/user/:userId" element={<User />} />
           <Route path="/newUser" element={<NewUser />} />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:productId" element={<Product />} />
-          <Route path="/newproduct" element={<NewProduct />} />
+          <Route path="/campaigns" element={<CampaignList />} />
+          <Route path="/campaigns/:campaignId" element={<Campaign />} />
+          <Route path="/newcampaign" element={<NewCampaign />} />
         </Routes>
       </div>
     </Router>

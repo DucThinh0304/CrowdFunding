@@ -1,13 +1,4 @@
-.icon_home:hover {
-  color: #3c52b2;
-}
 .icon_home {
-  color: #0275d8;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.icon_allcampaign {
   position: "absolute";
   padding: "5px 5px";
   color: "#0275d8";
@@ -18,6 +9,6 @@
   right: "0";
 }
 
-.icon_allcampaign:hover {
+.icon_home:hover {
   color: #3c52b2;
 }

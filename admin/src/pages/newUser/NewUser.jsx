@@ -3,14 +3,14 @@ import "./newUser.css";
 export default function NewUser() {
   return (
     <div className="newUser">
-      <h1 className="newUserTitle">New User</h1>
+      <h1 className="newUserTitle">Thêm người dùng mới</h1>
       <form className="newUserForm">
         <div className="newUserItem">
-          <label>Username</label>
+          <label>Tên tài khoản</label>
           <input type="text" placeholder="john" />
         </div>
         <div className="newUserItem">
-          <label>Full Name</label>
+          <label>Tên người dùng</label>
           <input type="text" placeholder="John Smith" />
         </div>
         <div className="newUserItem">
@@ -18,26 +18,26 @@ export default function NewUser() {
           <input type="email" placeholder="john@gmail.com" />
         </div>
         <div className="newUserItem">
-          <label>Password</label>
+          <label>Mật khẩu</label>
           <input type="password" placeholder="password" />
         </div>
         <div className="newUserItem">
-          <label>Phone</label>
+          <label>Số điện thoại</label>
           <input type="text" placeholder="+1 123 456 78" />
         </div>
         <div className="newUserItem">
-          <label>Address</label>
+          <label>Địa chỉ</label>
           <input type="text" placeholder="New York | USA" />
         </div>
         <div className="newUserItem">
           <label>Gender</label>
           <div className="newUserGender">
             <input type="radio" name="gender" id="male" value="male" />
-            <label for="male">Male</label>
+            <label for="male">Nam</label>
             <input type="radio" name="gender" id="female" value="female" />
-            <label for="female">Female</label>
+            <label for="female">Nữ</label>
             <input type="radio" name="gender" id="other" value="other" />
-            <label for="other">Other</label>
+            <label for="other">Khác</label>
           </div>
         </div>
         <div className="newUserItem">
