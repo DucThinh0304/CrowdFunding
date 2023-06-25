@@ -64,14 +64,7 @@ const TextArea = styled.textarea`
   font-size: 14px;
   height: 200px;
   border: 0.1px solid lightgray;
-`;
-
-const Select = styled.select`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0px;
-  padding: 5px;
-  font-size: 14px;
+  resize: vertical;
 `;
 
 const Label = styled.div``;

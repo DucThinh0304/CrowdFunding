@@ -15,6 +15,9 @@ import {
   favoriteStart,
   favoriteSuccess,
   favoriteFailure,
+  addCommentStart,
+  addCommentSuccess,
+  addCommentFailure,
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
 import {
@@ -145,5 +148,16 @@ export const getStripe = async (dispatch, id) => {
   } catch (err) {
     console.log(err);
     dispatch(getStripeFailure());
+  }
+};
+
+export const addComment = async (dispatch, id, comment) => {
+  dispatch(addCommentStart());
+  try {
+    const res = await userRequest.post(`/campaign/comment/${id}`, comment);
+    dispatch(addCommentSuccess(res.data));
+  } catch (err) {
+    console.log(err);
+    dispatch(addCommentFailure());
   }
 };

@@ -101,4 +101,30 @@ router.get("/", async (req, res) => {
   }
 });
 
+//COMMENT
+
+router.post("/comment/:id", verifyTokenAndAuthorization, async (req, res) => {
+  try {
+    const campaign = await Campaign.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: {
+          comment: {
+            userId: req.body.userId,
+            content: req.body.content,
+            time: req.body.time,
+            star: req.body.star,
+          },
+        },
+        $inc: { comments: 1 },
+      }
+    );
+    res.status(200).json(campaign);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 module.exports = router;

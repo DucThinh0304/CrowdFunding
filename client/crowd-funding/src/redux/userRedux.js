@@ -72,6 +72,17 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    addCommentStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    addCommentSuccess: (state) => {
+      state.isFetching = false;
+    },
+    addCommentFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
@@ -92,5 +103,8 @@ export const {
   favoriteStart,
   favoriteSuccess,
   favoriteFailure,
+  addCommentStart,
+  addCommentSuccess,
+  addCommentFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

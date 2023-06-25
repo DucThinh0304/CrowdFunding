@@ -139,6 +139,7 @@ const TabPanelContext = styled.div`
 const StyledBox = styled(Box)`
   display: flex;
   margin-left: 25px;
+  padding: 20px;
 `;
 
 const formatter = new Intl.NumberFormat(
@@ -202,15 +203,15 @@ const Campaign = () => {
             <CampaignNumberContainer>
               <CampaignNumber>
                 <InsertEmoticonIcon />
-                {campaign.supporters} Người ủng hộ
+                &nbsp;{campaign.supporters} người ủng hộ
               </CampaignNumber>
               <CampaignNumber>
                 <FavoriteBorderIcon />
-                {campaign.likes}
+                &nbsp;{campaign.likes}
               </CampaignNumber>
               <CampaignNumber>
                 <StarBorderIcon />
-                {campaign.comments}
+                &nbsp;{campaign.comments} đánh giá
               </CampaignNumber>
             </CampaignNumberContainer>
             <CampaignProgessContainer>
@@ -257,6 +258,7 @@ const Campaign = () => {
               <Tab label="Đánh giá" value="4" />
             </TabList>
           </StyledBox>
+          <hr />
           <TabPanel value="1">
             <TabPanelContext>
               <CampaignInfomation />
