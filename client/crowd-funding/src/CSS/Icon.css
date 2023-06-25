@@ -8,14 +8,14 @@
 }
 
 .icon_allcampaign {
-  position: "absolute";
-  padding: "5px 5px";
-  color: "#0275d8";
-  cursor: "pointer";
-  transition: "all 0.3s ease";
-  z-index: "2";
-  top: "0";
-  right: "0";
+  position: absolute;
+  padding: 5px 5px;
+  color: #0275d8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  top: 0;
+  right: 0;
 }
 
 .icon_allcampaign:hover {

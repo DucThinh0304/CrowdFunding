@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const StripeSchema = new mongoose.Schema(
+const DonateSchema = new mongoose.Schema(
   {
     username: { type: String, require: true },
     campaign: { type: String, require: true },
@@ -12,4 +12,4 @@ const StripeSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Stripe", StripeSchema);
+module.exports = mongoose.model("Stripe", DonateSchema);

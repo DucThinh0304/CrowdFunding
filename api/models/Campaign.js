@@ -19,6 +19,7 @@ const CampaignSchema = new mongoose.Schema(
     username: { type: String, require: true },
     description: { type: String, default: "" },
     donateamounts: { type: Array },
+    update: { type: Array },
   },
   {
     timestamps: true,

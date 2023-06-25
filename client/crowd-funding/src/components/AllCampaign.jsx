@@ -237,6 +237,17 @@ const ButtonNumber = styled.button`
   transition: all 0.5s ease;
 `;
 
+const IconButtonStyled = styled(IconButton)`
+  position: absolute;
+  padding: 5px 5px;
+  color: #0275d8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  top: 0;
+  right: 0;
+`;
+
 const AllCampaign = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -318,19 +329,17 @@ const AllCampaign = () => {
                   <CampaignImage src={campaign.img} />
                 </Link>
                 {checkFavorite(campaign._id) ? (
-                  <IconButton
+                  <IconButtonStyled
                     onClick={(e) => handleRemoveFavorite(e, campaign._id)}
-                    className="icon_allcampaign"
                   >
                     <FavoriteIcon />
-                  </IconButton>
+                  </IconButtonStyled>
                 ) : (
-                  <IconButton
+                  <IconButtonStyled
                     onClick={(e) => handleFavorite(e, campaign._id)}
-                    className="icon_allcampaign"
                   >
                     <FavoriteBorderIcon />
-                  </IconButton>
+                  </IconButtonStyled>
                 )}
               </CampaignImageContainer>
               <CampaignInfoContainer>

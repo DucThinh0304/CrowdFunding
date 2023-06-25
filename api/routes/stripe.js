@@ -13,24 +13,11 @@ router.post("/payment/:id", async (req, res) => {
       currency: "vnd",
     });
 
-    // await User.findOneAndUpdate(
-    //   { _id: req.params.id },
-    //   {
-    //     $push: {
-    //       support: {
-    //         id: req.body.campaignId,
-    //         amount: req.body.amount,
-    //         stripe: charges,
-    //       },
-    //     },
-    //   }
-    // );
-
     const newContribute = await new Contribute({
       username: req.params.id,
       campaign: req.body.campaignId,
       amount: req.body.amount,
-      stripe: charges,
+      stripe: req.body.tokenId,
     });
     const savedContribute = await newContribute.save();
 
@@ -47,14 +34,6 @@ router.post("/payment/:id", async (req, res) => {
     res.status(500).json(err);
     return;
   }
-
-  // (stripeErr, stripeRes) => {
-  //   if (stripeErr) {
-  //     res.status(500).json(stripeErr);
-  //   } else {
-  //     res.status(200).json(stripeRes);
-  //   }
-  // }
 });
 
 module.exports = router;

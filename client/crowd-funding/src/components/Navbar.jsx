@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { logoutUser } from "../redux/apiCalls";
+import { getStripe, logoutUser } from "../redux/apiCalls";
 import NoAvt from "../asset/NoAvt.png";
-import { Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import MainLogo from "../asset/Happy.png";
 import { mobile } from "../responsive";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const Container = styled.div`
   height: 94px;
@@ -81,7 +82,7 @@ const Icon = styled.div`
   align-items: center;
   display: flex;
   cursor: pointer;
-  margin-right: 20px;
+  margin-right: 50px;
   ${mobile({ display: "none" })}
 `;
 
@@ -137,6 +138,7 @@ const Navbar = () => {
   const location = useLocation();
   const [index, setIndex] = useState(1);
   const [anchorEl, setAnchorEl] = useState();
+  const [anchorElNew, setAnchorElNew] = useState();
   const id = location.pathname.split("/")[1];
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
@@ -163,6 +165,7 @@ const Navbar = () => {
   };
 
   const open = Boolean(anchorEl);
+  const openNew = Boolean(anchorElNew);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -175,6 +178,15 @@ const Navbar = () => {
   };
   const handleProfile = () => {
     navigate("/profile");
+  };
+
+  const handleClickNew = (e, user) => {
+    setAnchorElNew(e.currentTarget);
+    getStripe(dispatch, user._id);
+  };
+
+  const handleCloseNew = () => {
+    setAnchorElNew(null);
   };
 
   return (
@@ -212,7 +224,33 @@ const Navbar = () => {
         <Right>
           <WrapLogin>
             <Icon>
-              <SearchIcon />
+              <IconButton onClick={(e) => handleClickNew(e, user)}>
+                <AddCircleIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorElNew}
+                open={openNew}
+                onClose={handleCloseNew}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <MenuItem onClick={handleProfile}>Đức Thịnh</MenuItem>
+                <MenuItem onClick={handleMyAccount}>Tài khoản</MenuItem>
+                <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
+              </Menu>
+              <IconButton>
+                <SearchIcon />
+              </IconButton>
             </Icon>
             {user ? (
               <Links>

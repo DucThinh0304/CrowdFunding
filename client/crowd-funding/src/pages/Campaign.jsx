@@ -5,17 +5,17 @@ import Footer from "../components/Footer";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { publicRequest, userRequest } from "../requestMethod";
-import { CircularProgress } from "@mui/material";
-import StripeCheckout from "react-stripe-checkout";
-import MainLogo from "../asset/Happy.png";
+import { useLocation } from "react-router-dom";
+import { publicRequest } from "../requestMethod";
+import { CircularProgress, Tab, Box } from "@mui/material";
 import { useSelector } from "react-redux";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import CampaignInfomation from "../components/campaign/CampaignInfomation";
+import CampaignUpdate from "../components/campaign/CampaignUpdate";
+import CampaignDonator from "../components/campaign/CampaignDonator";
+import CampaignComment from "../components/campaign/CampaignComment";
 
 const Container = styled.div``;
-
-const KEY =
-  "pk_test_51N941iGn8BjmzShv5uCkfgIYoLX4GdfigEF1c4qWqgnma3N1MBowgwOQkJBicrmwMgHKHibzjmNmkcIgBsmU00aC00sFKpAJlY";
 
 const LoadingContainer = styled.div`
   width: 100vw;
@@ -124,49 +124,22 @@ const CampaignProgressNumberContainer = styled.div`
   justify-content: space-between;
 `;
 
-const Button = styled.button`
-  width: 40%;
-  font-weight: 700;
-  margin-top: 20px;
-  background-color: transparent;
-  text-transform: uppercase;
-  color: #0275d8;
-  padding: 18px 30px;
-  border: 1px solid #c9366f;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #c9366f;
-    color: white;
-  }
+const Bottom = styled.div`
+  display: flex;
+  flex-direction: column;
   transition: all 0.5s ease;
-  &:disabled {
-    color: gray;
-    cursor: not-allowed;
-  }
 `;
 
-const Bottom = styled.div`
+const CampaignProgressNumber = styled.span``;
+
+const TabPanelContext = styled.div`
   display: flex;
 `;
 
-const Desc = styled.div`
-  margin: 40px;
-  flex: 3;
-  background-color: #fff;
+const StyledBox = styled(Box)`
+  display: flex;
+  margin-left: 25px;
 `;
-
-const DonateContainer = styled.div`
-  flex: 1;
-  margin: 20px;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-`;
-
-const DonateBorder = styled.div``;
-
-const CampaignProgressNumber = styled.span``;
 
 const formatter = new Intl.NumberFormat(
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
@@ -180,35 +153,15 @@ const Campaign = () => {
   const id = location.pathname.split("/")[2];
   const today = new Date();
   const oneDay = 24 * 60 * 60 * 1000;
+  const user = useSelector((state) => state.user.currentUser);
   const [campaign, setCampaign] = useState({});
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState("1");
   const date = new Date(campaign.dayfinish);
 
-  const [stripeToken, setStripeToken] = useState(null);
-  const [money, setMoney] = useState(0);
-  const onToken = (token) => {
-    setStripeToken(token);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.user.currentUser);
-  useEffect(() => {
-    const makeRequest = async () => {
-      console.log(money);
-      try {
-        const res = await userRequest.post(`/donate/payment/${user._id}`, {
-          tokenId: stripeToken.id,
-          campaignId: id,
-          amount: money,
-        });
-        console.log(res.data);
-        navigate("/success");
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    !user && navigate("/login");
-    stripeToken && makeRequest();
-  }, [stripeToken, navigate]);
 
   useEffect(() => {
     const getCampaign = async () => {
@@ -290,25 +243,41 @@ const Campaign = () => {
       </Center>
 
       <Bottom>
-        <Desc>{campaign.description}</Desc>
-        <DonateContainer>
-          Ủng hộ số tiền
-          {campaign.donateamounts.map((donate) => (
-            <DonateBorder>
-              <StripeCheckout
-                name="Happy Fund"
-                image={MainLogo}
-                description={`Tổng tiền của bạn là ${donate}`}
-                amount={donate}
-                stripeKey={KEY}
-                token={onToken}
-                currency="VND"
-              >
-                <Button onClick={() => setMoney(donate)}>{donate} ₫</Button>
-              </StripeCheckout>
-            </DonateBorder>
-          ))}
-        </DonateContainer>
+        <TabContext value={value}>
+          <StyledBox>
+            <TabList
+              onChange={handleChange}
+              value={value}
+              aria-label="Tabs"
+              selectionFollowsFocus
+            >
+              <Tab label="Chi tiết" value="1" />
+              <Tab label="Cập nhật" value="2" />
+              <Tab label="Danh sách ủng hộ" value="3" />
+              <Tab label="Đánh giá" value="4" />
+            </TabList>
+          </StyledBox>
+          <TabPanel value="1">
+            <TabPanelContext>
+              <CampaignInfomation />
+            </TabPanelContext>
+          </TabPanel>
+          <TabPanel value="2">
+            <TabPanelContext>
+              <CampaignUpdate />
+            </TabPanelContext>
+          </TabPanel>
+          <TabPanel value="3">
+            <TabPanelContext>
+              <CampaignDonator />
+            </TabPanelContext>
+          </TabPanel>
+          <TabPanel value="4">
+            <TabPanelContext>
+              <CampaignComment />
+            </TabPanelContext>
+          </TabPanel>
+        </TabContext>
       </Bottom>
       <Footer />
     </Container>

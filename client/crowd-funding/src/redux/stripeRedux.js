@@ -14,13 +14,16 @@ const stripeSlice = createSlice({
     },
     getStripeSuccess: (state, action) => {
       state.isFetching = false;
-      state.currentUser = action.payload;
+      state.currentStripe = action.payload;
     },
-    getStripeFailure: (state, action) => {
+    getStripeFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
   },
 });
+
+export const { getStripeStart, getStripeSuccess, getStripeFailure } =
+  stripeSlice.actions;
 
 export default stripeSlice.reducer;

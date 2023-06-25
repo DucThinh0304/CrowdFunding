@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { publicRequest, userRequest } from "../requestMethod";
 import { CircularProgress } from "@mui/material";
 import StripeCheckout from "react-stripe-checkout";

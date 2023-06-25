@@ -24,6 +24,8 @@ const SuppportCampaign = () => {
   const [loading, setLoading] = useState(true);
   const [campaigns, setCampaigns] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
+  const stripe = useSelector((state) => state.stripe.currentStripe);
+
   const formatter = new Intl.NumberFormat(
     new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
   );
@@ -71,7 +73,7 @@ const SuppportCampaign = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/campaign/" + params.row.id}>
+            <Link to={"/campaign/" + params.row.campaign}>
               <button className="campaignCheck">Đến dự án</button>
             </Link>
           </>
@@ -82,10 +84,10 @@ const SuppportCampaign = () => {
 
   const mergedData = () => {
     let array = [];
-    if (!user.support || !campaigns) return array;
-    user.support.map((a) => {
+    if (!stripe || !campaigns) return array;
+    stripe.map((a) => {
       campaigns.map((b) => {
-        if (a.id === b._id) array.push({ ...a, ...b });
+        if (a.campaign === b._id) array.push({ ...a, ...b });
       });
     });
     return array;

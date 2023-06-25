@@ -7,7 +7,7 @@ const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
 const currentUser = user && JSON.parse(user).currentUser;
 // console.log(currentUser);
 const TOKEN = currentUser?.accessToken;
-console.log(TOKEN);
+// console.log(TOKEN);
 
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user)
 //   .currentUser.accessToken;

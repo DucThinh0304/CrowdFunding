@@ -17,6 +17,11 @@ import {
   favoriteFailure,
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
+import {
+  getStripeFailure,
+  getStripeStart,
+  getStripeSuccess,
+} from "./stripeRedux";
 
 const getAccessToken = () => {
   const userPersist = JSON.parse(localStorage.getItem("persist:root"))?.user;
@@ -28,8 +33,8 @@ const getAccessToken = () => {
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
-    const res = await publicRequest.post("/auth/login", user);
-    dispatch(loginSuccess(res.data));
+    const resUser = await publicRequest.post("/auth/login", user);
+    dispatch(loginSuccess(resUser.data));
   } catch (err) {
     dispatch(loginFailure());
   }
@@ -129,5 +134,16 @@ export const addPending = async (dispatch, pending) => {
   } catch (err) {
     console.log(err);
     dispatch(addressSuccess());
+  }
+};
+
+export const getStripe = async (dispatch, id) => {
+  dispatch(getStripeStart());
+  try {
+    const res = await publicRequest.get(`/contributes/find/${id}`);
+    dispatch(getStripeSuccess(res.data));
+  } catch (err) {
+    console.log(err);
+    dispatch(getStripeFailure());
   }
 };
