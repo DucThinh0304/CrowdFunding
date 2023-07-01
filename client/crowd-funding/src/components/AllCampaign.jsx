@@ -258,7 +258,11 @@ const AllCampaign = () => {
   useEffect(() => {
     const getCampaigns = async () => {
       try {
-        const resCampaign = await publicRequest.get("/campaign");
+        let extraURL;
+        extraURL = page ? page : "";
+        const resCampaign = await publicRequest.get(
+          `/campaign/?tag=${extraURL}`
+        );
         setCampaigns(resCampaign.data);
         setLoading(false);
       } catch (err) {
@@ -344,7 +348,12 @@ const AllCampaign = () => {
               </CampaignImageContainer>
               <CampaignInfoContainer>
                 {campaign.tag.map((tag) => (
-                  <CampaignTag key={tag}>{tag} </CampaignTag>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`../all-campaigns/${tag}`}
+                  >
+                    <CampaignTag key={tag}>{tag} </CampaignTag>
+                  </Link>
                 ))}
                 <Link
                   to={`../campaign/${campaign._id}`}

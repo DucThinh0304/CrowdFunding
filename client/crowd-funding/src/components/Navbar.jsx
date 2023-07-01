@@ -189,6 +189,11 @@ const Navbar = () => {
     setAnchorElNew(null);
   };
 
+  const checkIsAuthority = () => {
+    if (!user) return false;
+    return user.isAuthority ? true : false;
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -217,37 +222,38 @@ const Navbar = () => {
           >
             <LinkText id={index === 3 ? "true" : "false"}>Liên hệ</LinkText>
           </Link>
-          <Link to="/news" style={{ textDecoration: "none", color: "black" }}>
-            <LinkText id={index === 4 ? "true" : "false"}>Tin tức</LinkText>
-          </Link>
         </Center>
         <Right>
           <WrapLogin>
             <Icon>
-              <IconButton onClick={(e) => handleClickNew(e, user)}>
-                <AddCircleIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorElNew}
-                open={openNew}
-                onClose={handleCloseNew}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <MenuItem onClick={handleProfile}>Đức Thịnh</MenuItem>
-                <MenuItem onClick={handleMyAccount}>Tài khoản</MenuItem>
-                <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
-              </Menu>
+              {checkIsAuthority() && (
+                <>
+                  <IconButton onClick={(e) => handleClickNew(e, user)}>
+                    <AddCircleIcon />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorElNew}
+                    open={openNew}
+                    onClose={handleCloseNew}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  >
+                    <MenuItem onClick={handleProfile}>Dự án mới</MenuItem>
+                    <MenuItem onClick={handleMyAccount}>Tin tức mới</MenuItem>
+                  </Menu>
+                </>
+              )}
+
               <IconButton>
                 <SearchIcon />
               </IconButton>

@@ -75,6 +75,9 @@ const MyAccount = () => {
     } else if (page === "address") {
       setExited(true);
       setIndex(4);
+    } else if (page === "password") {
+      setExited(true);
+      setIndex(5);
     } else {
       setExited(false);
     }
@@ -110,6 +113,14 @@ const MyAccount = () => {
             to="/my-account/address"
           >
             <MenuLink id={index === 4 ? "true" : "false"}>Địa chỉ</MenuLink>
+          </Link>
+          <Link
+            style={{ textDecoration: "none", color: "black" }}
+            to="/my-account/password"
+          >
+            <MenuLink id={index === 5 ? "true" : "false"}>
+              Đổi mật khẩu
+            </MenuLink>
           </Link>
         </Left>
         <Right>

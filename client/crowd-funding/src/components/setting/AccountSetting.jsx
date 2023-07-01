@@ -80,6 +80,11 @@ const Button = styled.button`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const AccountSetting = () => {
   const refId = useRef(null);
   const refName = useRef(null);
@@ -207,8 +212,9 @@ const AccountSetting = () => {
         defaultValue={user.phonenumber ? user.phonenumber : ""}
         ref={refPhone}
       ></Input>
-
-      <Button onClick={(e) => handleClick(e)}>Lưu thông tin</Button>
+      <ButtonWrapper>
+        <Button onClick={(e) => handleClick(e)}>Lưu thông tin</Button>
+      </ButtonWrapper>
     </Container>
   );
 };

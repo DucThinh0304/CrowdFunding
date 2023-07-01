@@ -132,6 +132,15 @@ const CampaignComment = () => {
       star,
       time,
     });
+    setLoading(true);
+    setStars(0);
+    publicRequest
+      .get("/campaign/find/" + id)
+      .then((res) => {
+        setCampaign(res.data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   };
 
   return loading ? (

@@ -27,6 +27,11 @@ const CommentName = styled.div`
   color: gray;
 `;
 
+const DonateName = styled.div`
+  font-size: 14px;
+  padding-left: 10px;
+`;
+
 const Border = styled.div`
   display: flex;
   border-radius: 50%;
@@ -130,4 +135,30 @@ const UsernameComment = ({ id }) => {
   );
 };
 
-export { Avatar, Username, UsernameComment };
+const UsernameDonate = ({ id }) => {
+  const [username, setUsername] = useState([]);
+  const ID = id;
+  useEffect(() => {
+    const getAvt = async (ID) => {
+      try {
+        const data = await publicRequest.get(`/users/public/${ID}`);
+        data.data.name === ""
+          ? setUsername(data.data.username)
+          : setUsername(data.data.name);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAvt(ID);
+    return () => {
+      setUsername([]);
+    };
+  }, []);
+  return (
+    <Container>
+      <DonateName>{username}</DonateName>
+    </Container>
+  );
+};
+
+export { Avatar, Username, UsernameComment, UsernameDonate };

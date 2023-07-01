@@ -1,6 +1,6 @@
 import "./sidebar.css";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LineStyleIcon from "@mui/icons-material/LineStyle";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -13,8 +13,13 @@ import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ReportIcon from "@mui/icons-material/Report";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import { useState } from "react";
 
 export default function Sidebar() {
+  const location = useLocation();
+  const page = location.pathname.split("/")[1];
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -22,7 +27,11 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Bảng Điều Khiển</h3>
           <ul className="sidebarList">
             <Link to="/" className="link">
-              <li className="sidebarListItem active">
+              <li
+                className={
+                  page === "" ? "sidebarListItem active" : "sidebarListItem"
+                }
+              >
                 <LineStyleIcon className="sidebarIcon" />
                 Trang chủ
               </li>
@@ -41,24 +50,36 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Menu Nhanh</h3>
           <ul className="sidebarList">
             <Link to="/users" className="link">
-              <li className="sidebarListItem">
+              <li
+                className={
+                  page === "users" || page === "user"
+                    ? "sidebarListItem active"
+                    : "sidebarListItem"
+                }
+              >
                 <PermIdentityIcon className="sidebarIcon" />
-                Users
+                Người dùng
               </li>
             </Link>
             <Link to="/campaigns" className="link">
-              <li className="sidebarListItem">
-                <StorefrontIcon className="sidebarIcon" />
-                Products
+              <li
+                className={
+                  page === "campaigns" || page === "campaign"
+                    ? "sidebarListItem active"
+                    : "sidebarListItem"
+                }
+              >
+                <CampaignIcon className="sidebarIcon" />
+                Dự án
               </li>
             </Link>
             <li className="sidebarListItem">
               <AttachMoneyIcon className="sidebarIcon" />
-              Transactions
+              Chuyển khoản
             </li>
             <li className="sidebarListItem">
-              <BarChartIcon className="sidebarIcon" />
-              Reports
+              <PendingActionsIcon className="sidebarIcon" />
+              Pendings
             </li>
           </ul>
         </div>

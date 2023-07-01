@@ -4,15 +4,16 @@ const {
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 const User = require("../models/User");
+const CryptoJS = require("crypto-js");
 
 //UPDATE
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
-  if (req.body.password) {
-    req.body.password = CryptoJS.AES.decrypt(
-      req.body.password,
-      process.env.PASS_SEC
-    ).toString();
-  }
+router.put("/:id", async (req, res) => {
+  // if (req.body.password) {
+  //   req.body.password = CryptoJS.AES.decrypt(
+  //     req.body.password,
+  //     process.env.PASS_SEC
+  //   ).toString();
+  // }
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -23,6 +24,42 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     );
     const { password, ...others } = updatedUser._doc;
     res.status(200).json(others);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//CHANGE PASSWORD
+router.put("/password/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    const hashedPassword = CryptoJS.AES.decrypt(
+      user.password,
+      process.env.PASS_SEC
+    );
+
+    const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+
+    if (OriginalPassword === req.body.password) {
+      const reqNewPassword = CryptoJS.AES.encrypt(
+        req.body.newPassword,
+        process.env.PASS_SEC
+      ).toString();
+      await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: { password: reqNewPassword },
+        },
+        { new: true }
+      );
+      res.status(200).json("Success");
+      return;
+    } else {
+      res.status(401).json("Wrong password");
+    }
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -45,7 +82,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 //GET USER
 
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+router.get("/find/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { password, ...others } = user._doc;
@@ -102,11 +139,11 @@ router.get("/publicAll", async (req, res) => {
 
 //GET ALL USER
 
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   const query = req.query.new;
   try {
     const users = query
-      ? await User.find().sort({ Id: -1 }).limit(5)
+      ? await User.find().sort({ createdAt: -1 }).limit(5)
       : await User.find();
     res.status(200).json(users);
     return;
@@ -118,7 +155,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 
 //GET USER STAT
 
-router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
+router.get("/stats", async (req, res) => {
   const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
 

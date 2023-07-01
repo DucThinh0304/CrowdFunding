@@ -103,7 +103,7 @@ router.get("/", async (req, res) => {
 
 //COMMENT
 
-router.post("/comment/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/comment/:id", async (req, res) => {
   try {
     const campaign = await Campaign.findOneAndUpdate(
       { _id: req.params.id },

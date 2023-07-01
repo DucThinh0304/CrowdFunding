@@ -19,6 +19,7 @@ import Address from "./components/setting/Address";
 import Profile from "./pages/Profile";
 import CreateCampaign from "./pages/CreateCampaign";
 import PendingCampaign from "./pages/PendingCampaign";
+import UpdatePending from "./pages/UpdatePending";
 
 function App() {
   const CampaignPage = () => {
@@ -30,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" exact element={<Home />} />
         <Route path="/all-campaigns" element={<AllCampaigns />} />
+        <Route path="/all-campaigns/:id" element={<AllCampaigns />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
           path="/register"
@@ -62,12 +64,20 @@ function App() {
           element={!user ? <Navigate to="/login" /> : <MyAccount />}
         />
         <Route
+          path="/my-account/address/password/:id"
+          element={!user ? <Navigate to="/login" /> : <MyAccount />}
+        />
+        <Route
           path="/create-campaign"
           element={!user ? <Navigate to="/login" /> : <CreateCampaign />}
         />
         <Route
           path="/pending-campaign/:id"
           element={!user ? <Navigate to="/login" /> : <PendingCampaign />}
+        />
+        <Route
+          path="/update-pending/:id"
+          element={!user ? <Navigate to="/login" /> : <UpdatePending />}
         />
       </Routes>
     </Router>

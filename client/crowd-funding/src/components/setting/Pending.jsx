@@ -65,6 +65,20 @@ const Pending = () => {
         );
       },
     },
+    {
+      field: "update",
+      headerName: "Chỉnh sửa thông tin",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={"/update-pending/" + params.row._id}>
+              <button className="campaignCheck">Chỉnh sửa</button>
+            </Link>
+          </>
+        );
+      },
+    },
   ];
 
   return loading === true && campaigns !== null ? (

@@ -15,6 +15,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100vw;
 `;
 
 const LoadingContainer = styled.div`
@@ -23,6 +24,15 @@ const LoadingContainer = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-direction: column;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  border-radius: 5px;
+  border: 1px solid #ebebf1;
+  padding: 20px;
+  width: 50vw;
   flex-direction: column;
 `;
 
@@ -59,34 +69,36 @@ const CampaignUpdate = () => {
     </LoadingContainer>
   ) : (
     <Container>
-      <Timeline>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <UpdateContainer>12312312321312312312312321</UpdateContainer>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <UpdateContainer>12312312321312312312312321</UpdateContainer>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot />
-          </TimelineSeparator>
-          <TimelineContent>
-            <UpdateContainer>12312312321312312312312321</UpdateContainer>
-          </TimelineContent>
-        </TimelineItem>
-      </Timeline>
+      <Wrapper>
+        <Timeline>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <UpdateContainer>12312312321312312312312321</UpdateContainer>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <UpdateContainer>12312312321312312312312321</UpdateContainer>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot />
+            </TimelineSeparator>
+            <TimelineContent>
+              <UpdateContainer>12312312321312312312312321</UpdateContainer>
+            </TimelineContent>
+          </TimelineItem>
+        </Timeline>
+      </Wrapper>
     </Container>
   );
 };

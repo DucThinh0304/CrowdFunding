@@ -83,6 +83,17 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    changePasswordStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    changePasswordSuccess: (state) => {
+      state.isFetching = false;
+    },
+    changePasswordFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
@@ -106,5 +117,8 @@ export const {
   addCommentStart,
   addCommentSuccess,
   addCommentFailure,
+  changePasswordStart,
+  changePasswordSuccess,
+  changePasswordFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

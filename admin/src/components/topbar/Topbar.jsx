@@ -34,17 +34,17 @@ export default function Topbar() {
           <span className="logo">CrowdFunding</span>
         </div>
         <div className="topRight">
-          <div className="topbarIconContainer">
+          {/* <div className="topbarIconContainer">
             <NotificationsNoneIcon />
             <span className="topIconBadge">2</span>
           </div>
           <div className="topbarIconContainer">
             <LanguageIcon />
             <span className="topIconBadge">2</span>
-          </div>
-          <div className="topbarIconContainer">
+          </div> */}
+          {/* <div className="topbarIconContainer">
             <SettingsIcon />
-          </div>
+          </div> */}
 
           <img
             src={user.avt}

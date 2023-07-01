@@ -1,80 +1,71 @@
+import { useEffect, useState } from "react";
+import { userRequest } from "../../requestMethods";
 import "./widgetLg.css";
+import { Avatar, Username } from "../user/Avatar";
 
 export default function WidgetLg() {
+  const [contributes, setContributes] = useState([]);
+  useEffect(() => {
+    const getContributes = async () => {
+      try {
+        const res = await userRequest("/contributes/?new=true");
+        setContributes(res.data);
+      } catch {}
+    };
+    getContributes();
+  }, []);
+
+  const convertDate = (s) => {
+    let date = new Date(s);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate();
+
+    if (dt < 10) {
+      dt = "0" + dt;
+    }
+    if (month < 10) {
+      month = "0" + month;
+    }
+
+    return dt + "-" + month + "-" + year;
+  };
+
+  const formatter = new Intl.NumberFormat(
+    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
+  );
+
   const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
   };
   return (
     <div className="widgetLg">
-      <h3 className="widgetLgTitle">Latest transactions</h3>
+      <h3 className="widgetLgTitle">Lần chuyển khoản gần nhất</h3>
       <table className="widgetLgTable">
         <tbody>
           <tr className="widgetLgTr">
-            <th className="widgetLgTh">Customer</th>
-            <th className="widgetLgTh">Date</th>
-            <th className="widgetLgTh">Amount</th>
+            <th className="widgetLgTh">Người dùng</th>
+            <th className="widgetLgTh">Ngày</th>
+            <th className="widgetLgTh">Số tiền</th>
             <th className="widgetLgTh">Status</th>
           </tr>
-          <tr className="widgetLgTr">
-            <td className="widgetLgUser">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt=""
-                className="widgetLgImg"
-              />
-              <span className="widgetLgName">Susan Carol</span>
-            </td>
-            <td className="widgetLgDate">2 Jun 2021</td>
-            <td className="widgetLgAmount">$122.00</td>
-            <td className="widgetLgStatus">
-              <Button type="Approved" />
-            </td>
-          </tr>
-          <tr className="widgetLgTr">
-            <td className="widgetLgUser">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt=""
-                className="widgetLgImg"
-              />
-              <span className="widgetLgName">Susan Carol</span>
-            </td>
-            <td className="widgetLgDate">2 Jun 2021</td>
-            <td className="widgetLgAmount">$122.00</td>
-            <td className="widgetLgStatus">
-              <Button type="Declined" />
-            </td>
-          </tr>
-          <tr className="widgetLgTr">
-            <td className="widgetLgUser">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt=""
-                className="widgetLgImg"
-              />
-              <span className="widgetLgName">Susan Carol</span>
-            </td>
-            <td className="widgetLgDate">2 Jun 2021</td>
-            <td className="widgetLgAmount">$122.00</td>
-            <td className="widgetLgStatus">
-              <Button type="Pending" />
-            </td>
-          </tr>
-          <tr className="widgetLgTr">
-            <td className="widgetLgUser">
-              <img
-                src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt=""
-                className="widgetLgImg"
-              />
-              <span className="widgetLgName">Susan Carol</span>
-            </td>
-            <td className="widgetLgDate">2 Jun 2021</td>
-            <td className="widgetLgAmount">$122.00</td>
-            <td className="widgetLgStatus">
-              <Button type="Approved" />
-            </td>
-          </tr>
+          {contributes.map((contribute) => (
+            <tr className="widgetLgTr" key={contribute._id}>
+              <td className="widgetLgUser">
+                <Avatar id={contribute.username} />
+                <Username id={contribute.username}></Username>
+              </td>
+              <td className="widgetLgDate">
+                {convertDate(contribute.createdAt)}
+              </td>
+              <td className="widgetLgAmount">
+                {formatter.format(contribute.amount)} đ
+              </td>
+              <td className="widgetLgStatus">
+                <Button type="Approved" />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

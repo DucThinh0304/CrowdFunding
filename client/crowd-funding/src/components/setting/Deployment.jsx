@@ -67,6 +67,20 @@ const Deployment = () => {
         );
       },
     },
+    {
+      field: "update",
+      headerName: "Thêm cập nhật",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={"/campaign/" + params.row._id}>
+              <button className="campaignCheck">Cập nhật</button>
+            </Link>
+          </>
+        );
+      },
+    },
   ];
 
   return loading === true ? (

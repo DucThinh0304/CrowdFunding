@@ -5,6 +5,7 @@ import SupportCampaign from "./setting/SupportCampaign";
 import Favorite from "./setting/Favorite";
 import AccountSetting from "./setting/AccountSetting";
 import Address from "./setting/Address";
+import Password from "./setting/Password";
 
 const Container = styled.div`
   padding-left: 50px;
@@ -22,6 +23,8 @@ const Setting = () => {
         <Favorite />
       ) : page === "setting" ? (
         <AccountSetting />
+      ) : page === "password" ? (
+        <Password />
       ) : (
         <Address />
       )}

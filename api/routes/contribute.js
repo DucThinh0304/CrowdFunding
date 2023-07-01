@@ -28,13 +28,13 @@ router.get("/findbyCampaign/:id", async (req, res) => {
   }
 });
 
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   const query = req.query.new;
   try {
     const contribute = query
-      ? await Contribute.find().sort({ Id: -1 }).limit(15)
+      ? await Contribute.find().sort({ createdAt: -1 }).limit(5)
       : await Contribute.find();
-    res.status(200).json(users);
+    res.status(200).json(contribute);
     return;
   } catch (err) {
     res.status(500).json(err);

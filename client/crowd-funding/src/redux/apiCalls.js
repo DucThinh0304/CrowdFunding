@@ -18,6 +18,9 @@ import {
   addCommentStart,
   addCommentSuccess,
   addCommentFailure,
+  changePasswordStart,
+  changePasswordSuccess,
+  changePasswordFailure,
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
 import {
@@ -159,5 +162,17 @@ export const addComment = async (dispatch, id, comment) => {
   } catch (err) {
     console.log(err);
     dispatch(addCommentFailure());
+  }
+};
+
+export const changePassword = async (dispatch, id, password) => {
+  dispatch(changePasswordStart());
+  try {
+    await publicRequest.put(`/users/password/${id}`, password);
+    dispatch(changePasswordSuccess());
+    logoutUser(dispatch);
+  } catch (err) {
+    console.log(err);
+    dispatch(changePasswordFailure());
   }
 };
