@@ -276,7 +276,12 @@ const Ongoing = () => {
                     <ProjectFlex>
                       <ProjectTagContainer>
                         {campaign.tag.map((tag) => (
-                          <ProjectTag key={tag}>{tag} </ProjectTag>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={`../all-campaigns/${tag}`}
+                          >
+                            <ProjectTag key={tag}>{tag} </ProjectTag>
+                          </Link>
                         ))}
                       </ProjectTagContainer>
                       {checkFavorite(campaign._id) ? (

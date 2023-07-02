@@ -18,6 +18,8 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import { useSelector } from "react-redux";
 import Inaccessible from "./pages/login/Inaccessible";
+import PendingList from "./pages/pendingList/PendingList";
+import TransactionList from "./pages/transactionList/TransactionList";
 
 function App() {
   const admin = useSelector((state) => state.user.currentUser);
@@ -64,6 +66,8 @@ function App() {
           <Route path="/campaigns" element={<CampaignList />} />
           <Route path="/campaign/:campaignId" element={<Campaign />} />
           <Route path="/newcampaign" element={<NewCampaign />} />
+          <Route path="/pendings" element={<PendingList />} />
+          <Route path="/transactions" element={<TransactionList />} />
         </Routes>
       </div>
     </Router>

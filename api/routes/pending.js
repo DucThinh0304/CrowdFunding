@@ -82,19 +82,14 @@ router.get("/", async (req, res) => {
   try {
     let pendings;
     if (qNew) {
-      pendings = await Pending.find();
-    } else if (qTag) {
-      pendings = await Pending.find({
-        tag: {
-          $in: [qTag],
-        },
-      });
+      pendings = await Pending.find().sort({ createdAt: -1 }).limit(8);
     } else {
       pendings = await Pending.find();
     }
     res.status(200).json(pendings);
     return;
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
     return;
   }

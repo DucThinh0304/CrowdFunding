@@ -1,6 +1,6 @@
-import "./newCampaign.css";
+import "./newPending.css";
 
-export default function NewCampaign() {
+export default function NewPending() {
   return (
     <div className="newProduct">
       <h1 className="addProductTitle">New Product</h1>

@@ -73,14 +73,30 @@ export default function Sidebar() {
                 Dự án
               </li>
             </Link>
-            <li className="sidebarListItem">
-              <AttachMoneyIcon className="sidebarIcon" />
-              Chuyển khoản
-            </li>
-            <li className="sidebarListItem">
-              <PendingActionsIcon className="sidebarIcon" />
-              Pendings
-            </li>
+            <Link to="/transactions" className="link">
+              <li
+                className={
+                  page === "transactions" || page === "transaction"
+                    ? "sidebarListItem active"
+                    : "sidebarListItem"
+                }
+              >
+                <AttachMoneyIcon className="sidebarIcon" />
+                Chuyển khoản
+              </li>
+            </Link>
+            <Link to="/pendings" className="link">
+              <li
+                className={
+                  page === "pendings" || page === "pending"
+                    ? "sidebarListItem active"
+                    : "sidebarListItem"
+                }
+              >
+                <PendingActionsIcon className="sidebarIcon" />
+                Pendings
+              </li>
+            </Link>
           </ul>
         </div>
         <div className="sidebarMenu">

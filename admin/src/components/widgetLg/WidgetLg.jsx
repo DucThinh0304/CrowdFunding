@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { userRequest } from "../../requestMethods";
 import "./widgetLg.css";
-import { Avatar, Username } from "../user/Avatar";
+import { Avatar, Username } from "../userInf/Avatar";
 
 export default function WidgetLg() {
   const [contributes, setContributes] = useState([]);

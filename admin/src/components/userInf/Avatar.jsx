@@ -60,4 +60,24 @@ const Username = ({ id }) => {
   return <div>{username}</div>;
 };
 
-export { Avatar, Username };
+const Campaign = ({ id }) => {
+  const [campaign, setCampaign] = useState([]);
+  const ID = id;
+  useEffect(() => {
+    const getAvt = async (ID) => {
+      try {
+        const data = await userRequest.get(`/campaign/find/${ID}`);
+        setCampaign(data.data.title);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAvt(ID);
+    return () => {
+      setCampaign("");
+    };
+  }, [id]);
+  return <div>{campaign}</div>;
+};
+
+export { Avatar, Username, Campaign };
