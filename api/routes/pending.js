@@ -7,13 +7,15 @@ const {
 const Pending = require("../models/Pending");
 
 //CREATE
-router.post("/", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/", async (req, res) => {
   const newPending = new Pending(req.body);
+  console.log(newPending);
   try {
     const savedPending = await newPending.save();
     res.status(201).json(savedPending);
     return;
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
     return;
   }

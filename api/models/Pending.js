@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const PendingSchema = new mongoose.Schema(
   {
-    Id: { type: String, require: true, unique: true },
     title: { type: String, require: true, unique: true },
     tag: { type: Array },
     donateneed: { type: Number, require: true },

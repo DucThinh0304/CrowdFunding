@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -11,6 +11,8 @@ import {
 } from "firebase/storage";
 import app from "../firebase";
 import { addPending } from "../redux/apiCalls";
+import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div`
   display: flex;
@@ -73,10 +75,16 @@ const Span = styled.span`
   color: red;
 `;
 
-const Button = styled.button`
-  width: 40%;
-  font-weight: 700;
+const ButtonContainer = styled.div`
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
+  display: flex;
+`;
+
+const Button = styled.button`
+  width: 400px;
+  font-weight: 700;
   background-color: transparent;
   text-transform: uppercase;
   color: #0275d8;
@@ -95,6 +103,18 @@ const Button = styled.button`
   }
 `;
 
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 400px;
+  background-color: transparent;
+  border: 1px solid #c9366f;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+  cursor: not-allowed;
+  align-items: center;
+  justify-content: center;
+`;
+
 const CreateCampaign = () => {
   const refName = useRef(null);
   const refTag = useRef(null);
@@ -103,63 +123,66 @@ const CreateCampaign = () => {
   const refDonateAmount = useRef(null);
   const refDescription = useRef(null);
   const [file, setFile] = useState("");
+  const [isSave, setIsSave] = useState("notsave");
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const { isFetching } = useSelector((state) => state.user);
   const handleClick = (e) => {
-    e.preventDefault();
-    const title = refName.current.value;
-    const tag = refTag.current.value.split(",");
-    const donateneed = refDonateNeed.current.value;
-    const day = refDayFinish.current.value;
-    const dayfinish = new Date(day).toISOString();
-    const donateamounts = refDonateAmount.current.value.split(",");
-    const description = refDescription.current.value;
-    const username = user._id;
-    if (file.name !== undefined) {
-      const fileName = new Date().getTime() + file.name;
-      const storage = getStorage(app);
-      const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+    try {
+      e.preventDefault();
+      setIsSave("issave");
+      const title = refName.current.value;
+      const tag = refTag.current.value.split(",");
+      const donateneed = refDonateNeed.current.value;
+      const day = refDayFinish.current.value;
+      const dayfinish = new Date(day).toISOString();
+      const donateamounts = refDonateAmount.current.value.split(",");
+      const description = refDescription.current.value;
+      const username = user._id;
+      if (file.name !== undefined) {
+        const fileName = new Date().getTime() + file.name;
+        const storage = getStorage(app);
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-            default:
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then((img) => {
+                addPending(dispatch, {
+                  title,
+                  username,
+                  tag,
+                  donateneed,
+                  dayfinish,
+                  donateamounts,
+                  description,
+                  img,
+                });
+              })
+              .then(setIsSave("done"));
           }
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((img) => {
-            addPending(dispatch, {
-              title,
-              username,
-              tag,
-              donateneed,
-              dayfinish,
-              donateamounts,
-              description,
-              img,
-            });
-          });
-        }
-      );
+        );
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
+  useEffect(() => {
+    if (isSave === "done" && !isFetching) navigate("/profile");
+  }, [isSave, isFetching]);
   return (
     <Container>
       <Navbar />
@@ -205,7 +228,17 @@ const CreateCampaign = () => {
           Miêu tả dự án <Span>*</Span>
         </Label>
         <TextArea ref={refDescription}></TextArea>
-        <Button onClick={(e) => handleClick(e)}>Lưu dự án</Button>
+        <ButtonContainer>
+          {isSave === "issave" ? (
+            <LoadingContainer>
+              <CircularProgress
+                style={{ marginTop: "6px", marginBottom: "6px" }}
+              ></CircularProgress>
+            </LoadingContainer>
+          ) : (
+            <Button onClick={(e) => handleClick(e)}>Lưu dự án</Button>
+          )}
+        </ButtonContainer>
       </ContainerInput>
       <Footer />
     </Container>

@@ -9,11 +9,31 @@ import { getStripe, login } from "../redux/apiCalls";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import "../CSS/LoginPage.css";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div``;
 
 const Title = styled.h1`
   font-size: 48px;
+`;
+
+const ButtonContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  display: flex;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #c9366f;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+  cursor: not-allowed;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Wrapper = styled.div`
@@ -56,9 +76,8 @@ const Password = styled.input`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   font-weight: 700;
-  margin-top: 20px;
   background-color: transparent;
   text-transform: uppercase;
   color: #0275d8;
@@ -99,13 +118,31 @@ const Error = styled.span`
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errUsername, setErrUsername] = useState(false);
+  const [errPassword, setErrPassword] = useState(false);
   const [type, setType] = useState("password");
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { isFetching, error, errorDes } = useSelector((state) => state.user);
+
+  const CheckInput = () => {
+    let flag = false;
+    if (username === "") {
+      setErrUsername(true);
+      flag = true;
+    }
+    if (password === "") {
+      setErrPassword(true);
+      flag = true;
+    }
+    return flag;
+  };
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    const checkInputResult = CheckInput();
+    if (checkInputResult === false) {
+      login(dispatch, { username, password });
+    }
   };
   const changeType = () => {
     if (type === "password") setType("text");
@@ -131,6 +168,7 @@ const Login = () => {
             onChange={(e) => setUsername(e.target.value)}
             onKeyDown={handleKeyDown}
           />
+          {errUsername && <Error>Bạn cần nhập tài khoản</Error>}
           <PasswordContainer>
             <Password
               placeholder="Mật khẩu"
@@ -150,10 +188,19 @@ const Login = () => {
               />
             )}
           </PasswordContainer>
-          <Button onClick={handleClick} disabled={isFetching}>
-            ĐĂNG NHẬP
-          </Button>
-          {error && <Error>Có lỗi đã xảy ra...</Error>}
+          {errPassword && <Error>Bạn cần nhập mật khẩu</Error>}
+          <ButtonContainer>
+            {isFetching ? (
+              <LoadingContainer>
+                <CircularProgress
+                  style={{ marginTop: "6px", marginBottom: "6px" }}
+                ></CircularProgress>
+              </LoadingContainer>
+            ) : (
+              <Button onClick={handleClick}>ĐĂNG NHẬP</Button>
+            )}
+          </ButtonContainer>
+          {error && <Error>{errorDes}</Error>}
           <Link style={{ color: "black" }}>
             <LinkText>Quên mật khẩu?</LinkText>
           </Link>

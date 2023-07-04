@@ -6,6 +6,16 @@ const jwt = require("jsonwebtoken");
 //REGISTER
 
 router.post("/register", async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (user) {
+    res.status(403).json("Đã tồn tại tài khoản này");
+    return;
+  }
+  const email = await User.findOne({ email: req.body.email });
+  if (email) {
+    res.status(403).json("Email này đã được sử dụng");
+    return;
+  }
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
@@ -31,7 +41,7 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      res.status(401).json("Wrong credentials!");
+      res.status(401).json("Không tồn tại tài khoản này!!");
       return;
     }
     const hashedPassword = CryptoJS.AES.decrypt(
@@ -41,7 +51,7 @@ router.post("/login", async (req, res) => {
     const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
     if (OriginalPassword !== req.body.password) {
-      res.status(401).json("Wrong password!");
+      res.status(401).json("Sai mật khẩu!");
       return;
     }
     const accessToken = jwt.sign(

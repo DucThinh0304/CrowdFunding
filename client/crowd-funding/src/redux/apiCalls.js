@@ -42,7 +42,7 @@ export const login = async (dispatch, user) => {
     const resUser = await publicRequest.post("/auth/login", user);
     dispatch(loginSuccess(resUser.data));
   } catch (err) {
-    dispatch(loginFailure());
+    dispatch(loginFailure(err.response.data));
   }
 };
 
@@ -56,7 +56,7 @@ export const register = async (dispatch, user) => {
     const res = await publicRequest.post("/auth/register", user);
     dispatch(registerSuccess(res.data));
   } catch (err) {
-    dispatch(registerFailure());
+    dispatch(registerFailure(err.response.data));
   }
 };
 
@@ -67,7 +67,7 @@ export const setting = async (dispatch, user) => {
     res.data.accessToken = getAccessToken();
     dispatch(settingSuccess(res.data));
   } catch (err) {
-    dispatch(settingFailure());
+    dispatch(settingFailure(err.response.data));
   }
 };
 

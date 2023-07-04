@@ -20,6 +20,7 @@ import Profile from "./pages/Profile";
 import CreateCampaign from "./pages/CreateCampaign";
 import PendingCampaign from "./pages/PendingCampaign";
 import UpdatePending from "./pages/UpdatePending";
+import Messenger from "./pages/Messenger";
 
 function App() {
   const CampaignPage = () => {
@@ -78,6 +79,10 @@ function App() {
         <Route
           path="/update-pending/:id"
           element={!user ? <Navigate to="/login" /> : <UpdatePending />}
+        />
+        <Route
+          path="/messenger"
+          element={!user ? <Navigate to="/login" /> : <Messenger />}
         />
       </Routes>
     </Router>

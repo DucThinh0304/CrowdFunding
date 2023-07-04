@@ -10,6 +10,8 @@ const stripeRoute = require("./routes/stripe");
 const addressRoute = require("./routes/address");
 const pendingRoute = require("./routes/pending");
 const contributeRoute = require("./routes/contribute");
+const conversationRoute = require("./routes/conversations");
+const messageRoute = require("./routes/messages");
 const cors = require("cors");
 
 mongoose
@@ -28,6 +30,8 @@ app.use("/api/donate", stripeRoute);
 app.use("/api/addresses", addressRoute);
 app.use("/api/pendings", pendingRoute);
 app.use("/api/contributes", contributeRoute);
+app.use("/api/conversations", conversationRoute);
+app.use("/api/messages", messageRoute);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("Backend server is running!");

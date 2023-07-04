@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const Container = styled.div``;
 
@@ -128,11 +129,13 @@ const Contact = () => {
             <TextArea placeholder="Nội dung"></TextArea>
           </InputContainer>
           <Button>Gửi</Button>
+          <Link to="/messenger">
+            <Button>Nhắn tin với chúng tôi</Button>
+          </Link>
         </FormContainer>
       </Wrapper>
       <Footer />
     </Container>
   );
 };
-
 export default Contact;
