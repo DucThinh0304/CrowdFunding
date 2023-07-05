@@ -31,7 +31,7 @@ export default function Topbar() {
     <div className="topbar">
       <div className="topbarWrapper">
         <div className="topLeft">
-          <span className="logo">CrowdFunding</span>
+          <span className="logo">Admin Happy Fund</span>
         </div>
         <div className="topRight">
           {/* <div className="topbarIconContainer">

@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { userRequest } from "../../requestMethods";
+import NoAvt from "../../asset/NoAvt.png";
 
 export default function UserList() {
   const [data, setData] = useState(userRows);
@@ -30,12 +31,16 @@ export default function UserList() {
     { field: "_id", headerName: "ID", width: 90 },
     {
       field: "user",
-      headerName: "User",
+      headerName: "Username",
       width: 200,
       renderCell: (params) => {
         return (
           <div className="userListUser">
-            <img className="userListImg" src={params.row.avt} alt="" />
+            <img
+              className="userListImg"
+              src={params.row.avt === "" ? NoAvt : params.row.avt}
+              alt=""
+            />
             {params.row.username}
           </div>
         );
@@ -91,7 +96,11 @@ export default function UserList() {
     getCampaign();
   }, [page]);
 
-  return (
+  return loading ? (
+    <div className="loading">
+      <CircularProgress />
+    </div>
+  ) : (
     <div className="userList">
       <DataGrid
         localeText={viVN.components.MuiDataGrid.defaultProps.localeText}

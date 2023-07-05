@@ -13,6 +13,15 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
+const MessengerImage = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  margin-left: 10px;
+`;
+
 const Name = styled.div`
   font-size: 14px;
   padding-left: 10px;
@@ -79,6 +88,40 @@ const Avatar = ({ id }) => {
       <Border>
         <Image src={NoAvt} />
       </Border>
+    </Container>
+  );
+};
+
+const MessengerAvatar = ({ id }) => {
+  const [avt, setAvt] = useState("");
+  const [loading, setLoading] = useState(true);
+  const ID = id;
+  useEffect(() => {
+    const getAvt = async (ID) => {
+      try {
+        const data = await publicRequest.get(`/users/public/${ID}`);
+        setAvt(data.data.avt);
+        setLoading(false);
+      } catch (err) {
+        setAvt("");
+      }
+    };
+    getAvt(ID);
+    return () => {
+      setAvt([]);
+    };
+  }, []);
+  return loading === true ? (
+    <Container>
+      <CircularProgress />
+    </Container>
+  ) : avt !== "" ? (
+    <Container>
+      <MessengerImage src={avt} />
+    </Container>
+  ) : (
+    <Container>
+      <MessengerImage src={NoAvt} />
     </Container>
   );
 };
@@ -161,4 +204,4 @@ const UsernameDonate = ({ id }) => {
   );
 };
 
-export { Avatar, Username, UsernameComment, UsernameDonate };
+export { Avatar, MessengerAvatar, Username, UsernameComment, UsernameDonate };

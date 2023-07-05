@@ -6,6 +6,7 @@ const userSlice = createSlice({
     currentUser: null,
     isFetching: false,
     error: false,
+    errorDes: "",
   },
   reducers: {
     loginStart: (state) => {
@@ -14,10 +15,12 @@ const userSlice = createSlice({
     loginSuccess: (state, action) => {
       state.isFetching = false;
       state.currentUser = action.payload;
+      state.errorDes = "";
     },
-    loginFailure: (state) => {
+    loginFailure: (state, action) => {
       state.isFetching = false;
       state.error = true;
+      state.errorDes = action.payload;
     },
     logout: (state) => {
       state.currentUser = null;

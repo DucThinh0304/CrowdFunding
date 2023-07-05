@@ -64,6 +64,21 @@ export const productData = [
   },
 ];
 
+export const pendingData = [
+  {
+    name: "Jan",
+    Sales: 0,
+  },
+  {
+    name: "Feb",
+    Sales: 0,
+  },
+  {
+    name: "Mar",
+    Sales: 0,
+  },
+];
+
 export const userRows = [
   {
     id: 1,

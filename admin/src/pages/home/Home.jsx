@@ -8,11 +8,15 @@ import WidgetLg from "../../components/widgetLg/WidgetLg";
 export default function Home() {
   return (
     <div className="home">
-      <FeaturedInfo />
-      <Chart data={userData} title="User Analytics" grid dataKey="Active User"/>
+      <Chart
+        data={userData}
+        title="Phân tích người dùng"
+        grid
+        dataKey="Active User"
+      />
       <div className="homeWidgets">
-        <WidgetSm/>
-        <WidgetLg/>
+        <WidgetSm />
+        <WidgetLg />
       </div>
     </div>
   );

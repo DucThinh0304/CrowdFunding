@@ -10,6 +10,9 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineOppositeContent, {
+  timelineOppositeContentClasses,
+} from "@mui/lab/TimelineOppositeContent";
 
 const Container = styled.div`
   display: flex;
@@ -70,31 +73,45 @@ const CampaignUpdate = () => {
   ) : (
     <Container>
       <Wrapper>
-        <Timeline>
+        <Timeline
+          sx={{
+            [`& .${timelineOppositeContentClasses.root}`]: {
+              flex: 0.2,
+            },
+          }}
+        >
           <TimelineItem>
+            <TimelineOppositeContent>30-06-2023</TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot />
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <UpdateContainer>12312312321312312312312321</UpdateContainer>
+              <UpdateContainer>
+                VTV Chuyển động 24h - Cuốn sách ra đời từ cộng đồng
+                <iframe
+                  width="560"
+                  height="315"
+                  src="https://www.youtube.com/embed/k6MIqGSvw_s"
+                  title="VTV Chuyển động 24h - Cuốn sách ra đời từ cộng đồng"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </UpdateContainer>
             </TimelineContent>
           </TimelineItem>
           <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <UpdateContainer>12312312321312312312312321</UpdateContainer>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
+            <TimelineOppositeContent>27-06-2023</TimelineOppositeContent>
             <TimelineSeparator>
               <TimelineDot />
             </TimelineSeparator>
             <TimelineContent>
-              <UpdateContainer>12312312321312312312312321</UpdateContainer>
+              <UpdateContainer>
+                Buổi lễ ra mắt cuốn sách sẽ được tổ chức vào ngày 26/07/2023 tại
+                trung tâm Văn hóa Pháp. Mọi chi tiết sẽ được cập nhật trên
+                fanpage của nhóm
+              </UpdateContainer>
             </TimelineContent>
           </TimelineItem>
         </Timeline>

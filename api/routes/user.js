@@ -232,4 +232,25 @@ router.put("/removefavorite/:id", async (req, res) => {
   }
 });
 
+//get following
+router.get("/followings/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const followings = await Promise.all(
+      user.followings.map((followingsId) => {
+        return User.findById(followingsId);
+      })
+    );
+    let followingList = [];
+    followings.map((following) => {
+      const { _id, username, name, avt } = following;
+      followingList.push({ _id, username, name, avt });
+    });
+    res.status(200).json(followingList);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

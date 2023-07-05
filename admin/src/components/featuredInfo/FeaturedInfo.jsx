@@ -1,39 +1,54 @@
 import "./featuredInfo.css";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { useState } from "react";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
+import { userRequest } from "../../requestMethods";
 
-export default function FeaturedInfo() {
-  return (
+export default function FeaturedInfo({ donatesum, donateneed, id }) {
+  const [number, setNumber] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const formatter = new Intl.NumberFormat(
+    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
+  );
+  useEffect(() => {
+    const getCampaign = async () => {
+      userRequest
+        .get(`/contributes/count/${id}`)
+        .then((res) => {
+          setNumber(res.data);
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    };
+    getCampaign();
+  }, [id]);
+  return loading ? (
+    <div className="featuredLoading">
+      <CircularProgress />
+    </div>
+  ) : (
     <div className="featured">
       <div className="featuredItem">
-        <span className="featuredTitle">Revanue</span>
+        <span className="featuredTitle">Số tiền thu được</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">$2,415</span>
-          <span className="featuredMoneyRate">
-            -11.4 <ArrowDownwardIcon className="featuredIcon negative" />
-          </span>
+          <span className="featuredMoney">{formatter.format(donatesum)} đ</span>
         </div>
-        <span className="featuredSub">Compared to last month</span>
       </div>
       <div className="featuredItem">
-        <span className="featuredTitle">Sales</span>
+        <span className="featuredTitle">Số tiền cần</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">$4,415</span>
-          <span className="featuredMoneyRate">
-            -1.4 <ArrowDownwardIcon className="featuredIcon negative" />
+          <span className="featuredMoney">
+            {formatter.format(donateneed)} đ
           </span>
         </div>
-        <span className="featuredSub">Compared to last month</span>
       </div>
       <div className="featuredItem">
-        <span className="featuredTitle">Cost</span>
+        <span className="featuredTitle">Số người đã ủng hộ</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">$2,225</span>
-          <span className="featuredMoneyRate">
-            +2.4 <ArrowUpwardIcon className="featuredIcon" />
-          </span>
+          <span className="featuredMoney">{number} người</span>
         </div>
-        <span className="featuredSub">Compared to last month</span>
       </div>
     </div>
   );

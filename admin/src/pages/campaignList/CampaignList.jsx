@@ -120,7 +120,7 @@ export default function CampaignList() {
   ];
 
   return loading ? (
-    <div className="productList">
+    <div className="loading">
       <CircularProgress />
     </div>
   ) : (

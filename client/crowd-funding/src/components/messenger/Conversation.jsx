@@ -47,7 +47,9 @@ const Conversation = ({ conversation, currentUser }) => {
         alt=""
         src={user?.avt ? user?.avt : NoAvt}
       ></ConversationImg>
-      <ConversationName></ConversationName>
+      <ConversationName>
+        {user?.name ? user?.name : user?.username}
+      </ConversationName>
     </Container>
   );
 };

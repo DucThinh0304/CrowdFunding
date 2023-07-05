@@ -178,6 +178,7 @@ const checkDay = (check) => {
 const PendingCampaign = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const isEdit = location.pathname.split("/")[1];
   const today = new Date();
   const oneDay = 24 * 60 * 60 * 1000;
   const [campaign, setCampaign] = useState({});
@@ -237,7 +238,7 @@ const PendingCampaign = () => {
     </Container>
   ) : (
     <Container>
-      <Navbar />
+      {isEdit !== "update-pending" && <Navbar />}
       <Center>
         <CampaignInfoContainer>
           <CampaignImage src={campaign.img} />
@@ -314,7 +315,7 @@ const PendingCampaign = () => {
           ))}
         </DonateContainer>
       </Bottom>
-      <Footer />
+      {isEdit !== "update-pending" && <Footer />}
     </Container>
   );
 };

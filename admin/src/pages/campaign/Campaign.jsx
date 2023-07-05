@@ -6,6 +6,7 @@ import PublishIcon from "@mui/icons-material/Publish";
 import { useEffect, useState } from "react";
 import { userRequest } from "../../requestMethods";
 import { CircularProgress } from "@mui/material";
+import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
 
 export default function Campaign() {
   const [campaign, setCampaign] = useState();
@@ -58,10 +59,15 @@ export default function Campaign() {
     <div className="product">
       <div className="productTitleContainer">
         <h1 className="productTitle">Dự án</h1>
-        <Link to="/newproduct">
+        <Link to="/newcampaign">
           <button className="productAddButton">Thêm</button>
         </Link>
       </div>
+      <FeaturedInfo
+        donateneed={campaign.donateneed}
+        donatesum={campaign.donatesum}
+        id={campaign._id}
+      />
       <div className="productTop">
         <div className="productTopLeft">
           <Chart data={productData} dataKey="Sales" title="Hiệu suất dự án" />
@@ -117,8 +123,8 @@ export default function Campaign() {
             ></textarea>
             <label>Active</label>
             <select name="active" id="active">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+              <option value="yes">Có</option>
+              <option value="no">Không</option>
             </select>
           </div>
           <div className="productFormRight">
@@ -129,7 +135,7 @@ export default function Campaign() {
               </label>
               <input type="file" id="file" style={{ display: "none" }} />
             </div>
-            <button className="productButton">Update</button>
+            <button className="productButton">Lưu thay đổi</button>
           </div>
         </form>
       </div>

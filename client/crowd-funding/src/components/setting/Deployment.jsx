@@ -74,7 +74,7 @@ const Deployment = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/campaign/" + params.row._id}>
+            <Link to={"/update-campaign/" + params.row._id}>
               <button className="campaignCheck">Cập nhật</button>
             </Link>
           </>

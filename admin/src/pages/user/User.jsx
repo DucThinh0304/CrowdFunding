@@ -74,7 +74,7 @@ export default function User() {
                 {convertDate(user.birthday)}
               </span>
             </div>
-            <span className="userShowTitle">Contact Details</span>
+            <span className="userShowTitle">Thông tin liên lạc</span>
             <div className="userShowInfo">
               <PhoneAndroidIcon className="userShowIcon" />
               <span className="userShowInfoTitle">{user.phonenumber}</span>
@@ -93,15 +93,15 @@ export default function User() {
                 <label>Username</label>
                 <input
                   type="text"
-                  placeholder="annabeck99"
+                  placeholder={user.username}
                   className="userUpdateInput"
                 />
               </div>
               <div className="userUpdateItem">
-                <label>Full Name</label>
+                <label>Tên</label>
                 <input
                   type="text"
-                  placeholder="Anna Becker"
+                  placeholder={user.name}
                   className="userUpdateInput"
                 />
               </div>
@@ -109,40 +109,28 @@ export default function User() {
                 <label>Email</label>
                 <input
                   type="text"
-                  placeholder="annabeck99@gmail.com"
+                  placeholder={user.email}
                   className="userUpdateInput"
                 />
               </div>
               <div className="userUpdateItem">
-                <label>Phone</label>
+                <label>Số điện thoại</label>
                 <input
                   type="text"
-                  placeholder="+1 123 456 67"
-                  className="userUpdateInput"
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Address</label>
-                <input
-                  type="text"
-                  placeholder="New York | USA"
+                  placeholder={user.phonenumber}
                   className="userUpdateInput"
                 />
               </div>
             </div>
             <div className="userUpdateRight">
               <div className="userUpdateUpload">
-                <img
-                  className="userUpdateImg"
-                  src="https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                  alt=""
-                />
+                <img className="userUpdateImg" src={user.avt} alt="" />
                 <label htmlFor="file">
                   <PublishIcon className="userUpdateIcon" />
                 </label>
                 <input type="file" id="file" style={{ display: "none" }} />
               </div>
-              <button className="userUpdateButton">Update</button>
+              <button className="userUpdateButton">Lưu thay đổi</button>
             </div>
           </form>
         </div>

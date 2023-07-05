@@ -106,7 +106,7 @@ export default function PendingList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/campaign/" + params.row._id}>
+            <Link to={"/pending/" + params.row._id}>
               <button className="productListEdit">Chỉnh sửa</button>
             </Link>
             <DeleteOutlineIcon

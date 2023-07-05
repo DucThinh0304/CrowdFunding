@@ -40,10 +40,6 @@ export default function Sidebar() {
               <TimelineIcon className="sidebarIcon" />
               Phân tích
             </li>
-            <li className="sidebarListItem">
-              <TrendingUpIcon className="sidebarIcon" />
-              Sales
-            </li>
           </ul>
         </div>
         <div className="sidebarMenu">
@@ -100,7 +96,7 @@ export default function Sidebar() {
           </ul>
         </div>
         <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Notifications</h3>
+          <h3 className="sidebarTitle">Thông báo</h3>
           <ul className="sidebarList">
             <li className="sidebarListItem">
               <MailOutlineIcon className="sidebarIcon" />
@@ -113,23 +109,6 @@ export default function Sidebar() {
             <li className="sidebarListItem">
               <ChatBubbleOutlineIcon className="sidebarIcon" />
               Messages
-            </li>
-          </ul>
-        </div>
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Staff</h3>
-          <ul className="sidebarList">
-            <li className="sidebarListItem">
-              <WorkOutlineIcon className="sidebarIcon" />
-              Manage
-            </li>
-            <li className="sidebarListItem">
-              <TimelineIcon className="sidebarIcon" />
-              Analytics
-            </li>
-            <li className="sidebarListItem">
-              <ReportIcon className="sidebarIcon" />
-              Reports
             </li>
           </ul>
         </div>

@@ -74,18 +74,7 @@ export default function TransactionList() {
       headerName: "Trạng thái",
       width: 150,
       renderCell: (params) => {
-        return (
-          <div className="productListItem">
-            {checkDay(
-              Math.round((date(params.row.dayfinish) - today) / oneDay)
-            ) === true
-              ? Math.round(
-                  Math.abs((date(params.row.dayfinish) - today) / oneDay)
-                )
-              : "0"}{" "}
-            ngày còn lại
-          </div>
-        );
+        return <div className="productListItem">Thành công</div>;
       },
     },
     {
@@ -121,7 +110,7 @@ export default function TransactionList() {
   ];
 
   return loading ? (
-    <div className="productList">
+    <div className="loading">
       <CircularProgress />
     </div>
   ) : (

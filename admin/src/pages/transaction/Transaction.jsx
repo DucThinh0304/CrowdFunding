@@ -1,32 +1,67 @@
 import { Link, useLocation } from "react-router-dom";
 import "./transaction.css";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
-import PublishIcon from "@mui/icons-material/Publish";
 import { useEffect, useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { Avatar, CircularProgress } from "@mui/material";
 import { userRequest } from "../../requestMethods";
 
 export default function Transaction() {
-  const [user, setUser] = useState([]);
+  const [contribute, setContribute] = useState(null);
+  const [user, setUser] = useState(null);
+  const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const page = location.pathname.split("/")[2];
   useEffect(() => {
-    const getCampaign = async () => {
+    const getContribute = async () => {
       userRequest
-        .get(`/users/find/${page}`)
+        .get(`/contributes/findbyId/${page}`)
         .then((res) => {
-          setUser(res.data);
-          setLoading(false);
+          setContribute(res.data);
         })
         .catch((err) => console.log(err));
     };
-    getCampaign();
+    getContribute();
   }, [page]);
+
+  useEffect(() => {
+    const getCampaign = async () => {
+      userRequest
+        .get(`/campaign/find/${contribute.campaign}`)
+        .then((res) => {
+          setCampaign(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+    contribute && getCampaign();
+  }, [contribute]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      userRequest
+        .get(`/users/public/${contribute.username}`)
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+    contribute && getUser();
+  }, [contribute]);
+
+  useEffect(() => {
+    console.log(user);
+    console.log(contribute);
+    console.log(campaign);
+    if (user !== null && contribute !== null && campaign !== null)
+      setLoading(false);
+  }, [contribute, user, campaign]);
+
   const convertDate = (s) => {
     let date = new Date(s);
     let year = date.getFullYear();
@@ -42,6 +77,9 @@ export default function Transaction() {
 
     return dt + "-" + month + "-" + year;
   };
+  const formatter = new Intl.NumberFormat(
+    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" })
+  );
   return loading ? (
     <div>
       <CircularProgress />
@@ -49,102 +87,83 @@ export default function Transaction() {
   ) : (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Chỉnh sửa người dùng</h1>
-        <Link to="/newUser">
-          <button className="userAddButton">Tạo mới</button>
-        </Link>
+        <h1 className="userTitle">Chi tiết giao dịch</h1>
       </div>
       <div className="userContainer">
         <div className="userShow">
           <div className="userShowTop">
-            <img src={user.avt} alt="" className="userShowImg" />
+            <img className="userShowImg" src={user.avt} />
             <div className="userShowTopTitle">
               <span className="userShowUsername">{user.name}</span>
             </div>
           </div>
           <div className="userShowBottom">
-            <span className="userShowTitle">Thông tin tài khoản</span>
+            <span className="userShowTitle">Thông tin giao dịch</span>
+            <div className="userShowInfo">
+              <VpnKeyIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">{contribute._id}</span>
+            </div>
+            <div className="userShowInfo">
+              <CalendarTodayIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">
+                {convertDate(contribute.createdAt)}
+              </span>
+            </div>
+            <div className="userShowInfo">
+              <AttachMoneyIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">
+                {formatter.format(contribute.amount)} đ
+              </span>
+            </div>
+            <div className="userShowInfo">
+              <CreditCardIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">{contribute.stripe}</span>
+            </div>
+            <span className="userShowTitle">Người giao dịch</span>
             <div className="userShowInfo">
               <PermIdentityIcon className="userShowIcon" />
               <span className="userShowInfoTitle">{user.username}</span>
             </div>
             <div className="userShowInfo">
-              <CalendarTodayIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">
-                {convertDate(user.birthday)}
-              </span>
-            </div>
-            <span className="userShowTitle">Contact Details</span>
-            <div className="userShowInfo">
               <PhoneAndroidIcon className="userShowIcon" />
               <span className="userShowInfoTitle">{user.phonenumber}</span>
-            </div>
-            <div className="userShowInfo">
-              <MailOutlineIcon className="userShowIcon" />
-              <span className="userShowInfoTitle">{user.email}</span>
             </div>
           </div>
         </div>
         <div className="userUpdate">
-          <span className="userUpdateTitle">Edit</span>
-          <form className="userUpdateForm">
-            <div className="userUpdateLeft">
-              <div className="userUpdateItem">
-                <label>Username</label>
-                <input
-                  type="text"
-                  placeholder="annabeck99"
-                  className="userUpdateInput"
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Anna Becker"
-                  className="userUpdateInput"
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Email</label>
-                <input
-                  type="text"
-                  placeholder="annabeck99@gmail.com"
-                  className="userUpdateInput"
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Phone</label>
-                <input
-                  type="text"
-                  placeholder="+1 123 456 67"
-                  className="userUpdateInput"
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Address</label>
-                <input
-                  type="text"
-                  placeholder="New York | USA"
-                  className="userUpdateInput"
-                />
-              </div>
+          <div className="userShowTop">
+            <img className="userShowImg" src={campaign.img} />
+            <div className="userShowTopTitle">
+              <span className="userShowUsername">{campaign.title}</span>
             </div>
-            <div className="userUpdateRight">
-              <div className="userUpdateUpload">
-                <img
-                  className="userUpdateImg"
-                  src="https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                  alt=""
-                />
-                <label htmlFor="file">
-                  <PublishIcon className="userUpdateIcon" />
-                </label>
-                <input type="file" id="file" style={{ display: "none" }} />
-              </div>
-              <button className="userUpdateButton">Update</button>
+          </div>
+          <div className="userShowBottom">
+            <span className="userShowTitle">
+              Thông tin dự án đã chuyển khoản
+            </span>
+            <div className="userShowInfo">
+              <CampaignIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">{campaign._id}</span>
             </div>
-          </form>
+            <div className="userShowInfo">
+              <CalendarTodayIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">
+                {convertDate(campaign.createdAt)}
+              </span>
+            </div>
+            <div className="userShowInfo">
+              <AttachMoneyIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">
+                {formatter.format(campaign.donatesum)} đ
+              </span>
+            </div>
+            <div className="userShowInfo">
+              <AttachMoneyIcon className="userShowIcon" />
+              <span className="userShowInfoTitle">
+                {formatter.format(campaign.donateneed)} đ
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

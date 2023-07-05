@@ -21,6 +21,8 @@ import CreateCampaign from "./pages/CreateCampaign";
 import PendingCampaign from "./pages/PendingCampaign";
 import UpdatePending from "./pages/UpdatePending";
 import Messenger from "./pages/Messenger";
+import CampaignUpdate from "./components/campaign/CampaignUpdate";
+import AddUpate from "./pages/AddUpdate";
 
 function App() {
   const CampaignPage = () => {
@@ -79,6 +81,10 @@ function App() {
         <Route
           path="/update-pending/:id"
           element={!user ? <Navigate to="/login" /> : <UpdatePending />}
+        />
+        <Route
+          path="/update-campaign/:id"
+          element={!user ? <Navigate to="/login" /> : <AddUpate />}
         />
         <Route
           path="/messenger"

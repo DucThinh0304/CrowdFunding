@@ -6,16 +6,16 @@ export default function NewUser() {
       <h1 className="newUserTitle">Thêm người dùng mới</h1>
       <form className="newUserForm">
         <div className="newUserItem">
-          <label>Tên tài khoản</label>
-          <input type="text" placeholder="john" />
+          <label>Username</label>
+          <input type="text" placeholder="nguyenvana" />
         </div>
         <div className="newUserItem">
           <label>Tên người dùng</label>
-          <input type="text" placeholder="John Smith" />
+          <input type="text" placeholder="Nguyễn Văn A" />
         </div>
         <div className="newUserItem">
           <label>Email</label>
-          <input type="email" placeholder="john@gmail.com" />
+          <input type="email" placeholder="nguyenvana@gmail.com" />
         </div>
         <div className="newUserItem">
           <label>Mật khẩu</label>
@@ -23,14 +23,10 @@ export default function NewUser() {
         </div>
         <div className="newUserItem">
           <label>Số điện thoại</label>
-          <input type="text" placeholder="+1 123 456 78" />
+          <input type="text" placeholder="0123456789" />
         </div>
         <div className="newUserItem">
-          <label>Địa chỉ</label>
-          <input type="text" placeholder="New York | USA" />
-        </div>
-        <div className="newUserItem">
-          <label>Gender</label>
+          <label>Giới tính</label>
           <div className="newUserGender">
             <input type="radio" name="gender" id="male" value="male" />
             <label for="male">Nam</label>
@@ -41,13 +37,14 @@ export default function NewUser() {
           </div>
         </div>
         <div className="newUserItem">
-          <label>Active</label>
+          <label>Role</label>
           <select className="newUserSelect" name="active" id="active">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
+            <option value="user">Người dùng</option>
+            <option value="autheticate">Người dùng đã xác thực</option>
+            <option value="admin">Admin</option>
           </select>
         </div>
-        <button className="newUserButton">Create</button>
+        <button className="newUserButton">Tạo mới</button>
       </form>
     </div>
   );

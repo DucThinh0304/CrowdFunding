@@ -1,6 +1,8 @@
 import React from "react";
 import { format, register } from "timeago.js";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { Avatar, MessengerAvatar } from "../Avatar";
 
 const Messages = styled.div`
   display: flex;
@@ -33,6 +35,12 @@ const MessageBottom = styled.div`
   margin-top: 10px;
 `;
 
+const MessageBottomN = styled.div`
+  font-size: 12px;
+  margin-top: 10px;
+  margin-left: 10px;
+`;
+
 const MessagesOwn = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,42 +57,45 @@ const MessageTextOwn = styled.p`
 `;
 
 const Message = ({ message, own }) => {
+  const user = useSelector((state) => state.user.currentUser);
+
   const localeFunc = (number, index, totalSec) => {
     // number: the timeago / timein number;
     // index: the index of array below;
     // totalSec: total seconds between date to be formatted and today's date;
     return [
-      ["just now", "mới đây"],
-      ["%s seconds ago", "%s giây trước"],
-      ["1 minute ago", "1 phút trước"],
-      ["%s minutes ago", "%s phút trước"],
-      ["1 hour ago", "in 1 hour"],
-      ["%s hours ago", "in %s hours"],
-      ["1 day ago", "in 1 day"],
-      ["%s days ago", "in %s days"],
-      ["1 week ago", "in 1 week"],
-      ["%s weeks ago", "in %s weeks"],
-      ["1 month ago", "in 1 month"],
-      ["%s months ago", "in %s months"],
-      ["1 year ago", "in 1 year"],
-      ["%s years ago", "in %s years"],
+      ["mới đây", "mới đây"],
+      ["%s giây trước", "%s giây trước"],
+      ["1 phút trước", "1 phút trước"],
+      ["%s phút trước", "%s phút trước"],
+      ["1 tiếng trước", "1 tiếng trước"],
+      ["%s tiếng trước", "%s tiếng trước"],
+      ["1 ngày trước", "in 1 day"],
+      ["%s ngày trước", "in %s days"],
+      ["1 tuần trước", "in 1 week"],
+      ["%s tuần trước", "in %s weeks"],
+      ["1 tháng trước", "in 1 month"],
+      ["%s tháng trước", "in %s months"],
+      ["1 năm trước", "in 1 year"],
+      ["%s năm trước", "in %s years"],
     ][index];
   };
   register("my-locale", localeFunc);
   return own ? (
     <MessagesOwn>
       <MessageTop>
-        <MessageImg />
+        <MessageImg src={user.avt} />
         <MessageTextOwn>{message.text}</MessageTextOwn>
       </MessageTop>
-      <MessageBottom>{format(message.createdAt)}</MessageBottom>
+      <MessageBottom>{format(message.createdAt, "my-locale")}</MessageBottom>
     </MessagesOwn>
   ) : (
     <Messages>
       <MessageTop>
+        <MessengerAvatar id={message.sender} />
         <MessageText>{message.text}</MessageText>
       </MessageTop>
-      <MessageBottom>{format(message.createdAt)}</MessageBottom>
+      <MessageBottomN>{format(message.createdAt, "my-locale")}</MessageBottomN>
     </Messages>
   );
 };

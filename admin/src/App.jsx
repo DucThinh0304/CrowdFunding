@@ -19,6 +19,8 @@ import Login from "./pages/login/Login";
 import { useSelector } from "react-redux";
 import Inaccessible from "./pages/login/Inaccessible";
 import PendingList from "./pages/pendingList/PendingList";
+import Pending from "./pages/pending/Pending";
+import Transaction from "./pages/transaction/Transaction";
 import TransactionList from "./pages/transactionList/TransactionList";
 
 function App() {
@@ -67,7 +69,9 @@ function App() {
           <Route path="/campaign/:campaignId" element={<Campaign />} />
           <Route path="/newcampaign" element={<NewCampaign />} />
           <Route path="/pendings" element={<PendingList />} />
+          <Route path="/pending/:id" element={<Pending />} />
           <Route path="/transactions" element={<TransactionList />} />
+          <Route path="/transaction/:id" element={<Transaction />} />
         </Routes>
       </div>
     </Router>

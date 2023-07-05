@@ -10,6 +10,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MainLogo from "../asset/Happy.png";
 import { mobile } from "../responsive";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ChatIcon from "@mui/icons-material/Chat";
 
 const Container = styled.div`
   height: 94px;
@@ -226,6 +227,11 @@ const Navbar = () => {
         <Right>
           <WrapLogin>
             <Icon>
+              <Link to="/messenger">
+                <IconButton>
+                  <ChatIcon />
+                </IconButton>
+              </Link>
               {checkIsAuthority() && (
                 <>
                   <IconButton onClick={(e) => handleClickNew(e, user)}>

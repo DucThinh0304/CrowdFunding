@@ -42,4 +42,29 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/findbyId/:id", async (req, res) => {
+  try {
+    const contributes = await Contribute.findById(req.params.id);
+    res.status(200).json(contributes);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+router.get("/count/:id", async (req, res) => {
+  try {
+    const contributes = await Contribute.count({
+      campaign: `${req.params.id}`,
+    });
+
+    res.status(200).json(contributes);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 module.exports = router;

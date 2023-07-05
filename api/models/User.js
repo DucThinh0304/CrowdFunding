@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema(
     phonenumber: { type: String, default: "" },
     gender: { type: String, default: "" },
     birthday: { type: Date, default: "1980-01-01T00:00:00.902+00:00" },
+    followings: { type: Array, default: ["643ed45e343a5b44cd8ca892"] },
   },
   {
     timestamps: true,

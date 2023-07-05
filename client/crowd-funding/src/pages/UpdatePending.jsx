@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -11,32 +11,28 @@ import {
 } from "firebase/storage";
 import app from "../firebase";
 import { addPending } from "../redux/apiCalls";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { userRequest } from "../requestMethod";
-import { CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Box, CircularProgress } from "@mui/material";
+import PendingCampaign from "./PendingCampaign";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Center = styled.div`
+const BorderContainer = styled.div`
   display: flex;
-  background-color: #eee;
   align-items: center;
   justify-content: center;
-  padding-top: 50px;
-  padding-bottom: 80px;
+  width: 100%;
+  margin: 10px;
 `;
 
-const LoadingContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
+const Border = styled.div`
+  border-radius: 10px;
+  border: #eee solid 1px;
+  padding: 50px;
+  width: 80%;
 `;
 
 const ContainerInput = styled.div`
@@ -81,8 +77,6 @@ const Input = styled.input`
   font-size: 14px;
 `;
 
-const ImageLink = styled.a``;
-
 const TextArea = styled.textarea`
   padding: 5px;
   font-size: 14px;
@@ -97,10 +91,16 @@ const Span = styled.span`
   color: red;
 `;
 
-const Button = styled.button`
-  width: 40%;
-  font-weight: 700;
+const ButtonContainer = styled.div`
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
+  display: flex;
+`;
+
+const Button = styled.button`
+  width: 400px;
+  font-weight: 700;
   background-color: transparent;
   text-transform: uppercase;
   color: #0275d8;
@@ -119,9 +119,19 @@ const Button = styled.button`
   }
 `;
 
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 400px;
+  background-color: transparent;
+  border: 1px solid #c9366f;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+  cursor: not-allowed;
+  align-items: center;
+  justify-content: center;
+`;
+
 const UpdatePending = () => {
-  const [pending, setPending] = useState();
-  const [loading, setLoading] = useState(true);
   const refName = useRef(null);
   const refTag = useRef(null);
   const refDonateNeed = useRef(null);
@@ -129,116 +139,90 @@ const UpdatePending = () => {
   const refDonateAmount = useRef(null);
   const refDescription = useRef(null);
   const [file, setFile] = useState("");
+  const [isSave, setIsSave] = useState("notsave");
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const id = location.pathname.split("/")[2];
-
-  useEffect(() => {
-    const getPendings = async () => {
-      try {
-        const resCampaign = await userRequest.get(`/pendings/findone/${id}`);
-        setPending(resCampaign.data);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getPendings();
-  }, [id]);
-
+  const navigate = useNavigate();
+  const { isFetching } = useSelector((state) => state.user);
   const handleClick = (e) => {
-    e.preventDefault();
-    const title = refName.current.value;
-    const tag = refTag.current.value.split(",");
-    const donateneed = refDonateNeed.current.value;
-    const day = refDayFinish.current.value;
-    const dayfinish = new Date(day).toISOString();
-    const donateamounts = refDonateAmount.current.value.split(",");
-    const description = refDescription.current.value;
-    const username = user._id;
-    if (file.name !== undefined) {
-      const fileName = new Date().getTime() + file.name;
-      const storage = getStorage(app);
-      const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+    try {
+      e.preventDefault();
+      setIsSave("issave");
+      const title = refName.current.value;
+      const tag = refTag.current.value.split(",");
+      const donateneed = refDonateNeed.current.value;
+      const day = refDayFinish.current.value;
+      const dayfinish = new Date(day).toISOString();
+      const donateamounts = refDonateAmount.current.value.split(",");
+      const description = refDescription.current.value;
+      const username = user._id;
+      if (file.name !== undefined) {
+        const fileName = new Date().getTime() + file.name;
+        const storage = getStorage(app);
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-            default:
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then((img) => {
+                addPending(dispatch, {
+                  title,
+                  username,
+                  tag,
+                  donateneed,
+                  dayfinish,
+                  donateamounts,
+                  description,
+                  img,
+                });
+              })
+              .then(setIsSave("done"));
           }
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((img) => {
-            addPending(dispatch, {
-              title,
-              username,
-              tag,
-              donateneed,
-              dayfinish,
-              donateamounts,
-              description,
-              img,
-            });
-          });
-        }
-      );
+        );
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
-  return loading ? (
-    <Container>
-      <Navbar />
-      <Center>
-        <LoadingContainer>
-          <CircularProgress />
-        </LoadingContainer>
-      </Center>
-      <Footer />
-    </Container>
-  ) : (
+  useEffect(() => {
+    if (isSave === "done" && !isFetching) navigate("/profile");
+  }, [isSave, isFetching]);
+  return (
     <Container>
       <Navbar />
       <TitleContainer>
         <Title>Chỉnh sửa dự án</Title>
       </TitleContainer>
+      <BorderContainer>
+        <Border>
+          <PendingCampaign />
+        </Border>
+      </BorderContainer>
       <ContainerInput>
-        <ContainerRow>
-          <Wrapper position="left">
-            <Label name="gender">
-              Hình ảnh dự án <Span>*</Span>
-            </Label>
-            <Input
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-              accept="image/png, image/gif, image/jpeg"
-            ></Input>
-          </Wrapper>
-          <Wrapper position="right">
-            <Label>
-              <ImageLink href={pending.img}>Hình ảnh</ImageLink>
-            </Label>
-          </Wrapper>
-        </ContainerRow>
+        <Label>
+          Hình ảnh dự án <Span>*</Span>
+        </Label>
+        <Input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+          accept="image/png, image/gif, image/jpeg"
+        ></Input>
         <Label>
           Tên dự án <Span>*</Span>
         </Label>
-        <Input ref={refName}>{pending.title}</Input>
+        <Input ref={refName}></Input>
         <Label>
           tag <Span>*</Span>
         </Label>
@@ -265,7 +249,17 @@ const UpdatePending = () => {
           Miêu tả dự án <Span>*</Span>
         </Label>
         <TextArea ref={refDescription}></TextArea>
-        <Button onClick={(e) => handleClick(e)}>Lưu dự án</Button>
+        <ButtonContainer>
+          {isSave === "issave" ? (
+            <LoadingContainer>
+              <CircularProgress
+                style={{ marginTop: "6px", marginBottom: "6px" }}
+              ></CircularProgress>
+            </LoadingContainer>
+          ) : (
+            <Button onClick={(e) => handleClick(e)}>Lưu cập nhật</Button>
+          )}
+        </ButtonContainer>
       </ContainerInput>
       <Footer />
     </Container>
