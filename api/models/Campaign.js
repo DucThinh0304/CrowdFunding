@@ -21,7 +21,6 @@ const CampaignSchema = new mongoose.Schema(
     donateamounts: { type: Array },
     update: { type: Array },
     comment: { type: Array },
-    isReturn: { type: Boolean, require: true, default: false },
   },
   {
     timestamps: true,

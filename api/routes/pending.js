@@ -5,11 +5,11 @@ const {
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 const Pending = require("../models/Pending");
+const Campaign = require("../models/Campaign");
 
 //CREATE
 router.post("/", async (req, res) => {
   const newPending = new Pending(req.body);
-  console.log(newPending);
   try {
     const savedPending = await newPending.save();
     res.status(201).json(savedPending);
@@ -96,5 +96,33 @@ router.get("/", async (req, res) => {
     return;
   }
 });
+
+// //MOVE TO PENDING
+
+// router.put("/move/:id", async (req, res) => {
+//   try {
+//     const campaign = await Campaign.findById(req.params.id);
+//     // const pending = new Pending(campaign)
+//     const pending = new Pending({
+//       title: campaign.title,
+//       tag: campaign.tag,
+//       donateneed: campaign.donateneed,
+//       donatesum: campaign.donatesum,
+//       img: campaign.img,
+//       dayfinish: campaign.dayfinish,
+//       username: campaign.username,
+//       description: campaign.description,
+//       donateamounts: campaign.donateamounts,
+//     });
+//     await pending.save();
+//     await Campaign.findByIdAndDelete(req.params.id);
+//     res.status(200).json();
+//     return;
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//     return;
+//   }
+// });
 
 module.exports = router;

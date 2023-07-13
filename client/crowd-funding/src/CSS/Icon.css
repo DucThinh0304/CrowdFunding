@@ -21,3 +21,7 @@
 .icon_allcampaign:hover {
   color: #3c52b2;
 }
+
+.userShowIcon {
+  font-size: 16px !important;
+}

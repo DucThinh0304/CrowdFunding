@@ -10,8 +10,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase";
-import { addPending } from "../redux/apiCalls";
-import { useNavigate } from "react-router-dom";
+import { addPending, addUpdate } from "../redux/apiCalls";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import CampaignUpdate from "../components/campaign/CampaignUpdate";
 
@@ -116,31 +116,21 @@ const LoadingContainer = styled.div`
   justify-content: center;
 `;
 
-const AddUpate = () => {
-  const refName = useRef(null);
-  const refTag = useRef(null);
-  const refDonateNeed = useRef(null);
-  const refDayFinish = useRef(null);
-  const refDonateAmount = useRef(null);
+const AddUpdate = () => {
   const refDescription = useRef(null);
   const [file, setFile] = useState("");
   const [isSave, setIsSave] = useState("notsave");
-  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const page = location.pathname.split("/")[2];
   const navigate = useNavigate();
   const { isFetching } = useSelector((state) => state.user);
   const handleClick = (e) => {
     try {
       e.preventDefault();
       setIsSave("issave");
-      const title = refName.current.value;
-      const tag = refTag.current.value.split(",");
-      const donateneed = refDonateNeed.current.value;
-      const day = refDayFinish.current.value;
-      const dayfinish = new Date(day).toISOString();
-      const donateamounts = refDonateAmount.current.value.split(",");
+      const day = new Date();
       const description = refDescription.current.value;
-      const username = user._id;
       if (file.name !== undefined) {
         const fileName = new Date().getTime() + file.name;
         const storage = getStorage(app);
@@ -162,27 +152,27 @@ const AddUpate = () => {
           () => {
             getDownloadURL(uploadTask.snapshot.ref)
               .then((img) => {
-                addPending(dispatch, {
-                  title,
-                  username,
-                  tag,
-                  donateneed,
-                  dayfinish,
-                  donateamounts,
+                addUpdate(dispatch, page, {
                   description,
                   img,
+                  day,
                 });
               })
               .then(setIsSave("done"));
           }
         );
+      } else {
+        addUpdate(dispatch, page, {
+          description,
+          day,
+        }).then(setIsSave("done"));
       }
     } catch (e) {
       console.log(e);
     }
   };
   useEffect(() => {
-    if (isSave === "done" && !isFetching) navigate("/profile");
+    if (isSave === "done" && !isFetching) navigate(0);
   }, [isSave, isFetching]);
   return (
     <Container>
@@ -221,4 +211,4 @@ const AddUpate = () => {
   );
 };
 
-export default AddUpate;
+export default AddUpdate;

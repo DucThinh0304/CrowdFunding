@@ -7,16 +7,17 @@ const stripe = require("stripe")(KEY);
 
 router.post("/payment/:id", async (req, res) => {
   try {
+    const money = (req.body.amount * 98) / 100;
     const charges = stripe.charges.create({
       source: req.body.tokenId,
       amount: req.body.amount,
       currency: "vnd",
     });
 
-    const newContribute = await new Contribute({
+    const newContribute = new Contribute({
       username: req.params.id,
       campaign: req.body.campaignId,
-      amount: req.body.amount,
+      amount: money,
       stripe: req.body.tokenId,
     });
     const savedContribute = await newContribute.save();
@@ -24,7 +25,7 @@ router.post("/payment/:id", async (req, res) => {
     await Campaign.findOneAndUpdate(
       { _id: req.body.campaignId },
       {
-        $inc: { donatesum: req.body.amount, supporters: 1 },
+        $inc: { donatesum: money, supporters: 1 },
       }
     );
 

@@ -23,6 +23,7 @@ import UpdatePending from "./pages/UpdatePending";
 import Messenger from "./pages/Messenger";
 import CampaignUpdate from "./components/campaign/CampaignUpdate";
 import AddUpate from "./pages/AddUpdate";
+import UserInformation from "./pages/UserInformation";
 
 function App() {
   const CampaignPage = () => {
@@ -90,6 +91,7 @@ function App() {
           path="/messenger"
           element={!user ? <Navigate to="/login" /> : <Messenger />}
         />
+        <Route path="/user/:id" element={<UserInformation />} />
       </Routes>
     </Router>
   );

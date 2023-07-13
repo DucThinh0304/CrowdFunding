@@ -114,18 +114,13 @@ export default function Campaign() {
         <form className="productForm">
           <div className="productFormLeft">
             <label>Tên Dự Án</label>
-            <input type="text" placeholder={campaign.title} />
+            <input type="text" value={campaign.title}></input>
             <label>Miêu Tả</label>
             <textarea
               id="idStock"
               className="textarea"
-              placeholder={campaign.description.slice(1, -1)}
+              value={campaign.description.slice(1, -1)}
             ></textarea>
-            <label>Active</label>
-            <select name="active" id="active">
-              <option value="yes">Có</option>
-              <option value="no">Không</option>
-            </select>
           </div>
           <div className="productFormRight">
             <div className="productUpload">

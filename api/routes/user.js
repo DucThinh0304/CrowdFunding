@@ -4,7 +4,13 @@ const {
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 const User = require("../models/User");
+const Campaign = require("../models/Campaign");
 const CryptoJS = require("crypto-js");
+const Conversation = require("../models/Conversation");
+const Contribute = require("../models/Contribute");
+const Message = require("../models/Message");
+const Address = require("../models/Address");
+const Pending = require("../models/Pending");
 
 //UPDATE
 router.put("/:id", async (req, res) => {
@@ -69,12 +75,59 @@ router.put("/password/:id", async (req, res) => {
 
 //DELETE
 
-router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.status(200).json("User has been deleted...");
+    await User.updateMany(
+      { followings: `${req.params.id}` },
+      {
+        $pullAll: {
+          followings: `${req.params.id}`,
+        },
+      }
+    );
+    await Campaign.deleteMany({ username: `${req.params.id}` });
+    await Campaign.updateMany(
+      {
+        comment: [
+          {
+            userId: `${req.params.id}`,
+          },
+        ],
+      },
+      {
+        $pullAll: {
+          comment: [
+            {
+              userId: `${req.params.id}`,
+            },
+          ],
+        },
+      }
+    );
+    await Pending.deleteMany({ username: req.params.id });
+    await Contribute.updateMany(
+      { username: req.params.id },
+      { $set: { username: "64ae6e54492ff07d2c2a9d80" } }
+    );
+
+    await Message.updateMany(
+      { sender: req.params.id },
+      { $set: { sender: "64ae6e54492ff07d2c2a9d80" } }
+    );
+    await Conversation.updateMany(
+      { members: `${req.params.id}` },
+      {
+        $set: {
+          "members.$": "64ae6e54492ff07d2c2a9d80",
+        },
+      }
+    );
+    await Address.deleteMany({ username: req.params.id });
+    res.status(200).json("Người dùng đã bị xóa...");
     return;
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
     return;
   }
@@ -250,6 +303,66 @@ router.get("/followings/:userId", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+router.post("/following/:id", async (req, res) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: {
+          followings: `${req.body.userId}`,
+        },
+      },
+      { new: true }
+    );
+    const { password, ...others } = updatedUser._doc;
+    const newConversation = new Conversation({
+      members: [req.params.id, req.body.userId],
+    });
+    const savedConversation = await newConversation.save();
+    res.status(200).json(others);
+    return;
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+    return;
+  }
+});
+
+router.post("/new", async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (user) {
+    res.status(403).json("Đã tồn tại tài khoản này");
+    return;
+  }
+  const email = await User.findOne({ email: req.body.email });
+  if (email) {
+    res.status(403).json("Email này đã được sử dụng");
+    return;
+  }
+  const newUser = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.PASS_SEC
+    ).toString(),
+    avt: req.body.avt,
+    name: req.body.name,
+    phonenumber: req.body.phonenumber,
+    gender: req.body.gender,
+    isAuthority: req.body.isAuthority,
+    isAdmin: req.body.isAdmin,
+  });
+  try {
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
   }
 });
 

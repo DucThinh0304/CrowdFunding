@@ -21,6 +21,7 @@ const LoadingContainer = styled.div`
 
 const Container = styled.div`
   display: flex;
+  width: 100vw;
 `;
 
 const Desc = styled.div`
@@ -68,6 +69,12 @@ const CampaignInfomation = () => {
   const [loading, setLoading] = useState(true);
   const [money, setMoney] = useState(0);
   const [stripeToken, setStripeToken] = useState(null);
+  const today = new Date();
+  const oneDay = 24 * 60 * 60 * 1000;
+  const date = new Date(campaign.dayfinish);
+  const checkDay = (check) => {
+    return check < 0 ? false : true;
+  };
 
   const onToken = (token) => {
     setStripeToken(token);
@@ -113,7 +120,9 @@ const CampaignInfomation = () => {
     <Container>
       <Desc>{campaign.description}</Desc>
       <DonateContainer>
-        Ủng hộ nhận quà
+        {checkDay(Math.round((date - today) / oneDay)) === true
+          ? "Ủng hộ nhận quà"
+          : "Đã hết thời gian ủng hộ"}
         {campaign.donateamounts.map((donate) => (
           <DonateBorder>
             <StripeCheckout
@@ -125,7 +134,16 @@ const CampaignInfomation = () => {
               token={onToken}
               currency="VND"
             >
-              <Button onClick={() => setMoney(donate)}>{donate} ₫</Button>
+              <Button
+                onClick={() => setMoney(donate)}
+                disabled={
+                  checkDay(Math.round((date - today) / oneDay)) === true
+                    ? false
+                    : true
+                }
+              >
+                {donate} ₫
+              </Button>
             </StripeCheckout>
           </DonateBorder>
         ))}

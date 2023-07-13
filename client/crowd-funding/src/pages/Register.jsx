@@ -214,6 +214,7 @@ const Register = () => {
             onChange={(e) => {
               setEmail(e.target.value);
               setErrEmail(false);
+              setErrEmailValid(false);
             }}
           />
           {errEmail && <Error>Bạn cần nhập Email</Error>}

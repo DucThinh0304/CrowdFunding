@@ -37,3 +37,8 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.textarea {
+  width: 900px;
+  height: 300px;
+}

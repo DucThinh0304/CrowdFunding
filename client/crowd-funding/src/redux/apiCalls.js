@@ -21,6 +21,12 @@ import {
   changePasswordStart,
   changePasswordSuccess,
   changePasswordFailure,
+  textStart,
+  textSuccess,
+  textFailure,
+  addUpdateStart,
+  addUpdateSuccess,
+  addUpdateFailure,
 } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethod";
 import {
@@ -147,6 +153,7 @@ export const getStripe = async (dispatch, id) => {
   dispatch(getStripeStart());
   try {
     const res = await publicRequest.get(`/contributes/find/${id}`);
+    res.data.accessToken = getAccessToken();
     dispatch(getStripeSuccess(res.data));
   } catch (err) {
     console.log(err);
@@ -158,9 +165,9 @@ export const addComment = async (dispatch, id, comment) => {
   dispatch(addCommentStart());
   try {
     const res = await userRequest.post(`/campaign/comment/${id}`, comment);
+    res.data.accessToken = getAccessToken();
     dispatch(addCommentSuccess(res.data));
   } catch (err) {
-    console.log(err);
     dispatch(addCommentFailure());
   }
 };
@@ -172,7 +179,27 @@ export const changePassword = async (dispatch, id, password) => {
     dispatch(changePasswordSuccess());
     logoutUser(dispatch);
   } catch (err) {
-    console.log(err);
     dispatch(changePasswordFailure());
+  }
+};
+
+export const text = async (dispatch, id, userId) => {
+  dispatch(textStart());
+  try {
+    const res = await publicRequest.post(`/users/following/${id}`, userId);
+    res.data.accessToken = getAccessToken();
+    dispatch(textSuccess(res.data));
+  } catch (err) {
+    dispatch(textFailure());
+  }
+};
+
+export const addUpdate = async (dispatch, id, update) => {
+  dispatch(addUpdateStart());
+  try {
+    const res = await publicRequest.put(`/campaign/update/${id}`, update);
+    dispatch(addUpdateSuccess());
+  } catch (err) {
+    dispatch(addUpdateFailure());
   }
 };

@@ -1,18 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
 import "./pending.css";
 import PublishIcon from "@mui/icons-material/Publish";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { userRequest } from "../../requestMethods";
 import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
 import Chart from "../../components/chart/Chart";
-import { productData, pendingData } from "../../dummyData";
+import { pendingData } from "../../dummyData";
+import { savingPending } from "../../redux/apiCalls";
+import { useDispatch } from "react-redux";
 
 export default function Pending() {
   const [campaign, setCampaign] = useState();
   const [loading, setLoading] = useState(true);
+  const [title, setTitle] = useState(true);
+  const [description, setDescription] = useState(true);
+  const refActive = useRef(null);
   const location = useLocation();
   const page = location.pathname.split("/")[2];
+  const dispatch = useDispatch();
   useEffect(() => {
     const getCampaign = async () => {
       userRequest
@@ -50,6 +56,12 @@ export default function Pending() {
   const oneDay = 24 * 60 * 60 * 1000;
   const date = (day) => {
     return new Date(day);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    const isMove = refActive.current.value === "yes" ? true : false;
+    savingPending(dispatch, page, isMove, { title, description });
   };
   return loading ? (
     <div>
@@ -109,15 +121,20 @@ export default function Pending() {
         <form className="productForm">
           <div className="productFormLeft">
             <label>Tên Dự Án</label>
-            <input type="text" placeholder={campaign.title} />
+            <input
+              type="text"
+              defaultValue={campaign.title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
             <label>Miêu Tả</label>
             <textarea
               id="idStock"
               className="textarea"
-              placeholder={campaign.description.slice(1, -1)}
+              defaultValue={campaign.description.slice(1, -1)}
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             <label>Active</label>
-            <select name="active" id="active">
+            <select name="active" id="active" ref={refActive}>
               <option value="yes">Có</option>
               <option value="no" selected="selected">
                 Không
@@ -132,7 +149,9 @@ export default function Pending() {
               </label>
               <input type="file" id="file" style={{ display: "none" }} />
             </div>
-            <button className="productButton">Lưu thay đổi</button>
+            <button className="productButton" onClick={(e) => handleSave(e)}>
+              Lưu thay đổi
+            </button>
           </div>
         </form>
       </div>

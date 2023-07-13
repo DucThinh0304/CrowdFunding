@@ -88,7 +88,7 @@ const Favorite = () => {
     </CircularProgressContainer>
   ) : (
     <Container>
-      {user.support.length > 0 ? (
+      {user.favorite.length > 0 ? (
         <DataGrid
           localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
           rows={mergedData()}

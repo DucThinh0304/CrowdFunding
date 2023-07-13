@@ -2,7 +2,7 @@ import "./transactionList.css";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { productRows } from "../../dummyData";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
@@ -15,6 +15,7 @@ export default function TransactionList() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const page = location.pathname.split("/")[1];
+  const navigate = useNavigate();
   const checkDay = (check) => {
     return check < 0 ? false : true;
   };
@@ -40,7 +41,10 @@ export default function TransactionList() {
   }, [page]);
 
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    userRequest
+      .delete(`/contributes/${id}`)
+      .then(navigate(0))
+      .catch((err) => console.log(err));
   };
 
   const columns = [
@@ -101,7 +105,7 @@ export default function TransactionList() {
             </Link>
             <RotateLeftIcon
               className="productListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             />
           </>
         );

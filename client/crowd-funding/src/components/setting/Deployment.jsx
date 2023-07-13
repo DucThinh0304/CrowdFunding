@@ -98,7 +98,7 @@ const Deployment = () => {
           getRowId={(row) => row._id}
         />
       ) : (
-        <div>Bạn chưa có dự án nào đang chờ duyệt</div>
+        <div>Bạn chưa có dự án nào được duyệt</div>
       )}{" "}
     </Container>
   );

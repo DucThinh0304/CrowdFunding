@@ -2,24 +2,19 @@ import "./userList.css";
 import { DataGrid, viVN } from "@mui/x-data-grid";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { userRows } from "../../dummyData";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { userRequest } from "../../requestMethods";
 import NoAvt from "../../asset/NoAvt.png";
 
 export default function UserList() {
-  const [data, setData] = useState(userRows);
-
+  const navigate = useNavigate();
   const handleDelete = (id) => {
     userRequest
       .delete(`/users/${id}`)
-      .then((res) => {
-        setUsers(res.data);
-        setLoading(false);
-      })
+      .then(navigate(0))
       .catch((err) => console.log(err));
-    setData(data.filter((item) => item.id !== id));
   };
   const getStatus = (isAdmin, isAuthority) => {
     if (isAdmin === true) return "Admin";
@@ -71,7 +66,11 @@ export default function UserList() {
             </Link>
             <DeleteOutlineIcon
               className="userListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              sx={{
+                visibility:
+                  params.row.username === "admin" ? "hidden" : "visible",
+              }}
+              onClick={() => handleDelete(params.row._id)}
             />
           </>
         );

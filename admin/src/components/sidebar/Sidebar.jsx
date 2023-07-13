@@ -48,7 +48,7 @@ export default function Sidebar() {
             <Link to="/users" className="link">
               <li
                 className={
-                  page === "users" || page === "user"
+                  page === "users" || page === "user" || page === "newUser"
                     ? "sidebarListItem active"
                     : "sidebarListItem"
                 }
@@ -60,7 +60,9 @@ export default function Sidebar() {
             <Link to="/campaigns" className="link">
               <li
                 className={
-                  page === "campaigns" || page === "campaign"
+                  page === "campaigns" ||
+                  page === "campaign" ||
+                  page === "newCampaign"
                     ? "sidebarListItem active"
                     : "sidebarListItem"
                 }
@@ -84,7 +86,9 @@ export default function Sidebar() {
             <Link to="/pendings" className="link">
               <li
                 className={
-                  page === "pendings" || page === "pending"
+                  page === "pendings" ||
+                  page === "pending" ||
+                  page === "newPending"
                     ? "sidebarListItem active"
                     : "sidebarListItem"
                 }

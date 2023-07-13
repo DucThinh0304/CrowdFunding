@@ -101,6 +101,29 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    textStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    textSuccess: (state, action) => {
+      state.isFetching = false;
+      state.currentUser = action.payload;
+    },
+    textFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
+    addUpdateStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    addUpdateSuccess: (state) => {
+      state.isFetching = false;
+    },
+    addUpdateFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
@@ -127,5 +150,11 @@ export const {
   changePasswordStart,
   changePasswordSuccess,
   changePasswordFailure,
+  textStart,
+  textSuccess,
+  textFailure,
+  addUpdateStart,
+  addUpdateSuccess,
+  addUpdateFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

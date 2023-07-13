@@ -5,6 +5,7 @@ const {
   verifyTokenAndAdmin,
 } = require("./verifyToken");
 const Campaign = require("../models/Campaign");
+const Pending = require("../models/Pending");
 
 //CREATE
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
@@ -28,6 +29,30 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
         $set: req.body,
       },
       { new: true };
+    res.status(200).json(updatedCampaign);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//ADD UPDATE
+router.put("/update/:id", async (req, res) => {
+  try {
+    const updatedCampaign = await Campaign.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          update: {
+            img: req.body.img ? req.body.img : "",
+            description: req.body.description,
+            day: req.body.day,
+          },
+        },
+      },
+      { new: true }
+    );
     res.status(200).json(updatedCampaign);
     return;
   } catch (err) {
@@ -122,6 +147,35 @@ router.post("/comment/:id", async (req, res) => {
     res.status(200).json(campaign);
     return;
   } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+//MOVE TO PUBLIC
+
+router.put("/move/:id", async (req, res) => {
+  try {
+    const count = await Campaign.find().count();
+    const pending = await Pending.findById(req.params.id);
+    const campaign = new Campaign({
+      Id: count,
+      title: pending.title,
+      tag: pending.tag,
+      donateneed: pending.donateneed,
+      donatesum: pending.donatesum,
+      img: pending.img,
+      dayfinish: pending.dayfinish,
+      username: pending.username,
+      description: pending.description,
+      donateamounts: pending.donateamounts,
+    });
+    await campaign.save();
+    await Pending.findByIdAndDelete(req.params.id);
+    res.status(200).json();
+    return;
+  } catch (err) {
+    console.log(err);
     res.status(500).json(err);
     return;
   }

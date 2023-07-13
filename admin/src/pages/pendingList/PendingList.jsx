@@ -89,12 +89,12 @@ export default function PendingList() {
     },
     {
       field: "donatesum",
-      headerName: "Số tiền đã quyên góp",
+      headerName: "Số tiền gọi ủng hộ",
       width: 160,
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            {formatter.format(params.row.donatesum)} ₫
+            {formatter.format(params.row.donateneed)} ₫
           </div>
         );
       },

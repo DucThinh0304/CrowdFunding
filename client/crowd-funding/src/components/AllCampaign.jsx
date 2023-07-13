@@ -326,7 +326,7 @@ const AllCampaign = () => {
     <Container>
       <CampaignsContainer>
         {campaigns.map((campaign) => (
-          <CampaignContainer key={campaign.Id}>
+          <CampaignContainer key={campaign._id}>
             <Campaign>
               <CampaignImageContainer>
                 <Link to={`../campaign/${campaign._id}`}>
@@ -380,14 +380,19 @@ const AllCampaign = () => {
                 </CampaignProgessContainer>
                 <Hr />
                 <BottomCampaign>
-                  <UserContainer>
-                    <AvatarContainer>
-                      <Avatar id={campaign.username} />
-                    </AvatarContainer>
-                    <UsernameContainer>
-                      <Username id={campaign.username}></Username>
-                    </UsernameContainer>
-                  </UserContainer>
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to={`../user/${campaign.username}`}
+                  >
+                    <UserContainer>
+                      <AvatarContainer>
+                        <Avatar id={campaign.username} />
+                      </AvatarContainer>
+                      <UsernameContainer>
+                        <Username id={campaign.username}></Username>
+                      </UsernameContainer>
+                    </UserContainer>
+                  </Link>
                   <CampaignSuccessContainer>
                     <SuccessRate>
                       {Math.round(

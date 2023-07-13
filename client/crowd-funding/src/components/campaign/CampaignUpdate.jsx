@@ -44,6 +44,14 @@ const UpdateContainer = styled.div`
   border: 1px solid #ebebf1;
   padding: 20px;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Image = styled.img`
+  width: 450px;
+  height: auto;
+  margin: 5px;
 `;
 
 const CampaignUpdate = () => {
@@ -66,6 +74,18 @@ const CampaignUpdate = () => {
     getCampaign();
   }, [id]);
 
+  const formatDate = (date) => {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [day, month, year].join("-");
+  };
+
   return loading ? (
     <LoadingContainer>
       <CircularProgress />
@@ -80,40 +100,29 @@ const CampaignUpdate = () => {
             },
           }}
         >
-          <TimelineItem>
-            <TimelineOppositeContent>30-06-2023</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <UpdateContainer>
-                VTV Chuyển động 24h - Cuốn sách ra đời từ cộng đồng
-                <iframe
-                  width="560"
-                  height="315"
-                  src="https://www.youtube.com/embed/k6MIqGSvw_s"
-                  title="VTV Chuyển động 24h - Cuốn sách ra đời từ cộng đồng"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-              </UpdateContainer>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineOppositeContent>27-06-2023</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot />
-            </TimelineSeparator>
-            <TimelineContent>
-              <UpdateContainer>
-                Buổi lễ ra mắt cuốn sách sẽ được tổ chức vào ngày 26/07/2023 tại
-                trung tâm Văn hóa Pháp. Mọi chi tiết sẽ được cập nhật trên
-                fanpage của nhóm
-              </UpdateContainer>
-            </TimelineContent>
-          </TimelineItem>
+          {campaign.update.length === 0 ? (
+            <div>Dự án này chưa có cập nhật nào</div>
+          ) : (
+            <>
+              {campaign.update.map((update) => (
+                <TimelineItem>
+                  <TimelineOppositeContent>
+                    {formatDate(update.day)}
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineDot />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>
+                    <UpdateContainer>
+                      {update.description}
+                      <Image src={update.img} alt="" />
+                    </UpdateContainer>
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
+            </>
+          )}
         </Timeline>
       </Wrapper>
     </Container>

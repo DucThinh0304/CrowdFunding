@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Pending from "../components/setting/Pending";
 import Deployment from "../components/setting/Deployment";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div``;
 
@@ -58,6 +59,7 @@ const TableWrapper2 = styled.div`
 `;
 
 const Profile = () => {
+  const user = useSelector((state) => state.user.currentUser);
   return (
     <Container>
       <Navbar />
@@ -70,9 +72,13 @@ const Profile = () => {
         <TableWrapper2>
           <Title>Dự án đang chờ duyệt</Title>
           <Pending />
-          <Link to="/create-campaign">
-            <Button>Thêm dự án mới</Button>
-          </Link>
+          {user.isAuthority === true ? (
+            <Link to="/create-campaign">
+              <Button>Thêm dự án mới</Button>
+            </Link>
+          ) : (
+            <div></div>
+          )}
         </TableWrapper2>
       </Wrapper>
       <Footer />

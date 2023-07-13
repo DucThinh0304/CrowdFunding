@@ -93,7 +93,6 @@ const AddAddress = () => {
       ward,
       username: `${user._id}`,
     });
-    navigate("/my-account/address");
   };
 
   return (

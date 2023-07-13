@@ -2,7 +2,7 @@ import "./campaignList.css";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { productRows } from "../../dummyData";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
@@ -13,6 +13,7 @@ export default function CampaignList() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const page = location.pathname.split("/")[1];
+  const navigate = useNavigate();
   const checkDay = (check) => {
     return check < 0 ? false : true;
   };
@@ -37,9 +38,7 @@ export default function CampaignList() {
     getCampaign();
   }, [page]);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+  const handleDelete = (id) => {};
 
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },

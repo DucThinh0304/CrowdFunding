@@ -6,11 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getStripe, logoutUser } from "../redux/apiCalls";
 import NoAvt from "../asset/NoAvt.png";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import {
+  Autocomplete,
+  IconButton,
+  Menu,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 import MainLogo from "../asset/Happy.png";
 import { mobile } from "../responsive";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ChatIcon from "@mui/icons-material/Chat";
+import { publicRequest } from "../requestMethod";
 
 const Container = styled.div`
   height: 94px;
@@ -46,20 +53,23 @@ const Left = styled.div`
 `;
 
 const Center = styled.div`
-  flex: 2;
+  flex: 1;
   display: flex;
   align-items: left;
   justify-content: flex-start;
 `;
 
 const Right = styled.div`
-  flex: 1;
-  align-items: center;
+  flex: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 `;
 
 const WrapLogin = styled.div`
+  flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -77,11 +87,13 @@ const LinkText = styled.div`
 `;
 
 const Icon = styled.div`
+  flex: 3;
   width: 14px;
   height: 14px;
   justify-content: center;
   align-items: center;
   display: flex;
+  flex-direction: row-reverse;
   cursor: pointer;
   margin-right: 50px;
   ${mobile({ display: "none" })}
@@ -135,11 +147,18 @@ const Login = styled.div`
   transition: all 0.5s ease;
 `;
 
+const Name = styled.div`
+  flex: 1;
+`;
+
 const Navbar = () => {
   const location = useLocation();
   const [index, setIndex] = useState(1);
+  const [value, setValue] = useState(null);
+  const [campaigns, setCampaigns] = useState(1);
   const [anchorEl, setAnchorEl] = useState();
   const [anchorElNew, setAnchorElNew] = useState();
+  const [loading, setLoading] = useState(true);
   const id = location.pathname.split("/")[1];
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
@@ -195,7 +214,24 @@ const Navbar = () => {
     return user.isAuthority ? true : false;
   };
 
-  return (
+  useEffect(() => {
+    const getCampaign = async () => {
+      const resCampaign = await publicRequest.get("/campaign");
+      setCampaigns(resCampaign.data);
+      setLoading(false);
+    };
+    getCampaign();
+  }, []);
+
+  useEffect(() => {
+    if (value === null) return;
+    const id = campaigns.find((x) => x.title === value)?._id;
+    if (id !== null) navigate(`/campaign/${id}`);
+  }, [value]);
+
+  return loading ? (
+    <div></div>
+  ) : (
     <Container>
       <Wrapper>
         <Left>
@@ -255,46 +291,56 @@ const Navbar = () => {
                     }}
                   >
                     <MenuItem onClick={handleProfile}>Dự án mới</MenuItem>
-                    <MenuItem onClick={handleMyAccount}>Tin tức mới</MenuItem>
                   </Menu>
                 </>
               )}
 
               <IconButton>
-                <SearchIcon />
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  onInputChange={(event, newValue) => setValue(newValue)}
+                  options={campaigns.map((option) => option.title)}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Tìm kiếm..." />
+                  )}
+                />
               </IconButton>
             </Icon>
             {user ? (
-              <Links>
-                <Username>
-                  Xin chào,
-                  <Span> {user.name ? user.name : user.username}</Span>
-                </Username>
-                <Border onClick={(e) => handleClick(e)}>
-                  <Image src={user.avt ? user.avt : NoAvt} />
-                </Border>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                >
-                  <MenuItem onClick={handleProfile}>Hồ sơ</MenuItem>
-                  <MenuItem onClick={handleMyAccount}>Tài khoản</MenuItem>
-                  <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
-                </Menu>
-              </Links>
+              <Name>
+                <Links>
+                  <Username>
+                    Xin chào,
+                    <Span> {user.name ? user.name : user.username}</Span>
+                  </Username>
+                  <Border onClick={(e) => handleClick(e)}>
+                    <Image src={user.avt ? user.avt : NoAvt} />
+                  </Border>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  >
+                    <MenuItem onClick={handleProfile}>Hồ sơ</MenuItem>
+                    <MenuItem onClick={handleMyAccount}>Tài khoản</MenuItem>
+                    <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
+                  </Menu>
+                </Links>
+              </Name>
             ) : (
               <Links>
                 <Link
